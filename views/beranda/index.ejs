@@ -5,10 +5,12 @@
   <main class="main">
 
     
-      <div class="alert alert-success flash-bar no-print" id="flashBar">
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> flash-bar no-print" id="flashBar">
         <svg class="ic " aria-hidden="true"><use href="#i-check-circle"></use></svg>
-        <div>Selamat datang, Siti Rahmawati, S.Kom.</div>
+        <div><%= flash.message %></div>
       </div>
+    <% } %>
     
     <div class="crumbs no-print">
       <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Beranda</b>
@@ -18,8 +20,7 @@
       <p>Dashboard Personal — Data PTK Anda</p>
     </div>
 
-
-
+  <% if (user && (user.role === 'admin' || user.role === 'superadmin')) { %>
   <div class="grid grid-4 mb-3">
     <div class="stat tint-1">
       <div><div class="lbl">GTK Aktif</div><div class="val">8</div><div class="sub">7 guru · 1 tenaga kependidikan</div></div>
@@ -38,15 +39,14 @@
       <div class="ico ico-blue"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-check-circle"></use></svg></div>
     </div>
   </div>
-
-
+  <% } %>
 
 <div class="identity mb-3">
   <div class="identity-top">
-    <div class="avatar">SR</div>
+    <div class="avatar"><%= (user && user.nama) ? user.nama.split(' ').map(n=>n[0]).filter(Boolean).slice(0,2).join('') : 'GT' %></div>
     <div>
-      <h2>Siti Rahmawati, S.Kom</h2>
-      <div class="role">Tenaga Kependidikan / Admin Madrasah · MAN 2 KABUPATEN GORONTALO</div>
+      <h2><%= (user && user.nama) ? user.nama : 'Pengguna SIM-GTK' %></h2>
+      <div class="role"><%= (user && user.roleLabel) ? user.roleLabel : 'GTK' %> &middot; <%= (user && user.madrasahNama) ? user.madrasahNama : 'Madrasah' %></div>
     </div>
   </div>
   <div class="identity-grid">
