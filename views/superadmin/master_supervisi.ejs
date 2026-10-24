@@ -178,7 +178,17 @@
                       </td>
                       <td data-label="Aksi" style="text-align:center">
                         <div class="flex gap-1 justify-center">
-                          <button type="button" class="btn btn-outline btn-xs" title="Edit Butir" onclick='editMasterButir(<%= JSON.stringify(it) %>, "<%= domKey %>")'>
+                          <button type="button" class="btn btn-outline btn-xs" title="Edit Butir"
+                            data-db-id="<%= it.db_id %>"
+                            data-kode="<%= it.id %>"
+                            data-label="<%= it.label %>"
+                            data-domain="<%= domKey %>"
+                            data-weight="<%= it.weight || 1.0 %>"
+                            data-ind1="<%= it.indikator_1 || '' %>"
+                            data-ind2="<%= it.indikator_2 || '' %>"
+                            data-ind3="<%= it.indikator_3 || '' %>"
+                            data-ind4="<%= it.indikator_4 || '' %>"
+                            onclick="editMasterFromBtn(this)">
                             <svg class="ic ic-sm"><use href="#i-edit"></use></svg>
                           </button>
                           <form method="POST" action="/sim-gtk/superadmin/master-supervisi/hapus" style="display:inline" onsubmit="return confirm('Hapus butir master <%= it.id %>?')">
@@ -294,6 +304,20 @@ function openModalTambahMaster(defaultDomain = 'administrasi') {
   document.getElementById('field_id').value = '';
   document.getElementById('field_domain').value = defaultDomain;
   document.getElementById('modalMasterButir').style.display = 'grid';
+}
+
+function editMasterFromBtn(btn) {
+  const d = btn.dataset;
+  editMasterButir({
+    db_id: d.dbId,
+    id: d.kode,
+    label: d.label,
+    weight: d.weight,
+    indikator_1: d.ind1,
+    indikator_2: d.ind2,
+    indikator_3: d.ind3,
+    indikator_4: d.ind4
+  }, d.domain);
 }
 
 function editMasterButir(it, domain) {
