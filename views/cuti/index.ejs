@@ -1,0 +1,240 @@
+<%- include('../partials/head', { title: "Layanan Cuti & Perizinan GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Layanan Cuti &amp; Perizinan GTK</b>
+    </div>
+
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <svg class="ic"><use href="#i-info"></use></svg>
+        <div><%= flash.message %></div>
+      </div>
+    <% } %>
+
+    <div class="page-head flex justify-between align-center">
+      <div>
+        <h1>Layanan Cuti &amp; Perizinan GTK</h1>
+        <p>Pengajuan cuti online, izin ketidakhadiran dinas, dan pemantauan persetujuan Kepala Madrasah</p>
+      </div>
+      <div>
+        <span class="badge badge-purple" style="font-size:12px;padding:6px 12px">
+          <svg class="ic ic-xs"><use href="#i-calendar"></use></svg> Tahun Anggaran 2026/2027
+        </span>
+      </div>
+    </div>
+
+    <!-- STATISTIK RINGKAS CUTI -->
+    <div class="grid grid-4 gap-2 mb-3">
+      <div class="stat-card">
+        <div class="stat-lbl">Hak Cuti Tahunan</div>
+        <div class="stat-val text-blue">12 <span style="font-size:13px;font-weight:400;color:var(--text-muted)">Hari</span></div>
+        <div class="stat-sub">Regulasi Kemenag RI</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Cuti Digunakan</div>
+        <div class="stat-val text-warning">
+          <%= cutiList.filter(c => c.status === 'disetujui' && c.jenis_cuti === 'Cuti Tahunan').reduce((acc, curr) => acc + curr.lama_hari, 0) %>
+          <span style="font-size:13px;font-weight:400;color:var(--text-muted)">Hari</span>
+        </div>
+        <div class="stat-sub">Disetujui Kamad</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Menunggu Keputusan</div>
+        <div class="stat-val text-orange">
+          <%= cutiList.filter(c => c.status === 'menunggu').length %>
+          <span style="font-size:13px;font-weight:400;color:var(--text-muted)">Pengajuan</span>
+        </div>
+        <div class="stat-sub">Sedang Ditelaah</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Total Riwayat</div>
+        <div class="stat-val text-green"><%= cutiList.length %> <span style="font-size:13px;font-weight:400;color:var(--text-muted)">Berkas</span></div>
+        <div class="stat-sub">Riwayat Semua Jenis Cuti</div>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1.2fr 1.8fr;gap:20px">
+      <!-- FORMULIR PENGAJUAN CUTI -->
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3>Formulir Pengajuan Cuti Baru</h3>
+            <p>Ajukan permohonan resmi kepada Kepala Madrasah</p>
+          </div>
+        </div>
+
+        <form method="post" action="/sim-gtk/cuti" id="formCuti">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          
+          <div class="form-grid">
+            <div class="field span-2">
+              <label>Jenis Cuti *</label>
+              <select name="jenis_cuti" required class="form-control" id="jenisCutiSelect">
+                <option value="">— Pilih Jenis Cuti —</option>
+                <option value="Cuti Tahunan">Cuti Tahunan (Maks. 12 hari kerja/tahun)</option>
+                <option value="Cuti Sakit">Cuti Sakit (Wajib surat dokter)</option>
+                <option value="Cuti Alasan Penting">Cuti Alasan Penting (Keluarga sakit/meninggal/nikah)</option>
+                <option value="Cuti Melahirkan">Cuti Melahirkan / Persalinan (3 Bulan)</option>
+                <option value="Cuti Besar">Cuti Besar (Masa kerja > 5 tahun)</option>
+                <option value="Cuti Ibadah Haji/Umrah">Cuti Ibadah Keagamaan (Haji / Umrah)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Tanggal Mulai Cuti *</label>
+              <input type="date" name="tgl_mulai" id="tglMulai" required class="form-control">
+            </div>
+
+            <div class="field">
+              <label>Tanggal Selesai Cuti *</label>
+              <input type="date" name="tgl_selesai" id="tglSelesai" required class="form-control">
+            </div>
+
+            <div class="field span-2">
+              <label>Lama Hari Cuti</label>
+              <div class="flex align-center gap-1">
+                <input type="number" name="lama_hari" id="lamaHari" min="1" max="180" placeholder="Otomatis terhitung" required class="form-control" style="width:120px;font-weight:700">
+                <span class="small muted">Hari Kalender / Kerja</span>
+              </div>
+            </div>
+
+            <div class="field span-2">
+              <label>Alasan Lengkap Pengajuan *</label>
+              <textarea name="alasan" rows="3" placeholder="Sebutkan keperluan mendesak atau alasan pengajuan cuti secara rinci..." required class="form-control"></textarea>
+            </div>
+
+            <div class="field span-2">
+              <label>Alamat Selama Menjalankan Cuti *</label>
+              <input type="text" name="alamat_cuti" placeholder="Alamat tinggal / domisili selama masa cuti" required class="form-control">
+            </div>
+
+            <div class="field span-2">
+              <label>Nomor Telepon / WhatsApp Darurat *</label>
+              <input type="text" name="telepon" placeholder="Nomor kontak yang tetap bisa dihubungi pihak madrasah" required class="form-control" value="<%= (typeof currentGtk !== 'undefined' && currentGtk) ? currentGtk.telepon : '' %>">
+            </div>
+          </div>
+
+          <div class="alert alert-info mt-3 p-2 small">
+            <svg class="ic ic-sm"><use href="#i-info"></use></svg>
+            <div>Pengajuan akan diteruskan secara otomatis ke akun Kepala Madrasah untuk ditinjau dan diterbitkan SK Izin Cuti.</div>
+          </div>
+
+          <button class="btn btn-primary btn-block mt-3" type="submit">
+            <svg class="ic ic-sm"><use href="#i-send"></use></svg> Kirim Pengajuan Cuti ke Kepala Madrasah
+          </button>
+        </form>
+      </div>
+
+      <!-- RIWAYAT PENGAJUAN CUTI SAYA -->
+      <div class="card">
+        <div class="card-head flex justify-between align-center">
+          <div>
+            <h3>Riwayat Pengajuan Cuti Saya</h3>
+            <p>Daftar permohonan izin &amp; status verifikasi</p>
+          </div>
+        </div>
+
+        <% if (cutiList.length === 0) { %>
+          <div class="list-empty">
+            <svg class="ic"><use href="#i-calendar"></use></svg>
+            <b>Belum ada pengajuan cuti</b>
+            Gunakan formulir di samping jika Anda ingin mengajukan cuti tahunan, sakit, atau izin penting.
+          </div>
+        <% } else { %>
+          <div class="stack gap-2 mt-1">
+            <% cutiList.forEach(c => { %>
+              <div class="p-3" style="border:1px solid var(--line);border-radius:8px;background:var(--bg-subtle)">
+                <div class="flex justify-between align-start mb-2">
+                  <div>
+                    <span class="font-bold" style="font-size:15px;color:var(--text)"><%= c.jenis_cuti %></span>
+                    <span class="small muted">&bull; <%= c.lama_hari %> Hari</span>
+                  </div>
+                  <div>
+                    <% if (c.status === 'disetujui') { %>
+                      <span class="badge badge-success"><svg class="ic ic-xs"><use href="#i-check"></use></svg> Disetujui Kamad</span>
+                    <% } else if (c.status === 'ditolak') { %>
+                      <span class="badge badge-danger"><svg class="ic ic-xs"><use href="#i-x"></use></svg> Ditolak</span>
+                    <% } else { %>
+                      <span class="badge badge-warning"><svg class="ic ic-xs"><use href="#i-clock"></use></svg> Menunggu Persetujuan</span>
+                    <% } %>
+                  </div>
+                </div>
+
+                <div class="small">
+                  <b>Periode:</b> <%= c.tgl_mulai %> s.d. <%= c.tgl_selesai %>
+                </div>
+                <div class="small text-secondary mt-1">
+                  <b>Alasan:</b> <%= c.alasan %>
+                </div>
+                <div class="tiny muted mt-1">
+                  <b>Alamat Selama Cuti:</b> <%= c.alamat_cuti %> (Kontak: <%= c.telepon %>)
+                </div>
+
+                <% if (c.catatan_kamad) { %>
+                  <div class="mt-2 p-2" style="background:var(--bg-card);border-left:3px solid <%= c.status === 'disetujui' ? 'var(--green-600)' : 'var(--red-600)' %>;border-radius:4px;font-size:12px">
+                    <b>Catatan/Disposisi Kamad:</b> <%= c.catatan_kamad %>
+                    <% if (c.disetujui_oleh) { %>
+                      <div class="tiny muted mt-1">&mdash; <%= c.disetujui_oleh %> (<%= c.tgl_disetujui %>)</div>
+                    <% } %>
+                  </div>
+                <% } %>
+
+                <div class="flex justify-between align-center mt-3 pt-2" style="border-top:1px dashed var(--line)">
+                  <span class="tiny muted">Diajukan: <%= c.created_at %></span>
+                  <div class="flex gap-1">
+                    <% if (c.status === 'disetujui') { %>
+                      <a href="/sim-gtk/cuti/<%= c.id %>/cetak" target="_blank" class="btn btn-outline btn-sm text-green">
+                        <svg class="ic ic-sm"><use href="#i-print"></use></svg> Cetak Surat Cuti
+                      </a>
+                    <% } %>
+                    <% if (c.status === 'menunggu') { %>
+                      <form method="post" action="/sim-gtk/cuti/<%= c.id %>/batal" onsubmit="return confirm('Batalkan pengajuan cuti ini?')">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn btn-outline btn-sm text-danger">
+                          <svg class="ic ic-sm"><use href="#i-x"></use></svg> Batalkan
+                        </button>
+                      </form>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah.
+    </div>
+  </main>
+</div>
+
+<script>
+  // Hitung otomatis lama hari antara tglMulai dan tglSelesai
+  const tMulai = document.getElementById('tglMulai');
+  const tSelesai = document.getElementById('tglSelesai');
+  const lHari = document.getElementById('lamaHari');
+
+  function updateDays() {
+    if (tMulai.value && tSelesai.value) {
+      const d1 = new Date(tMulai.value);
+      const d2 = new Date(tSelesai.value);
+      const diffTime = d2 - d1;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      if (diffDays > 0) {
+        lHari.value = diffDays;
+      } else {
+        lHari.value = '';
+      }
+    }
+  }
+
+  tMulai.addEventListener('change', updateDays);
+  tSelesai.addEventListener('change', updateDays);
+</script>
+<%- include('../partials/footer') %>

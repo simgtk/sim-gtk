@@ -1,0 +1,212 @@
+<%- include('../partials/head', { title: "Persetujuan Cuti & Perizinan GTK · Kepala Madrasah", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/kamad/dashboard">Panel Kamad</a> <span>/</span> <b>Persetujuan &amp; Perizinan Cuti GTK</b>
+    </div>
+
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <svg class="ic"><use href="#i-info"></use></svg>
+        <div><%= flash.message %></div>
+      </div>
+    <% } %>
+
+    <div class="page-head flex justify-between align-center">
+      <div>
+        <h1>Persetujuan &amp; Perizinan Cuti GTK</h1>
+        <p>Pengendalian izin dinas, hak cuti tahunan, dan penerbitan izin cuti resmi tenaga pendidik madrasah</p>
+      </div>
+      <div>
+        <span class="badge badge-purple" style="font-size:12px;padding:6px 14px">
+          <svg class="ic ic-xs"><use href="#i-shield"></use></svg> Otoritas Kepala Madrasah
+        </span>
+      </div>
+    </div>
+
+    <!-- STATISTIK KEPUTUSAN KAMAD -->
+    <div class="grid grid-4 gap-2 mb-3">
+      <div class="stat-card" style="border-top: 3px solid var(--orange-600)">
+        <div class="stat-lbl">Menunggu Keputusan</div>
+        <div class="stat-val text-orange">
+          <%= cutiList.filter(c => c.status === 'menunggu').length %>
+          <span style="font-size:13px;font-weight:400;color:var(--text-muted)">Pengajuan</span>
+        </div>
+        <div class="stat-sub">Perlu Segera Ditelaah</div>
+      </div>
+      <div class="stat-card" style="border-top: 3px solid var(--green-600)">
+        <div class="stat-lbl">Telah Disetujui</div>
+        <div class="stat-val text-green">
+          <%= cutiList.filter(c => c.status === 'disetujui').length %>
+          <span style="font-size:13px;font-weight:400;color:var(--text-muted)">Pengajuan</span>
+        </div>
+        <div class="stat-sub">Surat Izin Terbit</div>
+      </div>
+      <div class="stat-card" style="border-top: 3px solid var(--red-600)">
+        <div class="stat-lbl">Permohonan Ditolak</div>
+        <div class="stat-val text-danger">
+          <%= cutiList.filter(c => c.status === 'ditolak').length %>
+          <span style="font-size:13px;font-weight:400;color:var(--text-muted)">Pengajuan</span>
+        </div>
+        <div class="stat-sub">Diberikan Alasan Penolakan</div>
+      </div>
+      <div class="stat-card" style="border-top: 3px solid var(--blue-600)">
+        <div class="stat-lbl">Total Permohonan</div>
+        <div class="stat-val text-blue">
+          <%= cutiList.length %>
+          <span style="font-size:13px;font-weight:400;color:var(--text-muted)">Berkas</span>
+        </div>
+        <div class="stat-sub">Tahun Ajaran 2026/2027</div>
+      </div>
+    </div>
+
+    <!-- DAFTAR PENGAJUAN PERIZINAN -->
+    <div class="card">
+      <div class="card-head flex justify-between align-center">
+        <div>
+          <h3>Daftar Pengajuan Cuti Seluruh Guru &amp; Tendik</h3>
+          <p>Tinjau alasan cuti, tentukan persetujuan, dan berikan catatan disposisi resmi</p>
+        </div>
+      </div>
+
+      <% if (cutiList.length === 0) { %>
+        <div class="list-empty">
+          <svg class="ic"><use href="#i-check-circle"></use></svg>
+          <b>Tidak ada permohonan cuti aktif</b>
+          Seluruh pengajuan cuti GTK telah diproses atau belum ada permohonan baru.
+        </div>
+      <% } else { %>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Pemohon (GTK)</th>
+                <th>Jenis &amp; Periode Cuti</th>
+                <th>Lama</th>
+                <th>Alasan &amp; Kontak</th>
+                <th>Status</th>
+                <th>Disposisi Kamad</th>
+                <th style="text-align:right">Aksi Keputusan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% cutiList.forEach(c => { %>
+                <tr>
+                  <td>
+                    <div class="font-bold"><%= c.gtk_nama %></div>
+                    <div class="tiny muted">NIP: <%= c.nip || '-' %> | <%= c.jabatan || 'Guru' %></div>
+                    <div class="tiny text-blue"><%= c.mapel_utama || '' %></div>
+                  </td>
+                  <td>
+                    <span class="badge badge-sm badge-secondary"><%= c.jenis_cuti %></span>
+                    <div class="small mt-1 font-bold"><%= c.tgl_mulai %> s.d. <%= c.tgl_selesai %></div>
+                  </td>
+                  <td>
+                    <span class="font-bold"><%= c.lama_hari %></span> <span class="tiny muted">Hari</span>
+                  </td>
+                  <td style="max-width:240px">
+                    <div class="small"><%= c.alasan %></div>
+                    <div class="tiny muted mt-1">Alamat: <%= c.alamat_cuti %> (WA: <%= c.telepon %>)</div>
+                  </td>
+                  <td>
+                    <% if (c.status === 'disetujui') { %>
+                      <span class="badge badge-success"><svg class="ic ic-xs"><use href="#i-check"></use></svg> Disetujui</span>
+                    <% } else if (c.status === 'ditolak') { %>
+                      <span class="badge badge-danger"><svg class="ic ic-xs"><use href="#i-x"></use></svg> Ditolak</span>
+                    <% } else { %>
+                      <span class="badge badge-warning"><svg class="ic ic-xs"><use href="#i-clock"></use></svg> Menunggu</span>
+                    <% } %>
+                  </td>
+                  <td style="max-width:200px">
+                    <% if (c.catatan_kamad) { %>
+                      <div class="small" style="font-style:italic">"<%= c.catatan_kamad %>"</div>
+                      <div class="tiny muted mt-1"><%= c.tgl_disetujui || '' %></div>
+                    <% } else { %>
+                      <span class="tiny muted">Belum ada disposisi</span>
+                    <% } %>
+                  </td>
+                  <td style="text-align:right">
+                    <div class="flex gap-1 justify-end">
+                      <% if (c.status === 'disetujui') { %>
+                        <a href="/sim-gtk/cuti/<%= c.id %>/cetak" target="_blank" class="btn btn-outline btn-sm text-green" title="Cetak SK Izin">
+                          <svg class="ic ic-sm"><use href="#i-print"></use></svg>
+                        </a>
+                      <% } %>
+                      <button class="btn btn-primary btn-sm" onclick="bukaModalKeputusan('<%= c.id %>', '<%= c.gtk_nama.replace(/'/g, '') %>', '<%= c.jenis_cuti %>', '<%= c.lama_hari %>', '<%= c.catatan_kamad ? c.catatan_kamad.replace(/'/g, '') : '' %>')">
+                        <svg class="ic ic-sm"><use href="#i-edit"></use></svg> Proses
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- MODAL PROSES KEPUTUSAN KAMAD -->
+    <div id="modalKeputusan" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center">
+      <div class="card p-4" style="width:100%;max-width:500px;background:var(--bg-card);border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,0.3)">
+        <div class="card-head flex justify-between align-center mb-2">
+          <div>
+            <h3 style="margin:0">Keputusan Kepala Madrasah</h3>
+            <p class="small muted" style="margin:0" id="modalSub">Tentukan izin pengajuan cuti</p>
+          </div>
+          <button class="btn btn-sm btn-outline" onclick="tutupModal()">✕</button>
+        </div>
+
+        <form method="post" id="formProsesCuti" action="">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          
+          <div class="mb-3">
+            <label class="font-bold small mb-1" style="display:block">Keputusan Kamad *</label>
+            <div class="flex gap-2">
+              <label class="flex align-center gap-1 p-2" style="border:1px solid var(--line);border-radius:6px;flex:1;cursor:pointer">
+                <input type="radio" name="status" value="disetujui" checked required>
+                <span class="font-bold text-green">Setujui Permohonan</span>
+              </label>
+              <label class="flex align-center gap-1 p-2" style="border:1px solid var(--line);border-radius:6px;flex:1;cursor:pointer">
+                <input type="radio" name="status" value="ditolak" required>
+                <span class="font-bold text-danger">Tolak Permohonan</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="font-bold small mb-1" style="display:block">Catatan / Arahan Disposisi Kamad</label>
+            <textarea name="catatan_kamad" id="modalCatatan" rows="3" class="form-control" placeholder="Contoh: Disetujui penuh. Tugas mengajar didelegasikan ke guru pamong / piket..."></textarea>
+          </div>
+
+          <div class="flex justify-end gap-2">
+            <button type="button" class="btn btn-outline" onclick="tutupModal()">Batal</button>
+            <button type="submit" class="btn btn-primary">
+              <svg class="ic ic-sm"><use href="#i-check"></use></svg> Simpan Keputusan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah.
+    </div>
+  </main>
+</div>
+
+<script>
+  function bukaModalKeputusan(id, nama, jenis, lama, catatan) {
+    document.getElementById('modalSub').innerText = nama + ' — ' + jenis + ' (' + lama + ' Hari)';
+    document.getElementById('modalCatatan').value = catatan || '';
+    document.getElementById('formProsesCuti').action = '/sim-gtk/kamad/perizinan/' + id + '/proses';
+    document.getElementById('modalKeputusan').style.display = 'flex';
+  }
+
+  function tutupModal() {
+    document.getElementById('modalKeputusan').style.display = 'none';
+  }
+</script>
+<%- include('../partials/footer') %>

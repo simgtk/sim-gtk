@@ -229,10 +229,63 @@ router.post('/sim-gtk/pengaturan/madrasah', (req, res) => {
   res.redirect('/sim-gtk/pengaturan');
 });
 
-// 3. Portofolio
+// Helper to resolve GTK profile for current session
+function getCurrentGtk(req) {
+  const userId = req.session.user ? req.session.user.id : null;
+  let gtk = null;
+  if (userId) {
+    gtk = db.prepare('SELECT * FROM gtk WHERE user_id = ?').get(userId);
+  }
+  if (!gtk) {
+    if (req.session.user && (req.session.user.role === 'guru' || (req.session.user.email && req.session.user.email.includes('herman')))) {
+      gtk = db.prepare('SELECT * FROM gtk WHERE email LIKE ? OR nama LIKE ?').get('%herman%', '%Herman%');
+    }
+  }
+  if (!gtk) {
+    gtk = db.prepare('SELECT * FROM gtk ORDER BY id ASC LIMIT 1').get();
+  }
+  return gtk;
+}
+
+// 3. Portofolio & Kartu Digital GTK
 router.get('/sim-gtk/portofolio/data-diri', (req, res) => {
-  res.render('portofolio/data-diri', { title: 'Data Diri GTK' });
+  const gtk = getCurrentGtk(req);
+  res.render('portofolio/data-diri', { title: 'Data Diri GTK', currentGtk: gtk });
 });
+
+router.get('/sim-gtk/portofolio/kartu-digital', (req, res) => {
+  const gtk = getCurrentGtk(req);
+  const madrasah = db.prepare('SELECT * FROM madrasah WHERE id = ?').get(gtk.madrasah_id || 1) || {
+    nama: 'MAN 2 KABUPATEN GORONTALO',
+    npsn: '40203010',
+    nama_kamad: 'Drs. H. Abdul Wahab, M.Pd'
+  };
+  res.render('portofolio/kartu-digital', {
+    title: `Kartu Digital GTK - ${gtk.nama}`,
+    gtk,
+    madrasah
+  });
+});
+
+router.get('/sim-gtk/manajemen/gtk/:id/kartu-digital', (req, res) => {
+  const { id } = req.params;
+  const gtk = db.prepare('SELECT * FROM gtk WHERE id = ?').get(id);
+  if (!gtk) {
+    req.session.flash = { type: 'danger', message: 'Data GTK tidak ditemukan.' };
+    return res.redirect('/sim-gtk/manajemen/gtk');
+  }
+  const madrasah = db.prepare('SELECT * FROM madrasah WHERE id = ?').get(gtk.madrasah_id || 1) || {
+    nama: 'MAN 2 KABUPATEN GORONTALO',
+    npsn: '40203010',
+    nama_kamad: 'Drs. H. Abdul Wahab, M.Pd'
+  };
+  res.render('portofolio/kartu-digital', {
+    title: `Kartu Digital GTK - ${gtk.nama}`,
+    gtk,
+    madrasah
+  });
+});
+
 router.get('/sim-gtk/portofolio/perubahan-data', (req, res) => {
   res.render('portofolio/perubahan-data', { title: 'Perubahan Data Diri' });
 });
@@ -242,6 +295,153 @@ router.post('/sim-gtk/portofolio/perubahan-data', (req, res) => {
 });
 router.get('/sim-gtk/portofolio/golongan-mkg', (req, res) => {
   res.render('portofolio/golongan-mkg', { title: 'Update Golongan & MKG' });
+});
+
+// =========================================================================
+// ----------------- MODUL ADMINISTRASI IJAZAH & SERTIFIKASI ---------------
+// =========================================================================
+
+router.get('/sim-gtk/administrasi/ijazah', (req, res) => {
+  const gtk = getCurrentGtk(req);
+  const ijazahList = db.prepare('SELECT * FROM gtk_ijazah WHERE gtk_id = ? ORDER BY thn_lulus DESC, id DESC').all(gtk.id);
+  res.render('administrasi/ijazah', {
+    title: 'Data Ijazah & Pendidikan Formal · SIM-GTK',
+    currentGtk: gtk,
+    ijazahList
+  });
+});
+
+router.post('/sim-gtk/administrasi/ijazah', (req, res) => {
+  try {
+    const gtk = getCurrentGtk(req);
+    const { jenjang, thn_lulus, institusi, jurusan, thn_masuk, gelar, ipk, no_ijazah } = req.body;
+    db.prepare(`
+      INSERT INTO gtk_ijazah (gtk_id, jenjang, institusi, jurusan, thn_masuk, thn_lulus, gelar, ipk, no_ijazah)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(gtk.id, jenjang, institusi, jurusan, thn_masuk || null, thn_lulus, gelar || null, ipk || null, no_ijazah || null);
+
+    req.session.flash = { type: 'success', message: `Data ijazah ${jenjang} di ${institusi} berhasil ditambahkan.` };
+  } catch (err) {
+    req.session.flash = { type: 'danger', message: `Gagal menyimpan: ${err.message}` };
+  }
+  res.redirect('/sim-gtk/administrasi/ijazah');
+});
+
+router.post('/sim-gtk/administrasi/ijazah/:id/hapus', (req, res) => {
+  try {
+    const { id } = req.params;
+    db.prepare('DELETE FROM gtk_ijazah WHERE id = ?').run(id);
+    req.session.flash = { type: 'warning', message: 'Riwayat data ijazah telah dihapus.' };
+  } catch (err) {
+    req.session.flash = { type: 'danger', message: `Gagal menghapus: ${err.message}` };
+  }
+  res.redirect('/sim-gtk/administrasi/ijazah');
+});
+
+router.get('/sim-gtk/administrasi/sertifikasi', (req, res) => {
+  const gtk = getCurrentGtk(req);
+  const sertifikasiList = db.prepare('SELECT * FROM gtk_sertifikasi WHERE gtk_id = ? ORDER BY id DESC').all(gtk.id);
+  res.render('administrasi/sertifikasi', {
+    title: 'Data Sertifikasi & Pelatihan · SIM-GTK',
+    currentGtk: gtk,
+    sertifikasiList
+  });
+});
+
+router.post('/sim-gtk/administrasi/sertifikasi', (req, res) => {
+  try {
+    const gtk = getCurrentGtk(req);
+    const { jenis, bidang, tgl_terbit, no_sertifikat, lembaga } = req.body;
+    db.prepare(`
+      INSERT INTO gtk_sertifikasi (gtk_id, jenis, bidang, tgl_terbit, no_sertifikat, lembaga)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(gtk.id, jenis, bidang, tgl_terbit || null, no_sertifikat, lembaga || null);
+
+    req.session.flash = { type: 'success', message: `Sertifikasi '${bidang}' berhasil ditambahkan.` };
+  } catch (err) {
+    req.session.flash = { type: 'danger', message: `Gagal menyimpan: ${err.message}` };
+  }
+  res.redirect('/sim-gtk/administrasi/sertifikasi');
+});
+
+router.post('/sim-gtk/administrasi/sertifikasi/:id/hapus', (req, res) => {
+  try {
+    const { id } = req.params;
+    db.prepare('DELETE FROM gtk_sertifikasi WHERE id = ?').run(id);
+    req.session.flash = { type: 'warning', message: 'Data sertifikat telah dihapus.' };
+  } catch (err) {
+    req.session.flash = { type: 'danger', message: `Gagal menghapus: ${err.message}` };
+  }
+  res.redirect('/sim-gtk/administrasi/sertifikasi');
+});
+
+// =========================================================================
+// ----------------- MODUL LAYANAN CUTI & PERIZINAN GTK --------------------
+// =========================================================================
+
+router.get('/sim-gtk/cuti', (req, res) => {
+  const gtk = getCurrentGtk(req);
+  const cutiList = db.prepare('SELECT * FROM gtk_cuti WHERE gtk_id = ? ORDER BY id DESC').all(gtk.id);
+  res.render('cuti/index', {
+    title: 'Layanan Cuti & Perizinan GTK · SIM-GTK',
+    currentGtk: gtk,
+    cutiList
+  });
+});
+
+router.post('/sim-gtk/cuti', (req, res) => {
+  try {
+    const gtk = getCurrentGtk(req);
+    const { jenis_cuti, tgl_mulai, tgl_selesai, lama_hari, alasan, alamat_cuti, telepon } = req.body;
+    db.prepare(`
+      INSERT INTO gtk_cuti (madrasah_id, gtk_id, jenis_cuti, tgl_mulai, tgl_selesai, lama_hari, alasan, alamat_cuti, telepon, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'menunggu')
+    `).run(gtk.madrasah_id || 1, gtk.id, jenis_cuti, tgl_mulai, tgl_selesai, parseInt(lama_hari) || 1, alasan, alamat_cuti, telepon);
+
+    req.session.flash = { type: 'success', message: 'Permohonan cuti berhasil diajukan dan diteruskan ke Kepala Madrasah.' };
+  } catch (err) {
+    req.session.flash = { type: 'danger', message: `Gagal mengajukan cuti: ${err.message}` };
+  }
+  res.redirect('/sim-gtk/cuti');
+});
+
+router.post('/sim-gtk/cuti/:id/batal', (req, res) => {
+  try {
+    const { id } = req.params;
+    db.prepare("DELETE FROM gtk_cuti WHERE id = ? AND status = 'menunggu'").run(id);
+    req.session.flash = { type: 'warning', message: 'Pengajuan cuti berhasil dibatalkan.' };
+  } catch (err) {
+    req.session.flash = { type: 'danger', message: `Gagal membatalkan: ${err.message}` };
+  }
+  res.redirect('/sim-gtk/cuti');
+});
+
+router.get('/sim-gtk/cuti/:id/cetak', (req, res) => {
+  const { id } = req.params;
+  const cuti = db.prepare(`
+    SELECT c.*, g.nama as gtk_nama, g.nip, g.nuptk, g.jabatan, g.status_kepegawaian, g.golongan, g.mapel_utama
+    FROM gtk_cuti c
+    JOIN gtk g ON c.gtk_id = g.id
+    WHERE c.id = ?
+  `).get(id);
+
+  if (!cuti) {
+    return res.status(404).send('Surat Izin Cuti tidak ditemukan');
+  }
+
+  const madrasah = db.prepare('SELECT * FROM madrasah WHERE id = ?').get(cuti.madrasah_id || 1) || {
+    nama: 'MAN 2 KABUPATEN GORONTALO',
+    alamat: 'Limboto, Kabupaten Gorontalo',
+    telepon: '0435-881234',
+    email: 'info@man2gorontalo.sch.id',
+    nama_kamad: 'Drs. H. Abdul Wahab, M.Pd'
+  };
+
+  res.render('cuti/cetak', {
+    title: `Surat Izin Cuti - ${cuti.gtk_nama}`,
+    cuti,
+    madrasah
+  });
 });
 
 // ----------------- MODUL PENILAIAN & SUPERVISI GTK -----------------
@@ -1494,6 +1694,44 @@ router.post('/sim-gtk/kamad/pengumuman', (req, res) => {
 
   req.session.flash = { type: 'success', message: 'Arahan/pengumuman berhasil diterbitkan kepada GTK.' };
   res.redirect('/sim-gtk/kamad/dashboard');
+});
+
+// KAMAD: PERSETUJUAN & PERIZINAN CUTI GTK
+router.get('/sim-gtk/kamad/perizinan', (req, res) => {
+  const cutiList = db.prepare(`
+    SELECT c.*, g.nama as gtk_nama, g.nip, g.nuptk, g.jabatan, g.mapel_utama
+    FROM gtk_cuti c
+    JOIN gtk g ON c.gtk_id = g.id
+    WHERE c.madrasah_id = 1
+    ORDER BY c.id DESC
+  `).all();
+
+  res.render('kamad/perizinan', {
+    title: 'Persetujuan Cuti & Perizinan GTK · Kepala Madrasah',
+    currentMenu: 'kamad',
+    activeSub: 'perizinan',
+    cutiList
+  });
+});
+
+router.post('/sim-gtk/kamad/perizinan/:id/proses', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, catatan_kamad } = req.body;
+    const kamadNama = req.session.user ? req.session.user.nama : 'Drs. H. Abdul Wahab, M.Pd';
+
+    db.prepare(`
+      UPDATE gtk_cuti
+      SET status = ?, catatan_kamad = ?, tgl_disetujui = datetime('now', '+8 hours'), disetujui_oleh = ?
+      WHERE id = ?
+    `).run(status, catatan_kamad, kamadNama, id);
+
+    recordAuditLog(req.session.user, `Keputusan Cuti: ${status}`, 'Perizinan Cuti Kamad', `Memproses permohonan cuti #${id} menjadi ${status}`);
+    req.session.flash = { type: 'success', message: `Permohonan cuti telah berhasil di-${status}.` };
+  } catch (err) {
+    req.session.flash = { type: 'danger', message: `Gagal memproses perizinan: ${err.message}` };
+  }
+  res.redirect('/sim-gtk/kamad/perizinan');
 });
 
 // =========================================================================

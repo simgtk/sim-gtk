@@ -1,0 +1,461 @@
+<%- include('../partials/head', { title: "Kartu Digital GTK - " + gtk.nama, bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <a href="/sim-gtk/portofolio/data-diri">Portofolio</a> <span>/</span> <b>Kartu Digital GTK</b>
+    </div>
+
+    <div class="page-head flex justify-between align-center no-print">
+      <div>
+        <h1>Kartu Identitas Digital GTK</h1>
+        <p>Kartu Tanda Anggota Elektronik Resmi Pendidik &amp; Tenaga Kependidikan Madrasah</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="/sim-gtk/portofolio/data-diri" class="btn btn-outline btn-sm">
+          <svg class="ic ic-sm"><use href="#i-arrow-left"></use></svg> Kembali ke Profil
+        </a>
+        <button onclick="window.print()" class="btn btn-primary btn-sm">
+          <svg class="ic ic-sm"><use href="#i-print"></use></svg> Cetak Kartu Digital
+        </button>
+      </div>
+    </div>
+
+    <!-- PREVIEW AREA KARTU DIGITAL GTK (STANDAR CR-80 PVC CARD) -->
+    <div class="kartu-container my-4">
+      <div class="flex flex-wrap justify-center gap-4 align-start">
+        
+        <!-- SISI DEPAN (FRONT) -->
+        <div class="id-card id-card-front" id="cardFront">
+          <!-- Card Header -->
+          <div class="id-header">
+            <div class="id-logo-wrap">
+              <div class="id-emblem">🕌</div>
+            </div>
+            <div class="id-instansi">
+              <div class="kemenag-title">KEMENTERIAN AGAMA REPUBLIK INDONESIA</div>
+              <div class="madrasah-title"><%= madrasah.nama %></div>
+              <div class="madrasah-sub">NPSN: <%= madrasah.npsn || '40203010' %> &bull; Satminkal Terakreditasi A</div>
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="id-body">
+            <div class="id-photo-col">
+              <div class="id-photo">
+                <div class="photo-placeholder">
+                  <%= gtk.nama.split(' ').slice(0, 2).map(n => n[0]).join('') %>
+                </div>
+              </div>
+              <div class="id-badge-role"><%= gtk.jabatan || 'Guru Pendidik' %></div>
+              <div class="id-status-badge"><%= gtk.status_kepegawaian || 'PNS' %></div>
+            </div>
+
+            <div class="id-info-col">
+              <div class="id-name"><%= gtk.nama %></div>
+              <div class="id-mapel"><%= gtk.mapel_utama || 'Pendidikan Madrasah' %></div>
+
+              <div class="id-table">
+                <div class="id-row">
+                  <span class="id-lbl">NUPTK</span>
+                  <span class="id-sep">:</span>
+                  <span class="id-val font-mono"><%= gtk.nuptk || '-' %></span>
+                </div>
+                <div class="id-row">
+                  <span class="id-lbl">NIP</span>
+                  <span class="id-sep">:</span>
+                  <span class="id-val font-mono"><%= gtk.nip || '-' %></span>
+                </div>
+                <div class="id-row">
+                  <span class="id-lbl">Golongan</span>
+                  <span class="id-sep">:</span>
+                  <span class="id-val"><%= gtk.golongan || 'III/a' %> (Masa Kerja <%= gtk.mkg_tahun || '8' %> Thn)</span>
+                </div>
+                <div class="id-row">
+                  <span class="id-lbl">Pendidikan</span>
+                  <span class="id-sep">:</span>
+                  <span class="id-val"><%= gtk.pendidikan_terakhir || 'S1' %> <%= gtk.prodi ? '(' + gtk.prodi + ')' : '' %></span>
+                </div>
+                <div class="id-row">
+                  <span class="id-lbl">Status Profesi</span>
+                  <span class="id-sep">:</span>
+                  <span class="id-val font-bold text-green">
+                    <%= (gtk.sertifikasi_status === 'Sudah') ? 'Tersertifikasi Pendidik' : 'Aktif Mengajar' %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="id-footer">
+            <div class="id-barcode">
+              |||||| | |||||||| |||| | |||||||||| ||| |||||||
+              <div class="tiny" style="font-family:monospace;letter-spacing:1px"><%= gtk.nuptk || '750101-GTK-2026' %></div>
+            </div>
+            <div class="id-qr">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=SIM-GTK-VERIFIKASI-<%= gtk.id %>-<%= encodeURIComponent(gtk.nama) %>" width="46" height="46" alt="QR Verifikasi">
+            </div>
+          </div>
+        </div>
+
+        <!-- SISI BELAKANG (BACK) -->
+        <div class="id-card id-card-back" id="cardBack">
+          <div class="id-back-header">
+            KETENTUAN PEMEGANG KARTU DIGITAL GTK
+          </div>
+          <div class="id-back-rules">
+            <ol>
+              <li>Kartu ini adalah identitas elektronik resmi Guru &amp; Tenaga Kependidikan pada <b><%= madrasah.nama %></b>.</li>
+              <li>Berfungsi untuk verifikasi presensi kehadiran digital, akses platform SIM-GTK, dan supervisi pembelajaran.</li>
+              <li>Keabsahan kartu dapat dipindai melalui kode QR yang terhubung ke basis data SIM-GTK terpusat.</li>
+              <li>Apabila kartu ini ditemukan, mohon diserahkan ke bagian Tata Usaha Madrasah.</li>
+            </ol>
+          </div>
+
+          <div class="id-back-ttd-wrap">
+            <div class="id-back-validity">
+              <div class="tiny uppercase muted font-bold">Masa Berlaku:</div>
+              <div class="font-bold text-blue" style="font-size:12px">TAHUN AJARAN 2026 / 2027</div>
+              <div class="tiny text-green font-bold mt-1">STATUS: AKTIF TERDAFTAR</div>
+            </div>
+
+            <div class="id-back-ttd">
+              <div class="tiny">Gorontalo, 24 Oktober 2026</div>
+              <div class="tiny font-bold">Kepala Madrasah,</div>
+              <div class="id-stempel-wrap">
+                <div class="id-stempel">STEMPEL RESMI<br>MAN 2 KAB. GORONTALO</div>
+                <div class="id-signature">AbdulWahab</div>
+              </div>
+              <div class="id-kamad-name"><u><%= madrasah.nama_kamad || 'Drs. H. Abdul Wahab, M.Pd' %></u></div>
+              <div class="tiny font-mono">NIP. 197005121996031002</div>
+            </div>
+          </div>
+
+          <div class="id-back-footer">
+            Portal Resmi SIM-GTK &bull; sim-gtk.kemenag.go.id &bull; Hak Cipta Dilindungi
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PETUNJUK CETAK DI LAYAR -->
+    <div class="card p-3 no-print max-w-700 mx-auto mt-4" style="background:var(--bg-subtle)">
+      <div class="flex gap-2 align-center">
+        <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-info"></use></svg>
+        <div>
+          <b>Petunjuk Pencetakan:</b>
+          <div class="small muted">
+            Gunakan kertas foto (glossy paper) atau kartu blank PVC ID Card standar ISO/IEC 7810 (85.60 × 53.98 mm).
+            Klik tombol <b>Cetak Kartu Digital</b> di atas atau tekan <b>Ctrl + P</b> pada keyboard. Bilah menu dan tombol tidak akan ikut tercetak.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tiny muted mt-4 no-print" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah.
+    </div>
+  </main>
+</div>
+
+<style>
+  /* ID CARD STYLES */
+  .id-card {
+    width: 360px;
+    height: 228px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  /* FRONT DESIGN */
+  .id-card-front {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 60%, #e2e8f0 100%);
+    border-top: 4px solid #15803d; /* Warna hijau kemenag */
+  }
+
+  .id-header {
+    background: linear-gradient(90deg, #15803d 0%, #166534 100%);
+    color: #ffffff;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .id-logo-wrap {
+    width: 30px;
+    height: 30px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .id-instansi {
+    flex: 1;
+    line-height: 1.15;
+  }
+  .kemenag-title {
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #bbf7d0;
+  }
+  .madrasah-title {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+  .madrasah-sub {
+    font-size: 7px;
+    opacity: 0.85;
+  }
+
+  .id-body {
+    padding: 6px 10px;
+    display: flex;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .id-photo-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 72px;
+  }
+  .id-photo {
+    width: 66px;
+    height: 80px;
+    border-radius: 6px;
+    background: #1e3a8a;
+    border: 2px solid #15803d;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .photo-placeholder {
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1px;
+  }
+  .id-badge-role {
+    margin-top: 4px;
+    background: #15803d;
+    color: #fff;
+    font-size: 7.5px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    text-align: center;
+    width: 100%;
+  }
+  .id-status-badge {
+    margin-top: 2px;
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 7px;
+    font-weight: bold;
+    padding: 1px 4px;
+    border-radius: 4px;
+    border: 1px solid #cbd5e1;
+  }
+
+  .id-info-col {
+    flex: 1;
+    overflow: hidden;
+  }
+  .id-name {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #0f172a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+  .id-mapel {
+    font-size: 8px;
+    font-weight: 600;
+    color: #15803d;
+    margin-bottom: 4px;
+  }
+
+  .id-table {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 8px;
+  }
+  .id-row {
+    display: flex;
+    align-items: baseline;
+  }
+  .id-lbl {
+    width: 62px;
+    color: #64748b;
+    font-weight: 600;
+  }
+  .id-sep {
+    width: 8px;
+    color: #94a3b8;
+  }
+  .id-val {
+    flex: 1;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .id-footer {
+    padding: 4px 10px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .id-barcode {
+    font-size: 11px;
+    color: #334155;
+    line-height: 1;
+  }
+  .id-qr {
+    background: #fff;
+    padding: 1px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+  }
+
+  /* BACK DESIGN */
+  .id-card-back {
+    background: #ffffff;
+    border-top: 4px solid #166534;
+    padding: 8px 12px;
+  }
+  .id-back-header {
+    text-align: center;
+    font-size: 8.5px;
+    font-weight: 800;
+    color: #166534;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 4px;
+  }
+  .id-back-rules {
+    font-size: 7.5px;
+    color: #334155;
+    line-height: 1.35;
+    margin: 4px 0;
+  }
+  .id-back-rules ol {
+    margin: 0;
+    padding-left: 14px;
+  }
+
+  .id-back-ttd-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px dashed #cbd5e1;
+  }
+  .id-back-validity {
+    font-size: 8px;
+  }
+  .id-back-ttd {
+    text-align: center;
+    font-size: 8px;
+    position: relative;
+    width: 140px;
+  }
+  .id-stempel-wrap {
+    position: relative;
+    height: 24px;
+  }
+  .id-signature {
+    font-family: 'Brush Script MT', cursive, italic;
+    font-size: 16px;
+    color: #1e3a8a;
+    position: absolute;
+    top: 2px;
+    left: 45px;
+  }
+  .id-stempel {
+    position: absolute;
+    top: -2px;
+    left: 15px;
+    border: 1.5px solid rgba(22, 101, 52, 0.4);
+    color: rgba(22, 101, 52, 0.6);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transform: rotate(-15deg);
+    pointer-events: none;
+  }
+  .id-kamad-name {
+    font-weight: bold;
+    font-size: 8.5px;
+    margin-top: 2px;
+  }
+  .id-back-footer {
+    text-align: center;
+    font-size: 6.5px;
+    color: #94a3b8;
+    margin-top: 4px;
+  }
+
+  /* PRINT MEDIA */
+  @media print {
+    body {
+      background: #fff !important;
+      padding: 0 !important;
+    }
+    .no-print, header, aside, .crumbs, .page-head, footer {
+      display: none !important;
+    }
+    .main {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .shell {
+      display: block !important;
+    }
+    .kartu-container {
+      margin: 0 !important;
+      padding: 10mm !important;
+    }
+    .id-card {
+      box-shadow: none !important;
+      border: 1px solid #94a3b8 !important;
+      page-break-inside: avoid;
+    }
+  }
+</style>
+<%- include('../partials/footer') %>

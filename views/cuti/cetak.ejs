@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Surat Izin Cuti - <%= cuti.gtk_nama %> · SIM-GTK</title>
+  <style>
+    @page { size: A4; margin: 20mm 20mm 20mm 20mm; }
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 12pt;
+      line-height: 1.5;
+      color: #000;
+      background: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+    .print-bar {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .btn-primary { background: #1565c0; color: #fff; }
+    .btn-outline { background: #fff; border: 1px solid #94a3b8; color: #334155; }
+    .kop {
+      border-bottom: 3px double #000;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .kop h3 { margin: 0; font-size: 13pt; font-weight: normal; text-transform: uppercase; }
+    .kop h2 { margin: 2px 0; font-size: 15pt; font-weight: bold; text-transform: uppercase; }
+    .kop p { margin: 0; font-size: 10pt; font-style: italic; }
+    .surat-title { text-align: center; margin: 25px 0 15px 0; }
+    .surat-title h3 { margin: 0; font-size: 14pt; text-decoration: underline; text-transform: uppercase; }
+    .surat-title p { margin: 2px 0; font-size: 11pt; }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    table td { padding: 4px 6px; vertical-align: top; }
+    .tabel-isi td { font-size: 11.5pt; }
+    .ttd-box {
+      margin-top: 35px;
+      float: right;
+      width: 250px;
+      text-align: center;
+    }
+    .clear { clear: both; }
+    @media print {
+      .print-bar { display: none !important; }
+      body { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="print-bar no-print">
+    <div>
+      <b>Dokumen Resmi: Surat Izin Cuti GTK</b>
+      <div style="font-size:12px;color:#64748b">Format Standar Badan Kepegawaian &amp; Kementerian Agama RI</div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="window.print()" class="btn btn-primary">🖨️ Cetak / Simpan PDF</button>
+      <button onclick="window.close()" class="btn btn-outline">Tutup</button>
+    </div>
+  </div>
+
+  <div class="kop">
+    <h3>KEMENTERIAN AGAMA REPUBLIK INDONESIA</h3>
+    <h3>KANTOR KEMENTERIAN AGAMA KABUPATEN GORONTALO</h3>
+    <h2><%= madrasah.nama %></h2>
+    <p><%= madrasah.alamat || 'Limboto, Kabupaten Gorontalo, Provinsi Gorontalo' %> | Telp: <%= madrasah.telepon || '-' %> | Email: <%= madrasah.email || '-' %></p>
+  </div>
+
+  <div class="surat-title">
+    <h3>SURAT PERSETUJUAN / IZIN CUTI</h3>
+    <p>Nomor: B-<%= String(cuti.id).padStart(4, '0') %>/Ma.30.01/KP.01.2/10/2026</p>
+  </div>
+
+  <p>Diberikan persetujuan izin cuti kepada Pegawai / Tenaga Pendidik di bawah ini:</p>
+
+  <table class="tabel-isi">
+    <tr>
+      <td style="width: 220px;">1. Nama Lengkap</td>
+      <td style="width: 15px;">:</td>
+      <td><b><%= cuti.gtk_nama %></b></td>
+    </tr>
+    <tr>
+      <td>2. NIP / NUPTK</td>
+      <td>:</td>
+      <td><%= cuti.nip || '-' %> / <%= cuti.nuptk || '-' %></td>
+    </tr>
+    <tr>
+      <td>3. Jabatan / Tugas</td>
+      <td>:</td>
+      <td><%= cuti.jabatan || 'Guru Pendidik' %> &bull; <%= cuti.mapel_utama || '-' %></td>
+    </tr>
+    <tr>
+      <td>4. Pangkat / Golongan Ruang</td>
+      <td>:</td>
+      <td><%= cuti.status_kepegawaian || 'PNS' %> / <%= cuti.golongan || 'III/a' %></td>
+    </tr>
+    <tr>
+      <td>5. Satuan Administrasi Pangkal</td>
+      <td>:</td>
+      <td><%= madrasah.nama %></td>
+    </tr>
+    <tr>
+      <td>6. Jenis Cuti yang Disetujui</td>
+      <td>:</td>
+      <td><b><%= cuti.jenis_cuti %></b></td>
+    </tr>
+    <tr>
+      <td>7. Lamanya Menjalankan Cuti</td>
+      <td>:</td>
+      <td><b><%= cuti.lama_hari %> (hari)</b></td>
+    </tr>
+    <tr>
+      <td>8. Terhitung Mulai Tanggal</td>
+      <td>:</td>
+      <td><b><%= cuti.tgl_mulai %></b> sampai dengan <b><%= cuti.tgl_selesai %></b></td>
+    </tr>
+    <tr>
+      <td>9. Keperluan / Alasan</td>
+      <td>:</td>
+      <td><%= cuti.alasan %></td>
+    </tr>
+    <tr>
+      <td>10. Alamat Selama Cuti</td>
+      <td>:</td>
+      <td><%= cuti.alamat_cuti %> (No. Telp/WA: <%= cuti.telepon %>)</td>
+    </tr>
+  </table>
+
+  <p style="text-align: justify; text-indent: 30px;">
+    Demikian surat persetujuan cuti ini diberikan untuk dapat dipergunakan sebagaimana mestinya, dengan ketentuan bahwa setelah berakhir masa cuti tersebut yang bersangkutan wajib kembali melaksanakan tugas sebagaimana biasa.
+  </p>
+
+  <div class="ttd-box">
+    <div>Limboto, <%= cuti.tgl_disetujui ? cuti.tgl_disetujui.split(' ')[0] : '24 Oktober 2026' %></div>
+    <div>Kepala Madrasah,</div>
+    
+    <!-- QR Code Verifikasi Dokumen Asli -->
+    <div style="margin: 15px 0;">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=SIM-GTK-CUTI-VALID-<%= cuti.id %>-<%= cuti.gtk_nama %>" width="85" height="85" alt="QR Verifikasi" style="border: 1px solid #e2e8f0; padding: 2px;">
+    </div>
+
+    <div><b><u><%= cuti.disetujui_oleh || madrasah.nama_kamad || 'Drs. H. Abdul Wahab, M.Pd' %></u></b></div>
+    <div>NIP. 197005121996031002</div>
+  </div>
+
+  <div class="clear"></div>
+
+  <div style="margin-top: 30px; font-size: 10pt; color: #475569; border-top: 1px solid #cbd5e1; padding-top: 5px;">
+    <i>Catatan Disposisi: <%= cuti.catatan_kamad || 'Disetujui penuh oleh Kepala Madrasah.' %></i><br>
+    <i>Dokumen ini diterbitkan sah melalui Sistem Informasi Manajemen GTK (SIM-GTK) Terpadu.</i>
+  </div>
+
+</body>
+</html>

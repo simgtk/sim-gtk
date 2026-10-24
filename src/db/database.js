@@ -498,6 +498,54 @@ export function initDatabase() {
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       UNIQUE(role, submenu_key)
     );
+
+    CREATE TABLE IF NOT EXISTS gtk_ijazah (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      gtk_id INTEGER NOT NULL,
+      jenjang TEXT NOT NULL,
+      institusi TEXT NOT NULL,
+      jurusan TEXT,
+      thn_masuk INTEGER,
+      thn_lulus INTEGER,
+      gelar TEXT,
+      ipk TEXT,
+      no_ijazah TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (gtk_id) REFERENCES gtk(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS gtk_sertifikasi (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      gtk_id INTEGER NOT NULL,
+      jenis TEXT NOT NULL,
+      bidang TEXT,
+      tgl_terbit TEXT,
+      no_sertifikat TEXT NOT NULL,
+      lembaga TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (gtk_id) REFERENCES gtk(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS gtk_cuti (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      madrasah_id INTEGER NOT NULL,
+      gtk_id INTEGER NOT NULL,
+      jenis_cuti TEXT NOT NULL,
+      tgl_mulai DATE NOT NULL,
+      tgl_selesai DATE NOT NULL,
+      lama_hari INTEGER NOT NULL,
+      alasan TEXT NOT NULL,
+      alamat_cuti TEXT,
+      telepon TEXT,
+      lampiran TEXT,
+      status TEXT DEFAULT 'menunggu', /* menunggu, disetujui, ditolak */
+      catatan_kamad TEXT,
+      tgl_disetujui DATETIME,
+      disetujui_oleh TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (gtk_id) REFERENCES gtk(id) ON DELETE CASCADE,
+      FOREIGN KEY (madrasah_id) REFERENCES madrasah(id) ON DELETE CASCADE
+    );
   `);
 
   // Migrate madrasah table columns if needed
@@ -603,6 +651,42 @@ function ensureExtendedFeatures() {
     tugasInsert.run(1, 2, 'Kepala Perpustakaan Madrasah', 'Kd.30.01/1/PP.00/145/2026', '2026-07-15', '2026-07-15', 12, 'SK Pengelola Unit Perpustakaan Digital');
     tugasInsert.run(1, 3, 'Wali Kelas XII-MIPA 1', 'Kd.30.01/1/PP.00/150/2026', '2026-07-15', '2026-07-15', 2, 'Pembinaan akademik dan karakter kelas binaan');
     tugasInsert.run(1, 4, 'Pembina OSIS & Ekstrakurikuler', 'Kd.30.01/1/PP.00/155/2026', '2026-07-15', '2026-07-15', 2, 'Pengembangan minat bakat siswa madrasah');
+  }
+
+  // 3. Seed Ijazah GTK jika belum ada
+  const countIjazah = db.prepare('SELECT count(*) as count FROM gtk_ijazah').get();
+  if (countIjazah.count === 0) {
+    const ijzStmt = db.prepare(`
+      INSERT INTO gtk_ijazah (gtk_id, jenjang, institusi, jurusan, thn_masuk, thn_lulus, gelar, ipk, no_ijazah)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    ijzStmt.run(5, 'S1', 'Universitas Negeri Gorontalo', 'Pendidikan Informatika & Komputer', 2004, 2008, 'S.Pd', '3.65', 'UNG-FT-2008-0842');
+    ijzStmt.run(5, 'S2', 'Universitas Terbuka', 'Magister Pendidikan Teknologi Pembelajaran', 2018, 2021, 'M.Pd', '3.82', 'UT-PASCA-2021-1205');
+    ijzStmt.run(1, 'S1', 'Universitas Negeri Gorontalo', 'Sistem Informasi', 2008, 2012, 'S.Kom', '3.58', 'UNG-FT-2012-0457');
+  }
+
+  // 4. Seed Sertifikasi GTK jika belum ada
+  const countSert = db.prepare('SELECT count(*) as count FROM gtk_sertifikasi').get();
+  if (countSert.count === 0) {
+    const srtStmt = db.prepare(`
+      INSERT INTO gtk_sertifikasi (gtk_id, jenis, bidang, tgl_terbit, no_sertifikat, lembaga)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+    srtStmt.run(5, 'Sertifikasi Pendidik (PPG)', 'Informatika & Komputer', '2021-12-15', 'SER-PPG-2021-75010045', 'Kementerian Agama RI / LPTK UNG');
+    srtStmt.run(5, 'Sertifikat PKB', 'Pemanfaatan AI Generatif dalam Pembelajaran Kurikulum Merdeka', '2024-05-20', 'PKB-BDK-MDO-2024-883', 'Balai Diklat Keagamaan Manado');
+    srtStmt.run(2, 'Sertifikasi Pendidik (PPG)', 'Al-Qur\'an Hadis', '2016-11-28', 'SER-PPG-2016-75010012', 'Kementerian Agama RI / LPTK UIN Alauddin');
+  }
+
+  // 5. Seed Pengajuan Cuti GTK jika belum ada
+  const countCuti = db.prepare('SELECT count(*) as count FROM gtk_cuti').get();
+  if (countCuti.count === 0) {
+    const cutiStmt = db.prepare(`
+      INSERT INTO gtk_cuti (madrasah_id, gtk_id, jenis_cuti, tgl_mulai, tgl_selesai, lama_hari, alasan, alamat_cuti, telepon, status, catatan_kamad, tgl_disetujui, disetujui_oleh)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    cutiStmt.run(1, 5, 'Cuti Alasan Penting', '2026-09-10', '2026-09-12', 3, 'Mendampingi orang tua rawat inap di Rumah Sakit Aloei Saboe', 'Jl. Trans Sulawesi, Limboto', '081356789012', 'disetujui', 'Disetujui. Semoga lekas sembuh, koordinasikan modul ajar dengan guru piket.', '2026-09-09 14:20:00', 'Drs. H. Abdul Wahab, M.Pd');
+    cutiStmt.run(1, 3, 'Cuti Melahirkan', '2026-07-01', '2026-09-30', 90, 'Persalinan anak kedua (Cuti Bersalin 3 Bulan)', 'Kecamatan Telaga, Kab. Gorontalo', '081345678902', 'disetujui', 'Disetujui sesuai hak cuti melahirkan 3 bulan.', '2026-06-25 10:15:00', 'Drs. H. Abdul Wahab, M.Pd');
+    cutiStmt.run(1, 8, 'Cuti Tahunan', '2026-11-02', '2026-11-06', 5, 'Keperluan keluarga di luar daerah dan urusan administrasi tanah warisan', 'Kota Kotamobagu, Sulawesi Utara', '081289012346', 'menunggu', null, null, null);
   }
 }
 

@@ -226,8 +226,8 @@
             <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
           </summary>
           <% if (typeof canShow === 'undefined' || canShow('persetujuan_izin')) { %>
-            <a class="nav-item" href="/sim-gtk/kamad/dashboard">
-              <svg class="ic"><use href="#i-check-square"></use></svg> <span>Persetujuan &amp; Perizinan</span>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'perizinan') ? 'active' : '' %>" href="/sim-gtk/kamad/perizinan">
+              <svg class="ic"><use href="#i-check-square"></use></svg> <span>Persetujuan &amp; Perizinan Cuti</span>
             </a>
           <% } %>
           <% if (typeof canShow === 'undefined' || canShow('pengumuman_agenda')) { %>
@@ -361,6 +361,18 @@
             <a class="nav-item" href="/sim-gtk/portofolio/data-diri">
               <svg class="ic"><use href="#i-id-card"></use></svg> <span>Profil Saya</span>
             </a>
+            <a class="nav-item" href="/sim-gtk/portofolio/kartu-digital">
+              <svg class="ic text-green"><use href="#i-id-card"></use></svg> <span>Kartu Digital GTK</span>
+            </a>
+            <a class="nav-item" href="/sim-gtk/cuti">
+              <svg class="ic text-orange"><use href="#i-calendar"></use></svg> <span>Layanan Cuti &amp; Izin</span>
+            </a>
+            <a class="nav-item" href="/sim-gtk/administrasi/ijazah">
+              <svg class="ic"><use href="#i-graduation"></use></svg> <span>Riwayat Ijazah Formal</span>
+            </a>
+            <a class="nav-item" href="/sim-gtk/administrasi/sertifikasi">
+              <svg class="ic"><use href="#i-award"></use></svg> <span>Sertifikasi Pendidik</span>
+            </a>
           <% } %>
           <% if (typeof canShow === 'undefined' || canShow('riwayat_golongan')) { %>
             <a class="nav-item" href="/sim-gtk/portofolio/golongan-mkg">
@@ -456,6 +468,15 @@
           <% if (typeof canShow === 'undefined' || canShow('profil_saya')) { %>
             <a class="nav-item" href="/sim-gtk/portofolio/data-diri">
               <svg class="ic"><use href="#i-id-card"></use></svg> <span>Profil Saya</span>
+            </a>
+            <a class="nav-item" href="/sim-gtk/portofolio/kartu-digital">
+              <svg class="ic text-green"><use href="#i-id-card"></use></svg> <span>Kartu Digital Tendik</span>
+            </a>
+            <a class="nav-item" href="/sim-gtk/cuti">
+              <svg class="ic text-orange"><use href="#i-calendar"></use></svg> <span>Layanan Cuti &amp; Izin</span>
+            </a>
+            <a class="nav-item" href="/sim-gtk/administrasi/ijazah">
+              <svg class="ic"><use href="#i-graduation"></use></svg> <span>Riwayat Ijazah Formal</span>
             </a>
           <% } %>
           <% if (typeof canShow === 'undefined' || canShow('dokumen_kepegawaian')) { %>
