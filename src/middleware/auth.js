@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import db from '../db/database.js';
 import { getRolePermissionsMap } from '../services/permissionService.js';
 
 export function requireAuth(req, res, next) {
@@ -31,13 +32,29 @@ export function attachUser(req, res, next) {
     };
   }
 
+  // Ambil nama madrasah secara dinamis dari database untuk user yang login
+  if (req.session && req.session.user) {
+    if (req.session.user.role === 'superadmin') {
+      req.session.user.madrasahNama = 'Platform Terpusat SIM-GTK';
+    } else if (req.session.user.madrasahId) {
+      try {
+        const m = db.prepare('SELECT nama FROM madrasah WHERE id = ?').get(req.session.user.madrasahId);
+        if (m && m.nama) {
+          req.session.user.madrasahNama = m.nama;
+        }
+      } catch (err) {
+        // fallback
+      }
+    }
+  }
+
   const user = req.session.user || {
     id: 1,
     nama: 'Tamu',
     email: '',
     role: 'guest',
     roleLabel: 'Tamu',
-    madrasahNama: 'MAN 2 KABUPATEN GORONTALO'
+    madrasahNama: 'Madrasah'
   };
   res.locals.user = user;
 

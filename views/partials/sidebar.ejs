@@ -1,45 +1,4 @@
 <aside class="sidebar" id="sidebar">
-  
-  <!-- SWITCHER PERAN AKTIF DI ATAS SIDEBAR -->
-  <div style="padding:10px 12px;background:var(--bg-subtle);border-radius:10px;margin-bottom:12px;border:1px solid var(--line)">
-    <div class="flex justify-between align-center mb-1">
-      <span class="tiny uppercase muted font-bold" style="letter-spacing:0.5px">Peran Aktif</span>
-      <% if (user.role === 'superadmin' || (typeof currentMenu !== 'undefined' && currentMenu === 'superadmin')) { %>
-        <span class="badge badge-xs badge-danger">SUPERADMIN</span>
-      <% } else if (user.role === 'kamad') { %>
-        <span class="badge badge-xs badge-purple">KAMAD</span>
-      <% } else if (user.role === 'pengawas') { %>
-        <span class="badge badge-xs badge-success">PENGAWAS</span>
-      <% } else if (user.role === 'tendik') { %>
-        <span class="badge badge-xs badge-secondary">TENDIK</span>
-      <% } else if (user.role === 'guru') { %>
-        <span class="badge badge-xs badge-info">GURU</span>
-      <% } else { %>
-        <span class="badge badge-xs badge-primary">ADMIN</span>
-      <% } %>
-    </div>
-    <div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-      <%= (user.role === 'superadmin' || (typeof currentMenu !== 'undefined' && currentMenu === 'superadmin')) ? 'Super Admin Platform' : (user.roleLabel || 'Admin Madrasah') %>
-    </div>
-    <div class="tiny muted" style="margin-top:2px;font-size:11px">
-      <%= user.nama %>
-    </div>
-    
-    <!-- QUICK ROLE SELECTOR (TANPA NOMOR) -->
-    <div class="mt-2" style="border-top:1px dashed var(--line);padding-top:6px">
-      <select class="form-control" style="font-size:11px;padding:3px 6px;height:auto" onchange="if(this.value) window.location.href='/sim-gtk/switch-role/' + this.value">
-        <option value="">-- Ganti Panel Peran --</option>
-        <option value="superadmin" <%= (user.role === 'superadmin' || (typeof currentMenu !== 'undefined' && currentMenu === 'superadmin')) ? 'selected' : '' %>>Superadmin (Platform Terpusat)</option>
-        <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin / Operator Madrasah</option>
-        <option value="kamad" <%= user.role === 'kamad' ? 'selected' : '' %>>Kepala Madrasah</option>
-        <option value="pengawas" <%= user.role === 'pengawas' ? 'selected' : '' %>>Pengawas Pembina</option>
-        <option value="guru" <%= user.role === 'guru' ? 'selected' : '' %>>Guru (Herman Buhungo)</option>
-        <option value="guru_penilai" <%= user.role === 'guru_penilai' ? 'selected' : '' %>>Guru Penilai (Supervisi Mengajar)</option>
-        <option value="tendik" <%= user.role === 'tendik' ? 'selected' : '' %>>Tenaga Kependidikan</option>
-      </select>
-    </div>
-  </div>
-
   <div class="tahun-card">
     <div class="lbl">Tahun Ajaran</div>
     <div class="val">2026/2027</div>

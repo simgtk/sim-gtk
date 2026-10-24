@@ -60,10 +60,11 @@ router.post('/sim-gtk/login', (req, res) => {
 
   const roleLabels = {
     superadmin: 'Super Admin Platform',
-    admin: 'Admin/Operator Madrasah',
+    admin: 'Admin / Operator Madrasah',
     kamad: 'Kepala Madrasah',
     pengawas: 'Pengawas Madrasah',
-    guru: 'Guru (Herman Buhungo)',
+    guru: 'Guru Pendidik',
+    guru_penilai: 'Guru Penilai Supervisi',
     tendik: 'Tenaga Kependidikan'
   };
 
@@ -75,7 +76,7 @@ router.post('/sim-gtk/login', (req, res) => {
     role: user.role,
     roleLabel: roleLabels[user.role] || user.role,
     madrasahId: user.madrasah_id || 1,
-    madrasahNama: user.madrasah_nama || (user.role === 'superadmin' ? 'Platform Terpusat SIM-GTK' : 'MAN 2 KABUPATEN GORONTALO')
+    madrasahNama: user.madrasah_nama || (user.role === 'superadmin' ? 'Platform Terpusat SIM-GTK' : 'Madrasah')
   };
 
   req.session.flash = { type: 'success', message: `Selamat datang kembali, ${user.nama}!` };
@@ -114,10 +115,10 @@ router.get('/sim-gtk/switch-role/:role', (req, res) => {
   const { role } = req.params;
   const roleLabels = {
     superadmin: 'Super Admin Platform',
-    admin: 'Admin/Operator Madrasah',
+    admin: 'Admin / Operator Madrasah',
     kamad: 'Kepala Madrasah',
     pengawas: 'Pengawas Madrasah',
-    guru: 'Guru (Herman Buhungo)',
+    guru: 'Guru Pendidik',
     guru_penilai: 'Guru Penilai Supervisi',
     tendik: 'Tenaga Kependidikan'
   };
@@ -131,7 +132,7 @@ router.get('/sim-gtk/switch-role/:role', (req, res) => {
       nama: roleLabels[role] || role,
       role: role,
       madrasah_id: 1,
-      madrasah_nama: 'MAN 2 KABUPATEN GORONTALO'
+      madrasah_nama: 'Madrasah'
     };
   }
 
@@ -143,7 +144,7 @@ router.get('/sim-gtk/switch-role/:role', (req, res) => {
     role: targetUser.role,
     roleLabel: roleLabels[targetUser.role] || targetUser.role,
     madrasahId: targetUser.madrasah_id || 1,
-    madrasahNama: targetUser.madrasah_nama || (targetUser.role === 'superadmin' ? 'Platform Terpusat SIM-GTK' : 'MAN 2 KABUPATEN GORONTALO')
+    madrasahNama: targetUser.madrasah_nama || (targetUser.role === 'superadmin' ? 'Platform Terpusat SIM-GTK' : 'Madrasah')
   };
 
   req.session.flash = { type: 'success', message: `Beralih ke tampilan peran: ${req.session.user.roleLabel}` };
