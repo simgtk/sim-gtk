@@ -1,0 +1,61 @@
+<%- include('../partials/head', { title: "Akun AKGTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Akun AKGTK</b>
+    </div>
+    <div class="page-head">
+      <h1>Akun AKGTK</h1>
+      <p>Akun resmi Asesmen Kompetensi Guru dan Tenaga Kependidikan</p>
+    </div>
+
+
+<div class="grid" style="grid-template-columns:1fr 1fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Akun AKGTK</h3><p>Akun resmi asesmen kompetensi Anda</p></div></div>
+    <div class="info-row"><span class="k">Nama</span><span class="v">Siti Rahmawati, S.Kom</span></div>
+    <div class="info-row"><span class="k">NUPTK</span><span class="v">-</span></div>
+    <div class="info-row"><span class="k">NIK</span><span class="v">7501101010802236</span></div>
+    <div class="info-row"><span class="k">Madrasah</span><span class="v">MAN 2 KABUPATEN GORONTALO</span></div>
+    <div class="info-row"><span class="k">Nomor Akun AKGTK</span><span class="v">-</span></div>
+    <div class="info-row"><span class="k">Status Akun</span><span class="v"><span class="badge badge-warning">Belum Terdaftar</span></span></div>
+
+    <form method="post" action="/sim-gtk/diklat/akun-akgtk" class="mt-3">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field mb-2">
+        <label>Nomor Akun AKGTK</label>
+        <input type="text" name="no_akun" value="" placeholder="AKG-2026-7501010106900001" required>
+        <span class="help">Nomor akun dapat dilihat pada surat keterangan AKG atau akun AKGTK Anda.</span>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-key"></use></svg> Simpan Akun</button>
+    </form>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>Riwayat Asesmen</h3><p>Keterkaitan akun dengan hasil AKG</p></div></div>
+      
+        <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-key"></use></svg><b>Belum ada data</b>Simpan nomor akun AKGTK Anda terlebih dahulu.</div>
+      
+    </div>
+    <div class="card tight">
+      <h3 style="font-size:14px;margin-bottom:8px">Catatan</h3>
+      <ul class="small muted" style="margin:0;padding-left:18px;line-height:1.7">
+        <li>Akun AKGTK digunakan untuk mengikuti asesmen kompetensi secara daring.</li>
+        <li>Pastikan NUPTK dan NIK pada akun sesuai data SIM-GTK.</li>
+        <li>Hubungi admin madrasah bila nomor akun tidak dikenali sistem.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

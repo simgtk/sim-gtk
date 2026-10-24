@@ -1,0 +1,71 @@
+<%- include('../partials/head', { title: "Jadwal Mingguan", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Jadwal Mingguan</b>
+    </div>
+    <div class="page-head">
+      <h1>Jadwal Mingguan</h1>
+      <p>Sebaran jam mengajar Anda dalam satu pekan</p>
+    </div>
+
+<div class="grid grid-3 mb-3">
+  <div class="stat tint-1"><div><div class="lbl">Total Jadwal</div><div class="val">0</div><div class="sub">0.00 JP per pekan</div></div><div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-calendar"></use></svg></div></div>
+  <div class="stat tint-2"><div><div class="lbl">Mata Pelajaran</div><div class="val">0</div><div class="sub">-</div></div><div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-book"></use></svg></div></div>
+  <div class="stat tint-3"><div><div class="lbl">Kelas Diajar</div><div class="val">0</div><div class="sub">Rombongan belajar</div></div><div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-layers"></use></svg></div></div>
+</div>
+
+<div class="card" style="padding:0">
+  <div style="padding:18px 22px 0"><div class="card-head mb-2"><div><h3>Jadwal Mingguan</h3><p>2026/2027 · semester 1 (Ganjil)</p></div><a class="btn btn-outline btn-sm" data-print href="#"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-print"></use></svg> Cetak</a></div></div>
+  <div style="overflow-x:auto;padding:0 12px 16px">
+    <table class="jadwal-grid">
+      <thead><tr><th style="width:110px">Jam</th><th>Senin</th><th>Selasa</th><th>Rabu</th><th>Kamis</th><th>Jumat</th><th>Sabtu</th></tr></thead>
+      <tbody>
+        
+        
+          <tr><td colspan="7"><div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-calendar"></use></svg><b>Belum ada jadwal</b>Jadwal ditetapkan admin madrasah.</div></td></tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="grid grid-2 mt-3">
+  <div class="card">
+    <div class="card-head"><div><h3>Aktivitas Mengajar</h3><p>Rincian jadwal per hari</p></div></div>
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  <div class="card">
+    <div class="card-head"><div><h3>Aksi Cepat</h3><p>Lanjutkan pekerjaan Anda</p></div></div>
+    <div class="quick-actions">
+      <a href="/sim-gtk/pembelajaran/absensi"><svg class="ic " aria-hidden="true"><use href="#i-user-check"></use></svg> Isi Absensi</a>
+      <a href="/sim-gtk/pembelajaran/jurnal"><svg class="ic " aria-hidden="true"><use href="#i-notebook"></use></svg> Tulis Jurnal</a>
+      <a href="/sim-gtk/pembelajaran/ai"><svg class="ic " aria-hidden="true"><use href="#i-sparkles"></use></svg> Perangkat Ajar</a>
+      <a href="/sim-gtk/beban-kerja/jtm"><svg class="ic " aria-hidden="true"><use href="#i-calculator"></use></svg> Hitung JTM</a>
+    </div>
+    <div class="alert alert-info mt-3"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Perubahan jadwal hanya dapat dilakukan admin madrasah melalui menu Jadwal Pelajaran.</div></div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

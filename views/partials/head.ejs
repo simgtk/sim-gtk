@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= (typeof title !== 'undefined' && title) ? title : "SIM-GTK — Rumah Digital GTK Madrasah" %></title>
+<meta name="description" content="SIM-GTK — Rumah Digital Guru dan Tenaga Kependidikan Madrasah. Kelola portofolio GTK, supervisi, perangkat ajar, absensi, dan jurnal mengajar.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' rx='18' fill='%23ffffff'/%3E%3Crect x='12' y='26' width='72' height='50' rx='10' fill='none' stroke='%231565b8' stroke-width='6'/%3E%3Ccircle cx='37' cy='47' r='7' fill='%230d3f7c'/%3E%3Cpath d='M24 66c0-7 6-11 13-11s13 4 13 11z' fill='%230d3f7c'/%3E%3Crect x='58' y='56' width='6' height='10' rx='2' fill='%238dc63f'/%3E%3Crect x='67' y='50' width='6' height='16' rx='2' fill='%232a9d4f'/%3E%3Crect x='76' y='44' width='6' height='22' rx='2' fill='%232a9d4f'/%3E%3Cpath d='M32 23 57 13l25 10-25 10z' fill='%231565b8'/%3E%3Cpath d='M14 74c22 10 44 10 66-6' fill='none' stroke='%232a9d4f' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/sim-gtk/css/style.css">
+</head>
+<body class="<%= (typeof bodyClass !== 'undefined' && bodyClass) ? bodyClass : '' %>">
+<%- include('./icons') %>
+
+<!-- FULLSCREEN BRAND PULSE PRELOADER -->
+<div id="appPreloader" class="app-preloader no-print">
+  <div class="preloader-brand-pulse">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+      <path d="M6 12v5c0 3 6 3 6 3s6 0 6-3v-5"/>
+    </svg>
+  </div>
+  <div class="preloader-text">SIM-GTK Kemenag RI</div>
+  <div class="preloader-sub">Memuat Rumah Digital Madrasah...</div>
+</div>
+<script>
+  (function() {
+    function hidePreloader() {
+      const p = document.getElementById('appPreloader');
+      if (p && !p.classList.contains('fade-out')) {
+        setTimeout(function() { p.classList.add('fade-out'); }, 200);
+      }
+    }
+    if (document.readyState === 'complete') {
+      hidePreloader();
+    } else {
+      window.addEventListener('load', hidePreloader);
+      setTimeout(hidePreloader, 1500); // Safety fallback
+    }
+  })();
+</script>

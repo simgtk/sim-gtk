@@ -1,0 +1,167 @@
+<%- include('../partials/head', { title: "AI Perangkat Ajar", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>AI Perangkat Ajar</b>
+    </div>
+    <div class="page-head">
+      <h1>AI Perangkat Ajar</h1>
+      <p>Susun modul ajar, ATP, prota, prosem, LKPD/LKM, soal, dan KKTP — hasil berupa tabel rapi siap ekspor Word, Excel, PowerPoint, dan PDF</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1.15fr 1fr">
+  <div class="card">
+    <div class="card-head">
+      <div class="flex align-center gap-1">
+        <span class="ico ico-teal" style="width:40px;height:40px;border-radius:11px;display:grid;place-items:center"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-sparkles"></use></svg></span>
+        <div><h3>Generator Perangkat Ajar</h3><p>Susun dokumen lengkap sesuai Kurikulum Merdeka</p></div>
+      </div>
+    </div>
+    <form method="post" action="/sim-gtk/pembelajaran/ai/generate" data-ai-form>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="form-grid">
+        <div class="field span-2">
+          <label>Jenis Perangkat</label>
+          <select name="jenis" required>
+            
+              <option value="Modul Ajar">Modul Ajar — Modul ajar Kurikulum Merdeka lengkap (tujuan, langkah, asesmen, rubrik).</option>
+            
+              <option value="ATP">ATP — Alur Tujuan Pembelajaran satu semester beserta urutan materi.</option>
+            
+              <option value="Prota">Prota — Program tahunan: distribusi materi per semester dan alokasi jam.</option>
+            
+              <option value="Prosem">Prosem — Program semester: rincian pekan efektif dan materi per pertemuan.</option>
+            
+              <option value="LKPD">LKPD — Lembar kerja peserta didik + ilustrasi siap cetak.</option>
+            
+              <option value="LKM">LKM — Lembar Kerja Murid dengan gambar/ilustrasi aktivitas.</option>
+            
+              <option value="Soal Asesmen">Soal Asesmen — Kisi-kisi + paket soal, kunci jawaban, dan pedoman penskoran.</option>
+            
+              <option value="KKTP">KKTP — Kriteria Ketercapaian Tujuan Pembelajaran dan rubrik.</option>
+            
+          </select>
+        </div>
+        <div class="field">
+          <label>Mata Pelajaran</label>
+          <input name="mapel" list="mapelList" value="Informatika" placeholder="Fikih" required>
+          <datalist id="mapelList"><option value="Akidah Akhlak"></option><option value="Al-Qur&#39;an Hadis"></option><option value="Bahasa Arab"></option><option value="Bahasa Indonesia"></option><option value="Bahasa Inggris"></option><option value="Fikih"></option><option value="IPA Terpadu"></option><option value="Informatika"></option><option value="Matematika"></option><option value="PJOK"></option><option value="Pendidikan Pancasila"></option><option value="Sejarah Kebudayaan Islam"></option></datalist>
+        </div>
+        <div class="field">
+          <label>Kelas / Fase</label>
+          <select name="kelas" required>
+            <option value="X IPA 1">X IPA 1 (Fase E)</option><option value="X IPA 2">X IPA 2 (Fase E)</option><option value="XI IPA 1">XI IPA 1 (Fase F)</option><option value="XI IPS 1">XI IPS 1 (Fase F)</option><option value="XII IPA 1">XII IPA 1 (Fase F)</option><option value="XII IPS 1">XII IPS 1 (Fase F)</option>
+          </select>
+        </div>
+        <div class="field span-2">
+          <label>Materi / Topik Pembelajaran</label>
+          <input name="materi" placeholder="mis. Shalat Jamak dan Qashar" required>
+        </div>
+        <div class="field">
+          <label>Alokasi Waktu (JP)</label>
+          <input type="number" name="jp" min="1" max="72" value="4">
+        </div>
+        <div class="field">
+          <label>Ilustrasi Gambar</label>
+          <label class="check" style="padding:9px 0">
+            <input type="checkbox" name="gambar" value="1" checked>
+            <span class="small">Sertakan ilustrasi LKM</span>
+          </label>
+          <span class="help">Otomatis aktif untuk LKPD/LKM.</span>
+        </div>
+        <div class="field">
+          <label>Jumlah Peserta Didik</label>
+          <input type="number" name="jumlah_siswa" min="1" max="60" value="30">
+        </div>
+        <div class="field span-2">
+          <label>Capaian Pembelajaran / Konteks (opsional)</label>
+          <textarea name="cp" placeholder="Tempelkan CP atau catatan khusus madrasah bila ada"></textarea>
+        </div>
+      </div>
+      <div class="alert alert-info mt-2">
+        <svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg>
+        <div>Dokumen dihasilkan oleh generator offline SIM-GTK berdasarkan data guru, mapel, kelas, dan materi yang Anda isi.
+          Admin madrasah dapat menambahkan API key pada Pengaturan untuk memakai model AI online.
+        </div>
+      </div>
+      <div class="format-row">
+        <span class="tiny muted">Hasil dapat diunduh:</span>
+        <span class="badge badge-info">Word</span>
+        <span class="badge badge-info">Excel</span>
+        <span class="badge badge-info">PowerPoint</span>
+        <span class="badge badge-info">PDF</span>
+      </div>
+      <button class="btn btn-primary btn-block mt-2" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-sparkles"></use></svg> Buat Perangkat Ajar</button>
+      <div id="aiProgress" class="hidden mt-2">
+        <div class="alert alert-info"><svg class="ic " aria-hidden="true"><use href="#i-refresh"></use></svg><div>Sedang menyusun dokumen… mohon tunggu beberapa detik.</div></div>
+      </div>
+    </form>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>Riwayat Dokumen</h3><p>0 dokumen tersimpan</p></div></div>
+      
+        <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-file-text"></use></svg><b>Belum ada dokumen</b>Dokumen perangkat ajar yang Anda buat akan tersimpan di sini.</div>
+      
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>Jenis Dokumen yang Tersedia</h3><p>Referensi singkat</p></div></div>
+      <div class="stack-sm">
+        
+          <div class="flex align-start gap-1">
+            <span class="badge badge-info">Modul Ajar</span>
+            <div class="tiny muted" style="flex:1">Modul ajar Kurikulum Merdeka lengkap (tujuan, langkah, asesmen, rubrik).</div>
+          </div>
+        
+          <div class="flex align-start gap-1">
+            <span class="badge badge-info">ATP</span>
+            <div class="tiny muted" style="flex:1">Alur Tujuan Pembelajaran satu semester beserta urutan materi.</div>
+          </div>
+        
+          <div class="flex align-start gap-1">
+            <span class="badge badge-info">Prota</span>
+            <div class="tiny muted" style="flex:1">Program tahunan: distribusi materi per semester dan alokasi jam.</div>
+          </div>
+        
+          <div class="flex align-start gap-1">
+            <span class="badge badge-info">Prosem</span>
+            <div class="tiny muted" style="flex:1">Program semester: rincian pekan efektif dan materi per pertemuan.</div>
+          </div>
+        
+          <div class="flex align-start gap-1">
+            <span class="badge badge-info">LKPD</span>
+            <div class="tiny muted" style="flex:1">Lembar kerja peserta didik + ilustrasi siap cetak.</div>
+          </div>
+        
+          <div class="flex align-start gap-1">
+            <span class="badge badge-info">LKM</span>
+            <div class="tiny muted" style="flex:1">Lembar Kerja Murid dengan gambar/ilustrasi aktivitas.</div>
+          </div>
+        
+          <div class="flex align-start gap-1">
+            <span class="badge badge-info">Soal Asesmen</span>
+            <div class="tiny muted" style="flex:1">Kisi-kisi + paket soal, kunci jawaban, dan pedoman penskoran.</div>
+          </div>
+        
+          <div class="flex align-start gap-1">
+            <span class="badge badge-info">KKTP</span>
+            <div class="tiny muted" style="flex:1">Kriteria Ketercapaian Tujuan Pembelajaran dan rubrik.</div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

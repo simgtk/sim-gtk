@@ -1,0 +1,71 @@
+<%- include('../partials/head', { title: "Tugas Tambahan", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Tugas Tambahan</b>
+    </div>
+    <div class="page-head">
+      <h1>Tugas Tambahan</h1>
+      <p>Tugas tambahan yang diakui sebagai ekuivalensi beban kerja</p>
+    </div>
+
+
+<div class="grid grid-3 mb-3">
+  <div class="stat tint-1"><div><div class="lbl">Tugas Tambahan Aktif</div><div class="val">0</div><div class="sub">Disetujui admin madrasah</div></div><div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-clipboard"></use></svg></div></div>
+  <div class="stat tint-2"><div><div class="lbl">Ekuivalensi JTM</div><div class="val">0</div><div class="sub">Jam ekuivalen tugas tambahan</div></div><div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-clock"></use></svg></div></div>
+  <div class="stat tint-3"><div><div class="lbl">Menunggu Verifikasi</div><div class="val">0</div><div class="sub">Pengajuan baru</div></div><div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-clipboard"></use></svg></div></div>
+</div>
+
+<div class="grid" style="grid-template-columns:1fr 1.6fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Ajukan Tugas Tambahan</h3><p>Tugas yang diakui sebagai ekuivalensi beban kerja</p></div></div>
+    <form method="post" action="/sim-gtk/beban-kerja/tugas-tambahan">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="form-grid">
+        <div class="field span-2">
+          <label>Jenis Tugas</label>
+          <select name="jenis" required>
+            <option value="">— pilih —</option>
+            <option>Wali Kelas</option><option>Kepala Laboratorium</option><option>Kepala Perpustakaan</option><option>Pembina Ekstrakurikuler</option><option>Koordinator PKB</option><option>Wakil Kepala Madrasah</option><option>Pembimbing Khusus</option>
+          </select>
+        </div>
+        <div class="field span-2">
+          <label>Nama Tugas</label>
+          <input type="text" name="nama" placeholder="mis. Wali Kelas X IPA 1" required>
+        </div>
+        <div class="field">
+          <label>Nomor SK</label>
+          <input type="text" name="no_sk" placeholder="SK-421/MAN.2/2026">
+        </div>
+        <div class="field">
+          <label>Tanggal SK</label>
+          <input type="date" name="tgl_sk">
+        </div>
+        <div class="field span-2">
+          <label>Ekuivalensi JTM</label>
+          <input type="number" name="jtm_ekuivalen" min="0" step="0.5" value="2">
+          <span class="help">Umumnya 2 JTM untuk wali kelas, 12 JTM untuk wakil kepala madrasah.</span>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block mt-2" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Kirim Pengajuan</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h3>Daftar Tugas Tambahan</h3><p>Riwayat penugasan pada tahun ajaran berjalan</p></div></div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-clipboard"></use></svg><b>Belum ada tugas tambahan</b>Ajukan melalui formulir di samping.</div>
+    
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,502 @@
+<%- include('../partials/head', { title: "Jadwal Pelajaran", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Jadwal Pelajaran</b>
+    </div>
+    <div class="page-head">
+      <h1>Jadwal Pelajaran</h1>
+      <p>Susun jadwal tatap muka madrasah</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1fr 1.7fr">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>Tambah Jadwal</h3><p>Sistem otomatis memeriksa bentrok jadwal</p></div></div>
+      <form method="post" action="/sim-gtk/manajemen/jadwal">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="field mb-2"><label>Guru Pengampu</label>
+          <select name="guru_id" required><option value="">— pilih guru —</option><option value="5">Ahmad Fauzi, S.Ag</option><option value="6">Dewi Kartika, S.Pd</option><option value="8">Fatimah Zahra, S.Pd</option><option value="3">Herman Susanto Buhungo</option><option value="12">Herman Susanto Buhungo, S.Pd</option><option value="4">Nurhayati, S.Pd</option><option value="7">Rahmat Hidayat, S.Pd.I</option><option value="2">Siti Rahmawati, S.Kom</option></select>
+        </div>
+        <div class="field mb-2"><label>Kelas</label>
+          <select name="kelas_id" required><option value="">— pilih kelas —</option><option value="1">X IPA 1</option><option value="2">X IPA 2</option><option value="3">XI IPA 1</option><option value="4">XI IPS 1</option><option value="5">XII IPA 1</option><option value="6">XII IPS 1</option></select>
+        </div>
+        <div class="field mb-2"><label>Mata Pelajaran</label>
+          <select name="mapel_id" required><option value="">— pilih mapel —</option><option value="4">Akidah Akhlak</option><option value="2">Al-Qur&#39;an Hadis</option><option value="5">Bahasa Arab</option><option value="7">Bahasa Indonesia</option><option value="8">Bahasa Inggris</option><option value="1">Fikih</option><option value="9">IPA Terpadu</option><option value="11">Informatika</option><option value="6">Matematika</option><option value="10">PJOK</option><option value="12">Pendidikan Pancasila</option><option value="3">Sejarah Kebudayaan Islam</option></select>
+        </div>
+        <div class="field mb-2"><label>Hari</label>
+          <select name="hari" required><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>Jam Mulai</label><input type="time" name="jam_mulai" value="07:00" required></div>
+          <div class="field"><label>Jam Selesai</label><input type="time" name="jam_selesai" value="08:30" required></div>
+        </div>
+        <div class="field mb-2 mt-2"><label>Ruang</label><input type="text" name="ruang" placeholder="R-101"></div>
+        <button class="btn btn-primary btn-block" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"></use></svg> Simpan Jadwal</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>Beban Mengajar</h3><p>Jumlah JP per guru</p></div></div>
+      
+        <div class="info-row"><span class="k small">Herman Susanto Buhungo</span><span class="v">12 JP <span class="badge badge-warning" style="margin-left:6px">Kurang</span></span></div>
+      
+        <div class="info-row"><span class="k small">Nurhayati, S.Pd</span><span class="v">4 JP <span class="badge badge-warning" style="margin-left:6px">Kurang</span></span></div>
+      
+        <div class="info-row"><span class="k small">Dewi Kartika, S.Pd</span><span class="v">4 JP <span class="badge badge-warning" style="margin-left:6px">Kurang</span></span></div>
+      
+        <div class="info-row"><span class="k small">Ahmad Fauzi, S.Ag</span><span class="v">3 JP <span class="badge badge-warning" style="margin-left:6px">Kurang</span></span></div>
+      
+        <div class="info-row"><span class="k small">Rahmat Hidayat, S.Pd.I</span><span class="v">3 JP <span class="badge badge-warning" style="margin-left:6px">Kurang</span></span></div>
+      
+        <div class="info-row"><span class="k small">Fatimah Zahra, S.Pd</span><span class="v">2 JP <span class="badge badge-warning" style="margin-left:6px">Kurang</span></span></div>
+      
+        <div class="info-row"><span class="k small">Herman Susanto Buhungo, S.Pd</span><span class="v">0 JP <span class="badge badge-warning" style="margin-left:6px">Kurang</span></span></div>
+      
+    </div>
+  </div>
+
+  <div class="card" style="padding:0">
+    <div style="padding:20px 22px 0"><div class="card-head mb-2"><div><h3>Jadwal Pelajaran</h3><p>28 sesi tatap muka per pekan</p></div><button class="btn btn-outline btn-sm" data-print><svg class="ic ic-sm" aria-hidden="true"><use href="#i-print"></use></svg> Cetak</button></div></div>
+    <div class="table-wrap plain">
+      <table class="tbl">
+        <thead><tr><th>Hari</th><th>Jam</th><th>Kelas</th><th>Mapel</th><th>Guru</th><th>Ruang</th><th></th></tr></thead>
+        <tbody>
+          
+            <tr>
+              <td class="strong nowrap">Senin</td>
+              <td class="nowrap">07:00–08:30</td>
+              <td><span class="badge badge-teal">X IPA 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-101</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/1/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Senin</td>
+              <td class="nowrap">08:30–10:00</td>
+              <td><span class="badge badge-teal">X IPA 2</span></td>
+              <td>Al-Qur&#39;an Hadis</td>
+              <td class="small">Ahmad Fauzi, S.Ag</td>
+              <td class="muted small">R-102</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/2/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Senin</td>
+              <td class="nowrap">08:30–10:00</td>
+              <td><span class="badge badge-teal">XI IPA 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-102</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/20/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Senin</td>
+              <td class="nowrap">10:15–11:45</td>
+              <td><span class="badge badge-teal">XI IPA 1</span></td>
+              <td>Matematika</td>
+              <td class="small">Nurhayati, S.Pd</td>
+              <td class="muted small">R-103</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/3/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Senin</td>
+              <td class="nowrap">10:15–11:45</td>
+              <td><span class="badge badge-teal">XI IPS 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-103</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/21/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Senin</td>
+              <td class="nowrap">12:30–14:00</td>
+              <td><span class="badge badge-teal">XI IPS 1</span></td>
+              <td>Bahasa Inggris</td>
+              <td class="small">Dewi Kartika, S.Pd</td>
+              <td class="muted small">R-104</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/4/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Senin</td>
+              <td class="nowrap">12:30–14:00</td>
+              <td><span class="badge badge-teal">XII IPA 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-104</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/22/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Selasa</td>
+              <td class="nowrap">07:00–08:30</td>
+              <td><span class="badge badge-teal">X IPA 2</span></td>
+              <td>Matematika</td>
+              <td class="small">Nurhayati, S.Pd</td>
+              <td class="muted small">R-101</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/5/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Selasa</td>
+              <td class="nowrap">07:00–08:30</td>
+              <td><span class="badge badge-teal">XI IPA 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-101</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/23/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Selasa</td>
+              <td class="nowrap">08:30–10:00</td>
+              <td><span class="badge badge-teal">XI IPA 1</span></td>
+              <td>Bahasa Inggris</td>
+              <td class="small">Dewi Kartika, S.Pd</td>
+              <td class="muted small">R-102</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/6/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Selasa</td>
+              <td class="nowrap">08:30–10:00</td>
+              <td><span class="badge badge-teal">XI IPS 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-102</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/24/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Selasa</td>
+              <td class="nowrap">10:15–11:45</td>
+              <td><span class="badge badge-teal">XI IPS 1</span></td>
+              <td>Sejarah Kebudayaan Islam</td>
+              <td class="small">Rahmat Hidayat, S.Pd.I</td>
+              <td class="muted small">R-103</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/7/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Selasa</td>
+              <td class="nowrap">10:15–11:45</td>
+              <td><span class="badge badge-teal">XII IPA 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-103</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/25/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Selasa</td>
+              <td class="nowrap">12:30–14:00</td>
+              <td><span class="badge badge-teal">XII IPA 1</span></td>
+              <td>Bahasa Arab</td>
+              <td class="small">Fatimah Zahra, S.Pd</td>
+              <td class="muted small">R-104</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/8/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Selasa</td>
+              <td class="nowrap">12:30–14:00</td>
+              <td><span class="badge badge-teal">XII IPS 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-104</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/26/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Rabu</td>
+              <td class="nowrap">07:00–08:30</td>
+              <td><span class="badge badge-teal">XI IPA 1</span></td>
+              <td>Sejarah Kebudayaan Islam</td>
+              <td class="small">Rahmat Hidayat, S.Pd.I</td>
+              <td class="muted small">R-101</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/9/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Rabu</td>
+              <td class="nowrap">07:00–08:30</td>
+              <td><span class="badge badge-teal">XI IPS 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-101</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/27/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Rabu</td>
+              <td class="nowrap">08:30–10:00</td>
+              <td><span class="badge badge-teal">XI IPS 1</span></td>
+              <td>Bahasa Arab</td>
+              <td class="small">Fatimah Zahra, S.Pd</td>
+              <td class="muted small">R-102</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/10/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Rabu</td>
+              <td class="nowrap">08:30–10:00</td>
+              <td><span class="badge badge-teal">XII IPA 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-102</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/28/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Rabu</td>
+              <td class="nowrap">10:15–11:45</td>
+              <td><span class="badge badge-teal">XII IPA 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-103</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/11/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Rabu</td>
+              <td class="nowrap">12:30–14:00</td>
+              <td><span class="badge badge-teal">XII IPS 1</span></td>
+              <td>Al-Qur&#39;an Hadis</td>
+              <td class="small">Ahmad Fauzi, S.Ag</td>
+              <td class="muted small">R-104</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/12/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Kamis</td>
+              <td class="nowrap">07:00–08:30</td>
+              <td><span class="badge badge-teal">XI IPS 1</span></td>
+              <td>Fikih</td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="muted small">R-101</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/13/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Kamis</td>
+              <td class="nowrap">08:30–10:00</td>
+              <td><span class="badge badge-teal">XII IPA 1</span></td>
+              <td>Al-Qur&#39;an Hadis</td>
+              <td class="small">Ahmad Fauzi, S.Ag</td>
+              <td class="muted small">R-102</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/14/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Kamis</td>
+              <td class="nowrap">10:15–11:45</td>
+              <td><span class="badge badge-teal">XII IPS 1</span></td>
+              <td>Matematika</td>
+              <td class="small">Nurhayati, S.Pd</td>
+              <td class="muted small">R-103</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/15/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Kamis</td>
+              <td class="nowrap">12:30–14:00</td>
+              <td><span class="badge badge-teal">X IPA 1</span></td>
+              <td>Bahasa Inggris</td>
+              <td class="small">Dewi Kartika, S.Pd</td>
+              <td class="muted small">R-104</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/16/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Jumat</td>
+              <td class="nowrap">07:00–08:30</td>
+              <td><span class="badge badge-teal">XII IPA 1</span></td>
+              <td>Matematika</td>
+              <td class="small">Nurhayati, S.Pd</td>
+              <td class="muted small">R-101</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/17/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Jumat</td>
+              <td class="nowrap">08:30–10:00</td>
+              <td><span class="badge badge-teal">XII IPS 1</span></td>
+              <td>Bahasa Inggris</td>
+              <td class="small">Dewi Kartika, S.Pd</td>
+              <td class="muted small">R-102</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/18/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong nowrap">Jumat</td>
+              <td class="nowrap">10:15–11:45</td>
+              <td><span class="badge badge-teal">X IPA 1</span></td>
+              <td>Sejarah Kebudayaan Islam</td>
+              <td class="small">Rahmat Hidayat, S.Pd.I</td>
+              <td class="muted small">R-103</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/jadwal/19/hapus" data-confirm="Hapus jadwal ini?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,273 @@
+<%- include('../partials/head', { title: "Jadwal Supervisi GTK — SIM-GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar', { currentMenu: 'penilaian', activeSub: 'jadwal' }) %>
+  <main class="main">
+    
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/penilaian/jadwal">Penilaian</a>
+      <span class="sep">/</span>
+      <span>Jadwal Supervisi</span>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header flex justify-between align-center wrap gap-2 no-print mb-4">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-calendar"></use></svg>
+          Jadwal Pelaksanaan Supervisi GTK
+        </h1>
+        <p class="muted">
+          Agenda terpadu jadwal supervisi akademik guru, modul ajar, observasi kelas, dan manajerial madrasah lintas tanggal.
+        </p>
+      </div>
+      <div class="flex gap-2 wrap align-center">
+        <button type="button" class="btn btn-outline btn-sm flex align-center gap-1" onclick="window.print()">
+          <svg class="ic ic-sm"><use href="#i-print"></use></svg> Cetak Agenda
+        </button>
+        <% if (user.role === 'admin' || user.role === 'pengawas' || user.role === 'superadmin' || user.role === 'kamad') { %>
+          <button type="button" class="btn btn-primary btn-sm flex align-center gap-1" onclick="document.getElementById('modalTambahJadwal').style.display='flex'">
+            <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Tambah Agenda Jadwal
+          </button>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-4">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- KPI STATISTIK JADWAL -->
+    <div class="grid grid-4 mb-4">
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon bg-blue-subtle text-blue" style="width:48px;height:48px;border-radius:12px;background:var(--blue-50);display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-calendar"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Total Agenda</div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy-800)"><%= jadwalList.length %> Jadwal</div>
+          <div class="tiny text-blue font-bold">Semester Berjalan</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#b45309;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-clock"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Menunggu Observasi</div>
+          <div style="font-size:22px;font-weight:800;color:#b45309">
+            <%= jadwalList.filter(j => j.status === 'Terjadwal').length %> Sesi
+          </div>
+          <div class="tiny font-bold text-orange">Agenda Mendatang</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:var(--green-bg);color:var(--green);display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-check-circle"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Selesai Dinilai</div>
+          <div style="font-size:22px;font-weight:800;color:var(--green-800)">
+            <%= jadwalList.filter(j => j.status === 'Selesai').length %> Selesai
+          </div>
+          <div class="tiny text-green font-bold">Telah Terbit Nilai</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:#f3e8ff;color:#7e22ce;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-users"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Sasaran Guru</div>
+          <div style="font-size:22px;font-weight:800;color:#7e22ce"><%= uniqueGtkCount %> Orang</div>
+          <div class="tiny font-bold text-purple">Tersebar di Kelas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABEL JADWAL SUPERVISI LINTAS TANGGAL -->
+    <div class="card mb-4" style="padding:0;overflow:hidden">
+      <div class="card-head p-3 flex justify-between align-center wrap gap-2" style="background:#f8fafc;border-bottom:1px solid var(--line);margin:0">
+        <div>
+          <h3 style="font-size:16px;margin:0;color:var(--navy-900)">
+            Agenda Tabel Supervisi Guru Terjadwal
+          </h3>
+          <p class="tiny muted" style="margin-top:2px">
+            Susunan jadwal supervisi guru dalam satu tabel lintas tanggal, lengkap dengan mata pelajaran, kelas, dan supervisor.
+          </p>
+        </div>
+        <div class="flex gap-2 align-center">
+          <span class="badge badge-teal">Tahun 2026/2027 Ganjil</span>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table tbl mb-0">
+          <thead>
+            <tr>
+              <th style="width:50px;text-align:center">No</th>
+              <th style="width:170px">Tanggal &amp; Waktu</th>
+              <th style="min-width:210px">Guru / GTK yang Disupervisi</th>
+              <th style="width:180px">Jenis Supervisi</th>
+              <th style="width:180px">Mata Pelajaran &amp; Kelas</th>
+              <th style="min-width:160px">Supervisor</th>
+              <th style="width:130px">Ruang / Lokasi</th>
+              <th style="width:120px;text-align:center">Status</th>
+              <th style="width:140px;text-align:center" class="no-print">Tindakan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (jadwalList.length === 0) { %>
+              <tr>
+                <td colspan="9" class="center muted p-4">Belum ada agenda jadwal supervisi. Klik tombol "Tambah Agenda Jadwal" untuk membuat.</td>
+              </tr>
+            <% } %>
+            <% jadwalList.forEach(function(item, idx) { %>
+              <tr>
+                <td style="text-align:center;font-weight:700;color:var(--muted)"><%= idx + 1 %></td>
+                <td>
+                  <div style="font-weight:700;color:var(--navy-900)"><%= item.tanggal %></div>
+                  <div class="tiny muted"><svg class="ic ic-sm" style="vertical-align:-2px"><use href="#i-clock"></use></svg> <%= item.jam || '08:00 - 09:30' %></div>
+                </td>
+                <td>
+                  <div style="font-weight:700;color:var(--navy-900)"><%= item.gtk_nama %></div>
+                  <div class="tiny muted"><%= item.gtk_nip && item.gtk_nip !== '-' ? 'NIP. ' + item.gtk_nip : 'NUPTK: ' + (item.gtk_nuptk || '-') %></div>
+                </td>
+                <td>
+                  <span class="badge badge-teal"><%= item.jenis_supervisi %></span>
+                </td>
+                <td>
+                  <div style="font-weight:600"><%= item.mapel || 'Informatika' %></div>
+                  <div class="tiny muted"><%= item.kelas && item.kelas !== '-' ? 'Kelas ' + item.kelas : 'Tugas Tambahan' %></div>
+                </td>
+                <td>
+                  <div style="font-weight:600;color:#2b3a4d"><%= item.supervisor_nama %></div>
+                </td>
+                <td>
+                  <span class="tiny text-muted"><%= item.ruang || 'Ruang Kelas / Lab' %></span>
+                </td>
+                <td style="text-align:center">
+                  <% if (item.status === 'Selesai') { %>
+                    <span class="badge badge-success font-bold"><svg class="ic ic-sm"><use href="#i-check"></use></svg> Selesai</span>
+                  <% } else { %>
+                    <span class="badge badge-warning font-bold"><svg class="ic ic-sm"><use href="#i-clock"></use></svg> Terjadwal</span>
+                  <% } %>
+                </td>
+                <td class="no-print nowrap" style="text-align:center">
+                  <a class="btn btn-outline btn-sm flex align-center gap-1" href="/sim-gtk/penilaian/akademik">
+                    <svg class="ic ic-sm"><use href="#i-check-square"></use></svg> Form Nilai
+                  </a>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL TAMBAH JADWAL BARU (LEGA & RAPI)
+         ============================================================ -->
+    <div class="modal-overlay" id="modalTambahJadwal">
+      <div class="modal-card-lg" style="max-width:640px">
+        <form method="post" action="/sim-gtk/penilaian/jadwal/tambah">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+          <div class="modal-header">
+            <div>
+              <h3 style="font-size:17px;margin:0;color:var(--navy-900);font-weight:700">
+                Buat Agenda Jadwal Supervisi Baru
+              </h3>
+              <p class="tiny muted" style="margin-top:2px">
+                Tentukan guru, tanggal, kelas, mata pelajaran, dan supervisor penilai.
+              </p>
+            </div>
+            <button type="button" class="btn btn-ghost" onclick="document.getElementById('modalTambahJadwal').style.display='none'">
+              <svg class="ic"><use href="#i-x"></use></svg>
+            </button>
+          </div>
+
+          <div class="modal-body-scroll">
+            <div class="grid grid-2 gap-3">
+              <div class="field span-2">
+                <label class="font-bold">Guru / GTK yang Disupervisi</label>
+                <select name="gtk_id" required>
+                  <% gtkList.forEach(function(g) { %>
+                    <option value="<%= g.id %>"><%= g.nama %> &mdash; <%= g.mapel_utama || g.jabatan %></option>
+                  <% }); %>
+                </select>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Jenis Supervisi</label>
+                <select name="jenis_supervisi" required>
+                  <option value="Supervisi Akademik (4 Menu Terpadu)">Supervisi Akademik (4 Menu Terpadu)</option>
+                  <option value="Observasi Praktik Mengajar">Observasi Praktik Mengajar di Kelas</option>
+                  <option value="Telaah Perangkat Modul Ajar">Telaah Perangkat &amp; Modul Ajar</option>
+                  <option value="Supervisi Manajerial Tugas Tambahan">Supervisi Manajerial Tugas Tambahan</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Tanggal Observasi</label>
+                <input type="date" name="tanggal" required value="<%= new Date().toISOString().slice(0, 10) %>">
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Waktu / Jam Pelaksanaan</label>
+                <input type="text" name="jam" placeholder="08:00 - 09:30" value="08:00 - 09:30" required>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Kelas / Rombongan Belajar</label>
+                <select name="kelas">
+                  <option value="X-A">Kelas X-A</option>
+                  <option value="X-B">Kelas X-B</option>
+                  <option value="XI-MIPA 1">Kelas XI-MIPA 1</option>
+                  <option value="XI-IPS 1">Kelas XI-IPS 1</option>
+                  <option value="XII-MIPA 1">Kelas XII-MIPA 1</option>
+                  <option value="-">- (Khusus Manajerial)</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Mata Pelajaran / Sasaran</label>
+                <input type="text" name="mapel" placeholder="Informatika / Matematika" value="Informatika" required>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Nama Supervisor Penilai</label>
+                <input type="text" name="supervisor_nama" required value="<%= user ? user.nama : 'Drs. H. Abdul Wahab, M.Pd' %> (<%= user ? user.roleLabel : 'Kepala Madrasah' %>)">
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Ruang / Tempat Pelaksanaan</label>
+                <input type="text" name="ruang" placeholder="Contoh: Lab Komputer / Ruang Kelas X-A" value="Lab Komputer Madrasah">
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('modalTambahJadwal').style.display='none'">
+              Batal
+            </button>
+            <button type="submit" class="btn btn-primary flex align-center gap-1">
+              <svg class="ic ic-sm"><use href="#i-check"></use></svg> Simpan Jadwal Supervisi
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

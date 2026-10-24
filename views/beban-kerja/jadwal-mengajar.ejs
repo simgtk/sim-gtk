@@ -1,0 +1,82 @@
+<%- include('../partials/head', { title: "Jadwal Mengajar", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Jadwal Mengajar</b>
+    </div>
+    <div class="page-head">
+      <h1>Jadwal Mengajar</h1>
+      <p>Jadwal tatap muka mingguan tahun ajaran berjalan</p>
+    </div>
+
+
+<div class="card mb-3">
+  <div class="flex between align-center wrap gap-2">
+    <div class="flex align-center gap-2">
+      <span class="avatar avatar-lg">SR</span>
+      <div>
+        <b>Siti Rahmawati, S.Kom</b>
+        <div class="tiny muted">Informatika · MAN 2 KABUPATEN GORONTALO</div>
+      </div>
+    </div>
+    <div class="flex align-center gap-2 wrap">
+      <span class="badge badge-teal">0 jadwal</span>
+      <span class="badge badge-info">2026/2027 · 1 (Ganjil)</span>
+      
+        <form method="get" action="/sim-gtk/beban-kerja/jadwal-mengajar" class="flex gap-1 align-center">
+          <select name="guru_id" data-autosubmit style="min-width:200px">
+            <option value="5" >Ahmad Fauzi, S.Ag</option><option value="6" >Dewi Kartika, S.Pd</option><option value="8" >Fatimah Zahra, S.Pd</option><option value="3" >Herman Susanto Buhungo</option><option value="12" >Herman Susanto Buhungo, S.Pd</option><option value="4" >Nurhayati, S.Pd</option><option value="7" >Rahmat Hidayat, S.Pd.I</option><option value="2" selected>Siti Rahmawati, S.Kom</option>
+          </select>
+        </form>
+      
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3" style="padding:0">
+  <div style="padding:18px 22px 0"><div class="card-head mb-2"><div><h3>Jadwal Mingguan</h3><p>Sebaran jam tatap muka per hari</p></div><a class="btn btn-outline btn-sm" data-print href="#"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-print"></use></svg> Cetak</a></div></div>
+  <div style="overflow-x:auto;padding:0 12px 14px">
+    <table class="jadwal-grid">
+      <thead>
+        <tr><th style="width:110px">Jam</th><th>Senin</th><th>Selasa</th><th>Rabu</th><th>Kamis</th><th>Jumat</th><th>Sabtu</th></tr>
+      </thead>
+      <tbody>
+        
+        
+          <tr><td colspan="7"><div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-calendar"></use></svg><b>Belum ada jadwal</b>Jadwal mengajar ditetapkan oleh admin madrasah.</div></td></tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-head"><div><h3>Daftar Jadwal</h3><p>Rincian seluruh jadwal tatap muka</p></div></div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Hari</th><th>Jam</th><th>Mapel</th><th>Kelas</th><th>Ruang</th></tr></thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div><h3>Beban per Mata Pelajaran</h3><p>Akumulasi jam pelajaran per mapel</p></div></div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-book"></use></svg><b>Belum ada data</b></div>
+    
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

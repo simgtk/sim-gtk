@@ -1,0 +1,62 @@
+<%- include('../partials/head', { title: "Jurnal Mengajar", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Jurnal Mengajar</b>
+    </div>
+    <div class="page-head">
+      <h1>Jurnal Mengajar</h1>
+      <p>Catatan harian pelaksanaan pembelajaran di kelas</p>
+    </div>
+
+<div class="grid grid-3 mb-3">
+  <div class="stat tint-1"><div><div class="lbl">Total Jurnal</div><div class="val">0</div><div class="sub">Seluruh jurnal tercatat</div></div><div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-notebook"></use></svg></div></div>
+  <div class="stat tint-2"><div><div class="lbl">Rata-rata Kehadiran</div><div class="val">0%</div><div class="sub">Dari seluruh jurnal</div></div><div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-user-check"></use></svg></div></div>
+  <div class="stat tint-3"><div><div class="lbl">Jurnal Bulan Ini</div><div class="val">0</div><div class="sub">2026-10</div></div><div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-calendar"></use></svg></div></div>
+</div>
+
+<div class="grid" style="grid-template-columns:1fr 1.6fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Tulis Jurnal</h3><p>Catat pelaksanaan pembelajaran</p></div></div>
+    <form method="post" action="/sim-gtk/pembelajaran/jurnal/simpan">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="form-grid">
+        <div class="field span-2"><label>Tanggal</label><input type="date" name="tanggal" value="2026-10-23" required></div>
+        <div class="field span-2">
+          <label>Jadwal / Kelas</label>
+          <select name="jadwal_id" required>
+            <option value="">— pilih jadwal —</option>
+            
+          </select>
+        </div>
+        <div class="field span-2"><label>Materi Pembelajaran</label><input type="text" name="materi" placeholder="mis. Shalat Jamak dan Qashar" required></div>
+        <div class="field span-2"><label>Kegiatan Pembelajaran</label><textarea name="kegiatan" placeholder="deskripsi singkat kegiatan: diskusi kelompok, presentasi, praktik…"></textarea></div>
+        <div class="field"><label>Jumlah Hadir</label><input type="number" name="hadir" min="0" placeholder="28"></div>
+        <div class="field"><label>Jumlah Siswa</label><input type="number" name="total" min="0" placeholder="30"></div>
+        <div class="field span-2"><label>Catatan / Kendala</label><textarea name="catatan" placeholder="mis. sebagian siswa belum mengumpulkan tugas"></textarea></div>
+      </div>
+      <button class="btn btn-primary btn-block mt-2" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Simpan Jurnal</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div><h3>Daftar Jurnal</h3><p>Riwayat jurnal mengajar Anda</p></div>
+      <form method="get" action="/sim-gtk/pembelajaran/jurnal"><input type="month" name="bulan" value="2026-10" data-autosubmit></form>
+    </div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-notebook"></use></svg><b>Belum ada jurnal pada bulan ini</b>Tulis jurnal melalui formulir di samping.</div>
+    
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

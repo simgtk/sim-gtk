@@ -1,0 +1,283 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <span>Platform Super Admin</span>
+      <span class="sep">/</span>
+      <span>Dashboard Platform</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-shield"></use></svg>
+          Dashboard Platform Super Admin
+        </h1>
+        <p class="muted">Statistik lembaga nasional, akun aktif, status penggunaan sistem, dan pemantauan notifikasi teknis.</p>
+      </div>
+      <div class="flex gap-1 align-center">
+        <span class="badge badge-success"><svg class="ic ic-sm"><use href="#i-check-circle"></use></svg> Platform Online (100% Uptime)</span>
+        <a href="/sim-gtk/superadmin/monitoring-audit" class="btn btn-outline btn-sm">
+          <svg class="ic ic-sm"><use href="#i-refresh"></use></svg> Diagnostik
+        </a>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- KPI STAT CARDS -->
+    <div class="grid grid-4 mb-3">
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(21, 101, 184, 0.1);color:var(--blue-700)">
+          <svg class="ic"><use href="#i-school"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Total Lembaga / Madrasah</div>
+          <div class="stat-value"><%= stats.totalLembaga %></div>
+          <div class="tiny text-green flex align-center gap-1 mt-1">
+            <svg class="ic ic-sm"><use href="#i-check"></use></svg> <%= stats.lembagaAktif %> Aktif &middot; <%= stats.lembagaPending %> Menunggu Verifikasi
+          </div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(42, 157, 79, 0.1);color:var(--green-700)">
+          <svg class="ic"><use href="#i-users"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Akun GTK &amp; Tendik Aktif</div>
+          <div class="stat-value"><%= stats.totalGtk %></div>
+          <div class="tiny text-blue flex align-center gap-1 mt-1">
+            <svg class="ic ic-sm"><use href="#i-user"></use></svg> <%= stats.totalAdminLembaga %> Admin Lembaga &middot; <%= stats.totalPengawas %> Pengawas
+          </div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(230, 126, 34, 0.1);color:#d35400">
+          <svg class="ic"><use href="#i-folder"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Penggunaan Storage Dokumen</div>
+          <div class="stat-value"><%= stats.storageUsedMb %> <span style="font-size:14px;color:var(--muted)">/ <%= stats.storageTotalMb %> MB</span></div>
+          <div class="tiny text-orange flex align-center gap-1 mt-1">
+            <svg class="ic ic-sm"><use href="#i-bar-chart"></use></svg> <%= Math.round((stats.storageUsedMb / stats.storageTotalMb) * 100) %>% Kapasitas Terpakai
+          </div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(142, 68, 173, 0.1);color:#8e44ad">
+          <svg class="ic"><use href="#i-sparkles"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Penggunaan Layanan AI</div>
+          <div class="stat-value"><%= stats.aiTokensUsed.toLocaleString() %> <span style="font-size:13px;color:var(--muted)">Token</span></div>
+          <div class="tiny text-purple flex align-center gap-1 mt-1">
+            <svg class="ic ic-sm"><use href="#i-check-circle"></use></svg> <%= stats.dokumenAiCount %> Dokumen RPP AI Digenerate
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFIKASI TEKNIS & STATUS SISTEM -->
+    <div class="card mb-3" style="border-left: 4px solid var(--blue-600)">
+      <div class="card-head flex justify-between align-center">
+        <div class="flex align-center gap-1">
+          <svg class="ic text-blue" style="width:20px;height:20px"><use href="#i-bell"></use></svg>
+          <h3 style="font-size:15px;margin:0">Notifikasi Teknis &amp; Peringatan Sistem Terkini</h3>
+        </div>
+        <span class="badge badge-info"><%= technicalAlerts.length %> Notifikasi</span>
+      </div>
+      <div class="card-body" style="padding-top:0">
+        <div class="stack-sm">
+          <% technicalAlerts.forEach(function(alert) { %>
+            <div class="flex justify-between align-center p-2" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line)">
+              <div class="flex align-center gap-2">
+                <span class="badge badge-<%= alert.level %>" style="min-width:70px;text-align:center"><%= alert.kategori %></span>
+                <div>
+                  <div style="font-weight:600;font-size:13px"><%= alert.judul %></div>
+                  <div class="tiny muted"><%= alert.pesan %></div>
+                </div>
+              </div>
+              <div class="tiny muted text-right hide-sm">
+                <%= alert.waktu %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+
+    <!-- DUA KOLOM: STATISTIK LEMBAGA & AKTIVITAS AUDIT -->
+    <div class="grid grid-2 mb-3">
+      
+      <!-- STATISTIK DISTRIBUSI LEMBAGA -->
+      <div class="card">
+        <div class="card-head flex justify-between align-center">
+          <h3 style="font-size:15px;margin:0">Distribusi Lembaga per Jenjang</h3>
+          <a href="/sim-gtk/superadmin/lembaga" class="small text-blue">Kelola Lembaga &rarr;</a>
+        </div>
+        <div class="card-body">
+          <div class="stack mb-3">
+            <div>
+              <div class="flex justify-between small mb-1">
+                <span>Madrasah Aliyah (MA)</span>
+                <b><%= jenjangStats.ma %> Lembaga (<%= Math.round((jenjangStats.ma / stats.totalLembaga) * 100) %>%)</b>
+              </div>
+              <div style="height:8px;background:var(--line);border-radius:4px;overflow:hidden">
+                <div style="width:<%= Math.round((jenjangStats.ma / stats.totalLembaga) * 100) %>%;height:100%;background:var(--blue-600)"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between small mb-1">
+                <span>Madrasah Tsanawiyah (MTs)</span>
+                <b><%= jenjangStats.mts %> Lembaga (<%= Math.round((jenjangStats.mts / stats.totalLembaga) * 100) %>%)</b>
+              </div>
+              <div style="height:8px;background:var(--line);border-radius:4px;overflow:hidden">
+                <div style="width:<%= Math.round((jenjangStats.mts / stats.totalLembaga) * 100) %>%;height:100%;background:var(--green-600)"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between small mb-1">
+                <span>Madrasah Ibtidaiyah (MI)</span>
+                <b><%= jenjangStats.mi %> Lembaga (<%= Math.round((jenjangStats.mi / stats.totalLembaga) * 100) %>%)</b>
+              </div>
+              <div style="height:8px;background:var(--line);border-radius:4px;overflow:hidden">
+                <div style="width:<%= Math.round((jenjangStats.mi / stats.totalLembaga) * 100) %>%;height:100%;background:var(--orange-600)"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between small mb-1">
+                <span>Raudhatul Athfal (RA)</span>
+                <b><%= jenjangStats.ra %> Lembaga (<%= Math.round((jenjangStats.ra / stats.totalLembaga) * 100) %>%)</b>
+              </div>
+              <div style="height:8px;background:var(--line);border-radius:4px;overflow:hidden">
+                <div style="width:<%= Math.round((jenjangStats.ra / stats.totalLembaga) * 100) %>%;height:100%;background:#8e44ad"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-between p-2" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line);font-size:13px">
+            <div>Status Operasional: <b class="text-green">Normal / Full Mode</b></div>
+            <div>Model Layanan: <b>Multi-Tenancy Satker</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOG AUDIT TERAKHIR -->
+      <div class="card">
+        <div class="card-head flex justify-between align-center">
+          <h3 style="font-size:15px;margin:0">Log Aktivitas Platform Terbaru</h3>
+          <a href="/sim-gtk/superadmin/monitoring-audit" class="small text-blue">Lihat Semua Log &rarr;</a>
+        </div>
+        <div class="card-body" style="padding-top:0">
+          <div class="stack-sm">
+            <% recentLogs.forEach(function(l) { %>
+              <div class="flex justify-between align-center p-2" style="border-bottom:1px solid var(--line);font-size:13px">
+                <div>
+                  <div class="flex align-center gap-1">
+                    <b><%= l.user_nama %></b>
+                    <span class="badge badge-sm badge-info"><%= l.role %></span>
+                  </div>
+                  <div class="tiny text-blue"><%= l.aksi %> &middot; <span class="muted"><%= l.modul %></span></div>
+                  <div class="tiny muted"><%= l.detail %></div>
+                </div>
+                <div class="tiny muted text-right">
+                  <%= l.created_at %>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PINTASAN FITUR UTAMA SUPERADMIN -->
+    <div class="card mb-3">
+      <div class="card-head">
+        <h3 style="font-size:15px;margin:0">Pusat Kendali Platform Super Admin</h3>
+      </div>
+      <div class="card-body">
+        <div class="grid grid-3 gap-2">
+          <a href="/sim-gtk/superadmin/lembaga" class="card p-3 flex align-center gap-2 hover-elevate" style="border:1px solid var(--line);text-decoration:none;color:inherit">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(21, 101, 184, 0.1);color:var(--blue-700);display:flex;align-items:center;justify-content:center">
+              <svg class="ic"><use href="#i-school"></use></svg>
+            </div>
+            <div>
+              <b style="font-size:14px">Manajemen Lembaga</b>
+              <p class="tiny muted" style="margin:2px 0 0">Registrasi, verifikasi, aktivasi &amp; suspensi lembaga.</p>
+            </div>
+          </a>
+
+          <a href="/sim-gtk/superadmin/admin-lembaga" class="card p-3 flex align-center gap-2 hover-elevate" style="border:1px solid var(--line);text-decoration:none;color:inherit">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(42, 157, 79, 0.1);color:var(--green-700);display:flex;align-items:center;justify-content:center">
+              <svg class="ic"><use href="#i-users"></use></svg>
+            </div>
+            <div>
+              <b style="font-size:14px">Manajemen Admin Lembaga</b>
+              <p class="tiny muted" style="margin:2px 0 0">Pembuatan, pemulihan akun &amp; status hak akses admin.</p>
+            </div>
+          </a>
+
+          <a href="/sim-gtk/superadmin/konfigurasi" class="card p-3 flex align-center gap-2 hover-elevate" style="border:1px solid var(--line);text-decoration:none;color:inherit">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(230, 126, 34, 0.1);color:#d35400;display:flex;align-items:center;justify-content:center">
+              <svg class="ic"><use href="#i-settings"></use></svg>
+            </div>
+            <div>
+              <b style="font-size:14px">Konfigurasi Global</b>
+              <p class="tiny muted" style="margin:2px 0 0">Parameter platform, modul aktif, kategori &amp; keamanan.</p>
+            </div>
+          </a>
+
+          <a href="/sim-gtk/superadmin/monitoring-audit" class="card p-3 flex align-center gap-2 hover-elevate" style="border:1px solid var(--line);text-decoration:none;color:inherit">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(192, 57, 43, 0.1);color:#c0392b;display:flex;align-items:center;justify-content:center">
+              <svg class="ic"><use href="#i-shield"></use></svg>
+            </div>
+            <div>
+              <b style="font-size:14px">Monitoring &amp; Audit</b>
+              <p class="tiny muted" style="margin:2px 0 0">Audit log, penanganan insiden akses &amp; status server.</p>
+            </div>
+          </a>
+
+          <a href="/sim-gtk/superadmin/layanan" class="card p-3 flex align-center gap-2 hover-elevate" style="border:1px solid var(--line);text-decoration:none;color:inherit">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(142, 68, 173, 0.1);color:#8e44ad;display:flex;align-items:center;justify-content:center">
+              <svg class="ic"><use href="#i-bar-chart"></use></svg>
+            </div>
+            <div>
+              <b style="font-size:14px">Pengelolaan Layanan</b>
+              <p class="tiny muted" style="margin:2px 0 0">Kapasitas kuota, paket lisensi &amp; status operasional.</p>
+            </div>
+          </a>
+
+          <a href="/sim-gtk/beranda" class="card p-3 flex align-center gap-2 hover-elevate" style="border:1px solid var(--line);text-decoration:none;color:inherit">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(52, 73, 94, 0.1);color:#34495e;display:flex;align-items:center;justify-content:center">
+              <svg class="ic"><use href="#i-home"></use></svg>
+            </div>
+            <div>
+              <b style="font-size:14px">Kembali ke Portal Satker</b>
+              <p class="tiny muted" style="margin:2px 0 0">Buka tampilan modul madrasah (Portofolio, Penilaian, dll).</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

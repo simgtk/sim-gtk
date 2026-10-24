@@ -1,0 +1,117 @@
+<%- include('../partials/head', { title: "Hari Libur Akademik", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Hari Libur Akademik</b>
+    </div>
+    <div class="page-head">
+      <h1>Hari Libur Akademik</h1>
+      <p>Kalender hari libur nasional dan libur madrasah</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1.5fr 1fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Kalender Hari Libur</h3><p>Libur nasional dan libur khusus madrasah</p></div><span class="badge badge-teal">4 hari</span></div>
+    
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Tanggal</th><th>Hari Libur</th><th>Jenis</th><th></th></tr></thead>
+          <tbody>
+            
+              <tr>
+                <td class="strong nowrap">Senin, 17 Agu 2026</td>
+                <td>Hari Kemerdekaan Republik Indonesia</td>
+                <td><span class="badge badge-info">Nasional</span></td>
+                
+                  <td class="right">
+                    
+                      <form method="post" action="/sim-gtk/referensi/hari-libur/1/hapus" data-confirm="Hapus hari libur ini?">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                      </form>
+                    
+                  </td>
+                
+              </tr>
+            
+              <tr>
+                <td class="strong nowrap">Sabtu, 5 Sep 2026</td>
+                <td>Maulid Nabi Muhammad SAW</td>
+                <td><span class="badge badge-info">Nasional</span></td>
+                
+                  <td class="right">
+                    
+                      <form method="post" action="/sim-gtk/referensi/hari-libur/2/hapus" data-confirm="Hapus hari libur ini?">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                      </form>
+                    
+                  </td>
+                
+              </tr>
+            
+              <tr>
+                <td class="strong nowrap">Selasa, 20 Okt 2026</td>
+                <td>Libur Semester Ganjil (khusus madrasah)</td>
+                <td><span class="badge badge-teal">Madrasah</span></td>
+                
+                  <td class="right">
+                    
+                      <form method="post" action="/sim-gtk/referensi/hari-libur/4/hapus" data-confirm="Hapus hari libur ini?">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                      </form>
+                    
+                  </td>
+                
+              </tr>
+            
+              <tr>
+                <td class="strong nowrap">Jumat, 25 Des 2026</td>
+                <td>Hari Raya Natal</td>
+                <td><span class="badge badge-info">Nasional</span></td>
+                
+                  <td class="right">
+                    
+                      <form method="post" action="/sim-gtk/referensi/hari-libur/3/hapus" data-confirm="Hapus hari libur ini?">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                      </form>
+                    
+                  </td>
+                
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    
+  </div>
+
+  
+    <div class="card">
+      <div class="card-head"><div><h3>Tambah Hari Libur</h3><p>Libur khusus madrasah Anda</p></div></div>
+      <form method="post" action="/sim-gtk/referensi/hari-libur">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="field mb-2"><label>Tanggal</label><input type="date" name="tanggal" required></div>
+        <div class="field mb-2"><label>Nama Hari Libur</label><input type="text" name="nama" placeholder="mis. Libur Idul Adha" required></div>
+        <div class="field mb-2"><label>Jenis</label>
+          <select name="jenis"><option>Madrasah</option><option>Nasional</option></select>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Simpan Hari Libur</button>
+      </form>
+      <div class="alert alert-info mt-2"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Hari libur madrasah hanya memengaruhi kalender madrasah Anda dan presensi GTK.</div></div>
+    </div>
+  
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

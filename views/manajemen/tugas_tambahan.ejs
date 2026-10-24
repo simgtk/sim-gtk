@@ -1,0 +1,288 @@
+<%- include('../partials/head', { title: "Tugas Tambahan Guru — SIM-GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar', { currentMenu: 'manajemen', activeSub: 'tugas_tambahan' }) %>
+  <main class="main">
+    
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/manajemen/gtk">Data GTK</a>
+      <span class="sep">/</span>
+      <span>Tugas Tambahan Guru</span>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header flex justify-between align-center wrap gap-2 no-print mb-4">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-award"></use></svg>
+          Manajemen Tugas Tambahan Guru (Penetapan Kamad)
+        </h1>
+        <p class="muted">
+          Kelola penugasan struktural dan fungsional guru oleh Kepala Madrasah: Wakamad, Kepala Laboratorium, Kepala Perpustakaan, Guru Penilai Supervisi, Pembina OSIS, dan Wali Kelas.
+        </p>
+      </div>
+      <div class="flex gap-2 wrap align-center">
+        <button type="button" class="btn btn-primary btn-sm flex align-center gap-1" onclick="openModalTambahTugas()">
+          <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Tambah Tugas Tambahan Guru
+        </button>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-4">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- KPI STAT CARDS HORIZONTAL FLEKSIBEL -->
+    <div class="grid grid-4 mb-4">
+      <div class="card stat-card">
+        <div class="stat-icon bg-blue-subtle text-blue">
+          <svg class="ic"><use href="#i-users"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Total Guru Ditugaskan</div>
+          <div class="stat-value"><%= tugasList.length %> GTK</div>
+          <div><span class="badge-status badge-status-aktif">SK Aktif</span></div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon bg-purple-subtle text-purple">
+          <svg class="ic"><use href="#i-award"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Guru Penilai Mandat</div>
+          <div class="stat-value"><%= tugasList.filter(t => t.jabatan_tambahan.toLowerCase().includes('penilai')).length %> Guru</div>
+          <div><span class="badge-status badge-status-selesai">Tim Supervisi</span></div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon bg-green-subtle text-green">
+          <svg class="ic"><use href="#i-school"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Kepala Unit / Lab</div>
+          <div class="stat-value"><%= tugasList.filter(t => t.jabatan_tambahan.toLowerCase().includes('kepala')).length %> Unit</div>
+          <div><span class="badge-status badge-status-aktif">12 JTM</span></div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon bg-amber-subtle text-orange">
+          <svg class="ic"><use href="#i-check-circle"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Wali Kelas &amp; Pembina</div>
+          <div class="stat-value"><%= tugasList.filter(t => t.jabatan_tambahan.toLowerCase().includes('wali') || t.jabatan_tambahan.toLowerCase().includes('pembina')).length %> Guru</div>
+          <div><span class="badge-status badge-status-pending">2 JTM</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABEL DATA TUGAS TAMBAHAN RESPONSIVE MOBILE-CARD -->
+    <div class="card mb-4" style="padding:0;overflow:hidden;border-radius:16px">
+      <div class="card-head p-3 flex justify-between align-center wrap gap-2" style="background:#f8fafc;border-bottom:1px solid var(--line);margin:0">
+        <div>
+          <h3 style="font-size:16px;color:var(--navy-900);font-weight:700">
+            Daftar Resmi Tugas Tambahan GTK Sesuai SK Kepala Madrasah
+          </h3>
+          <p class="tiny muted" style="margin-top:2px">
+            Ekuivalensi beban mengajar (JTM) diakui resmi untuk pemenuhan syarat tunjangan profesi dan kenaikan pangkat.
+          </p>
+        </div>
+        <div class="flex gap-2">
+          <span class="badge badge-teal">Semester Ganjil 2026/2027</span>
+        </div>
+      </div>
+
+      <div class="table-responsive plain">
+        <table class="table tbl table-mobile-card mb-0">
+          <thead>
+            <tr>
+              <th style="width:50px;text-align:center">No</th>
+              <th style="min-width:220px">Nama Guru / GTK</th>
+              <th style="min-width:200px">Jabatan Tugas Tambahan</th>
+              <th>Nomor &amp; Tanggal SK</th>
+              <th style="text-align:center">Ekuivalensi JTM</th>
+              <th style="text-align:center">Status</th>
+              <th style="text-align:center;width:120px">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (tugasList.length === 0) { %>
+              <tr>
+                <td colspan="7" class="center muted p-4">Belum ada data tugas tambahan yang ditetapkan.</td>
+              </tr>
+            <% } %>
+            <% tugasList.forEach(function(item, idx) { %>
+              <tr>
+                <td data-label="No" style="text-align:center;font-weight:700"><%= idx + 1 %></td>
+                <td data-label="Guru / GTK">
+                  <div class="font-bold text-blue"><%= item.gtk_nama %></div>
+                  <div class="tiny muted"><%= item.gtk_nip && item.gtk_nip !== '-' ? 'NIP. ' + item.gtk_nip : 'Mapel: ' + (item.mapel_utama || '-') %></div>
+                </td>
+                <td data-label="Jabatan Tambahan">
+                  <% if (item.jabatan_tambahan.toLowerCase().includes('penilai')) { %>
+                    <span class="badge badge-warning font-bold" style="background:#fef3c7;color:#92400e">
+                      <svg class="ic ic-sm"><use href="#i-award"></use></svg> <%= item.jabatan_tambahan %>
+                    </span>
+                  <% } else if (item.jabatan_tambahan.toLowerCase().includes('kepala')) { %>
+                    <span class="badge badge-teal font-bold">
+                      <svg class="ic ic-sm"><use href="#i-school"></use></svg> <%= item.jabatan_tambahan %>
+                    </span>
+                  <% } else { %>
+                    <span class="badge badge-info font-bold">
+                      <svg class="ic ic-sm"><use href="#i-users"></use></svg> <%= item.jabatan_tambahan %>
+                    </span>
+                  <% } %>
+                </td>
+                <td data-label="Nomor SK">
+                  <div class="font-semibold" style="font-size:12.5px"><%= item.nomor_sk || '-' %></div>
+                  <div class="tiny muted">TMT: <%= item.tmt || item.tanggal_sk || '15 Juli 2026' %></div>
+                </td>
+                <td data-label="Ekuivalensi" style="text-align:center">
+                  <b class="text-green" style="font-size:15px"><%= item.ekuivalensi_jtm %></b> <span class="tiny muted">Jam/Mgg</span>
+                </td>
+                <td data-label="Status" style="text-align:center">
+                  <span class="badge-status badge-status-aktif">Aktif</span>
+                </td>
+                <td data-label="Aksi" style="text-align:center">
+                  <div class="flex justify-center gap-1">
+                    <button type="button" class="btn btn-outline btn-xs" onclick='editTugas(<%= JSON.stringify(item) %>)'>
+                      <svg class="ic ic-sm"><use href="#i-edit"></use></svg>
+                    </button>
+                    <form method="post" action="/sim-gtk/manajemen/tugas-tambahan/hapus" style="display:inline" onsubmit="return confirm('Hapus tugas tambahan ini?')">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <input type="hidden" name="id" value="<%= item.id %>">
+                      <button type="submit" class="btn btn-danger btn-xs">
+                        <svg class="ic ic-sm"><use href="#i-trash"></use></svg>
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MODAL PENETAPAN TUGAS TAMBAHAN BARU -->
+    <div class="modal" id="modalTugasTambahan">
+      <div class="modal-dialog modal-lg">
+        <form method="post" action="/sim-gtk/manajemen/tugas-tambahan/simpan" id="formTugasTambahan">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <input type="hidden" name="id" id="tugas_id" value="">
+
+          <div class="modal-head">
+            <h3 id="modalTugasTitle">Penetapan Tugas Tambahan Guru oleh Kamad</h3>
+            <button type="button" class="btn-close" onclick="closeModalTugas()">&times;</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="grid grid-2 gap-2 mb-3">
+              <div class="field">
+                <label class="form-label required">Pilih Guru yang Diberikan Tugas</label>
+                <select name="gtk_id" id="tugas_gtk_id" class="form-control" required>
+                  <% gtkList.forEach(function(g) { %>
+                    <option value="<%= g.id %>"><%= g.nama %> &mdash; <%= g.mapel_utama || g.jabatan %></option>
+                  <% }); %>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="form-label required">Jenis Tugas Tambahan</label>
+                <select name="jabatan_tambahan" id="tugas_jabatan" class="form-control" required onchange="handleJabatanChange(this.value)">
+                  <option value="Guru Penilai Supervisi Pembelajaran">Guru Penilai Supervisi Pembelajaran (Pamong Sejawat)</option>
+                  <option value="Kepala Laboratorium Komputer">Kepala Laboratorium Komputer</option>
+                  <option value="Kepala Perpustakaan Madrasah">Kepala Perpustakaan Madrasah</option>
+                  <option value="Wakil Kepala Madrasah Bidang Kurikulum">Wakil Kepala Madrasah Bidang Kurikulum</option>
+                  <option value="Wakil Kepala Madrasah Bidang Kesiswaan">Wakil Kepala Madrasah Bidang Kesiswaan</option>
+                  <option value="Wakil Kepala Madrasah Bidang Sarpras">Wakil Kepala Madrasah Bidang Sarpras</option>
+                  <option value="Wakil Kepala Madrasah Bidang Humas">Wakil Kepala Madrasah Bidang Humas</option>
+                  <option value="Wali Kelas">Wali Kelas</option>
+                  <option value="Pembina OSIS & Ekstrakurikuler">Pembina OSIS &amp; Ekstrakurikuler</option>
+                  <option value="Pembina Gerakan Pramuka">Pembina Gerakan Pramuka</option>
+                  <option value="Koordinator PKB / PKG">Koordinator PKB / PKG</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-3 gap-2 mb-3">
+              <div class="field">
+                <label class="form-label required">Nomor SK Kepala Madrasah</label>
+                <input type="text" name="nomor_sk" id="tugas_nomor_sk" class="form-control" required value="Kd.30.01/1/PP.00/188/2026" placeholder="Contoh: Kd.30.01/1/PP.00/188/2026">
+              </div>
+
+              <div class="field">
+                <label class="form-label required">Tanggal SK</label>
+                <input type="date" name="tanggal_sk" id="tugas_tanggal_sk" class="form-control" required value="<%= new Date().toISOString().slice(0, 10) %>">
+              </div>
+
+              <div class="field">
+                <label class="form-label required">Ekuivalensi Jam (JTM)</label>
+                <input type="number" name="ekuivalensi_jtm" id="tugas_ekuivalensi" class="form-control" required value="2" min="1" max="24">
+                <span class="tiny muted" id="jtmNote">Penilai/Wali Kelas = 2 JTM, Kepala Lab/Perpus = 12 JTM</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="form-label">Uraian / Keterangan Penugasan</label>
+              <textarea name="keterangan" id="tugas_keterangan" class="form-control" rows="2" placeholder="Uraian tanggung jawab dan lingkup tugas tambahan..."></textarea>
+            </div>
+          </div>
+
+          <div class="modal-foot">
+            <button type="button" class="btn btn-outline" onclick="closeModalTugas()">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan &amp; Terbitkan Penugasan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function openModalTambahTugas() {
+  document.getElementById('formTugasTambahan').reset();
+  document.getElementById('tugas_id').value = '';
+  document.getElementById('modalTugasTitle').innerText = 'Penetapan Tugas Tambahan Guru Baru';
+  document.getElementById('modalTugasTambahan').classList.add('open');
+}
+
+function closeModalTugas() {
+  document.getElementById('modalTugasTambahan').classList.remove('open');
+}
+
+function editTugas(item) {
+  document.getElementById('tugas_id').value = item.id;
+  document.getElementById('tugas_gtk_id').value = item.gtk_id;
+  document.getElementById('tugas_jabatan').value = item.jabatan_tambahan;
+  document.getElementById('tugas_nomor_sk').value = item.nomor_sk || '';
+  document.getElementById('tugas_tanggal_sk').value = item.tanggal_sk || '';
+  document.getElementById('tugas_ekuivalensi').value = item.ekuivalensi_jtm || 12;
+  document.getElementById('tugas_keterangan').value = item.keterangan || '';
+  document.getElementById('modalTugasTitle').innerText = 'Edit Tugas Tambahan: ' + item.gtk_nama;
+  document.getElementById('modalTugasTambahan').classList.add('open');
+}
+
+function handleJabatanChange(val) {
+  const eq = document.getElementById('tugas_ekuivalensi');
+  if (val.includes('Kepala') || val.includes('Wakil')) {
+    eq.value = 12;
+  } else if (val.includes('Penilai') || val.includes('Wali') || val.includes('Pembina')) {
+    eq.value = 2;
+  } else {
+    eq.value = 6;
+  }
+}
+</script>
+
+<%- include('../partials/footer') %>

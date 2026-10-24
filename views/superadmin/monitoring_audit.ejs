@@ -1,0 +1,321 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/superadmin/dashboard">Super Admin</a>
+      <span class="sep">/</span>
+      <span>Monitoring &amp; Audit</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-shield"></use></svg>
+          Monitoring &amp; Audit Sistem Platform
+        </h1>
+        <p class="muted">Pemantauan log jejak audit pengguna, deteksi insiden keamanan akses, riwayat kegagalan proses latar belakang, dan status kesehatan server.</p>
+      </div>
+      <div>
+        <span class="badge badge-success"><svg class="ic ic-sm"><use href="#i-check-circle"></use></svg> Server Health: Optimal</span>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- SUMMARY CARDS -->
+    <div class="grid grid-4 mb-3">
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Total Log Aktivitas</div>
+          <div class="h3" style="font-size:22px;font-weight:700"><%= auditLogs.length %> Log</div>
+        </div>
+        <span class="badge badge-info">Audit Trail</span>
+      </div>
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Insiden Akses Terdeteksi</div>
+          <div class="h3 text-danger" style="font-size:22px;font-weight:700">
+            <%= incidents.length %>
+          </div>
+        </div>
+        <span class="badge badge-danger">Security</span>
+      </div>
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Database Status</div>
+          <div class="h3 text-green" style="font-size:20px;font-weight:700">WAL Mode</div>
+        </div>
+        <span class="badge badge-success">SQLite OK</span>
+      </div>
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">AI Gateway Status</div>
+          <div class="h3 text-blue" style="font-size:20px;font-weight:700">Terhubung</div>
+        </div>
+        <span class="badge badge-teal">Latensi 180ms</span>
+      </div>
+    </div>
+
+    <!-- TAB NAVIGATION -->
+    <div class="tabs mb-3" style="border-bottom: 2px solid var(--line);display:flex;gap:12px">
+      <button class="btn btn-ghost tab-btn active" onclick="switchAuditTab('tab-audit', this)" style="border-radius:6px 6px 0 0;font-weight:600">
+        <svg class="ic ic-sm"><use href="#i-file-text"></use></svg> Log Aktivitas (Audit Trail)
+      </button>
+      <button class="btn btn-ghost tab-btn" onclick="switchAuditTab('tab-insiden', this)" style="border-radius:6px 6px 0 0;font-weight:600">
+        <svg class="ic ic-sm"><use href="#i-lock"></use></svg> Insiden Akses
+      </button>
+      <button class="btn btn-ghost tab-btn" onclick="switchAuditTab('tab-kegagalan', this)" style="border-radius:6px 6px 0 0;font-weight:600">
+        <svg class="ic ic-sm"><use href="#i-refresh"></use></svg> Kegagalan Proses &amp; Error Log
+      </button>
+      <button class="btn btn-ghost tab-btn" onclick="switchAuditTab('tab-status', this)" style="border-radius:6px 6px 0 0;font-weight:600">
+        <svg class="ic ic-sm"><use href="#i-bar-chart"></use></svg> Status Layanan &amp; Server Health
+      </button>
+    </div>
+
+    <!-- TAB 1: LOG AKTIVITAS (AUDIT TRAIL) -->
+    <div class="tab-audit-pane active" id="tab-audit">
+      <div class="card">
+        <div class="card-head flex justify-between align-center wrap gap-1">
+          <input type="text" id="searchAudit" class="form-control" style="width:280px" placeholder="Cari pengguna, peran, aksi, modul..." onkeyup="filterAudit()">
+          <span class="tiny muted">Menampilkan <%= auditLogs.length %> catatan audit</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table" id="tableAudit">
+              <thead>
+                <tr>
+                  <th style="width:160px">Waktu Kejadian</th>
+                  <th>Pengguna &amp; Peran</th>
+                  <th>Aksi Dilakukan</th>
+                  <th>Modul Terkait</th>
+                  <th>Detail Keterangan</th>
+                  <th>Alamat IP</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% auditLogs.forEach(function(l) { %>
+                  <tr data-search="<%= (l.user_nama + ' ' + l.role + ' ' + l.aksi + ' ' + l.modul + ' ' + (l.detail || '')).toLowerCase() %>">
+                    <td class="tiny muted font-mono"><%= l.created_at %></td>
+                    <td>
+                      <b><%= l.user_nama %></b>
+                      <div><span class="badge badge-sm badge-info"><%= l.role %></span></div>
+                    </td>
+                    <td><b><%= l.aksi %></b></td>
+                    <td><%= l.modul %></td>
+                    <td class="small"><%= l.detail || '-' %></td>
+                    <td class="font-mono tiny"><%= l.ip_address || '127.0.0.1' %></td>
+                    <td>
+                      <span class="badge badge-sm badge-<%= l.status === 'success' ? 'success' : (l.status === 'warning' ? 'warning' : 'danger') %>">
+                        <%= l.status %>
+                      </span>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: INSIDEN AKSES -->
+    <div class="tab-audit-pane" id="tab-insiden" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <h3 style="font-size:16px;margin:0">Log Peringatan Insiden Akses &amp; Keamanan</h3>
+          <p class="tiny muted" style="margin:2px 0 0">Mencatat percobaan login gagal berturut-turut, akses tanpa hak (unauthorized), dan anomali IP.</p>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:150px">Waktu Deteksi</th>
+                  <th>Tipe Insiden</th>
+                  <th>Identifier / Akun Target</th>
+                  <th>Alamat IP Sumber</th>
+                  <th>Tingkat Bahaya</th>
+                  <th>Keterangan Teknis</th>
+                  <th>Status Penanganan</th>
+                  <th style="width:140px;text-align:center">Tindakan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% incidents.forEach(function(inc) { %>
+                  <tr>
+                    <td class="tiny muted font-mono"><%= inc.created_at %></td>
+                    <td><b class="text-danger"><%= inc.tipe_insiden %></b></td>
+                    <td class="font-mono small"><%= inc.identifier %></td>
+                    <td class="font-mono small"><%= inc.ip_address %></td>
+                    <td>
+                      <% if (inc.tingkat_bahaya === 'Kritis') { %>
+                        <span class="badge badge-danger">Kritis</span>
+                      <% } else if (inc.tingkat_bahaya === 'Sedang') { %>
+                        <span class="badge badge-warning">Sedang</span>
+                      <% } else { %>
+                        <span class="badge badge-info">Rendah</span>
+                      <% } %>
+                    </td>
+                    <td class="small"><%= inc.keterangan %></td>
+                    <td>
+                      <span class="badge badge-sm badge-teal"><%= inc.status %></span>
+                    </td>
+                    <td style="text-align:center">
+                      <form method="post" action="/sim-gtk/superadmin/monitoring-audit/resolve-incident" style="display:inline">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="hidden" name="id" value="<%= inc.id %>">
+                        <button type="submit" class="btn btn-outline btn-xs" title="Tandai Selesai Diinvestigasi">
+                          <svg class="ic ic-sm"><use href="#i-check"></use></svg> Selesai
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: KEGAGALAN PROSES & ERROR LOG -->
+    <div class="tab-audit-pane" id="tab-kegagalan" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <h3 style="font-size:16px;margin:0">Log Kegagalan Proses &amp; Exception Background</h3>
+          <p class="tiny muted" style="margin:2px 0 0">Mencatat error timeout layanan pihak ketiga, kegagalan render dokumen, atau error query database.</p>
+        </div>
+        <div class="card-body">
+          <div class="stack gap-2">
+            
+            <div class="p-3" style="background:var(--bg-subtle);border-left:4px solid var(--danger);border-radius:6px">
+              <div class="flex justify-between align-center mb-1">
+                <b class="text-danger">AI Service: Request Timeout (HTTP 504)</b>
+                <span class="tiny muted font-mono">Hari ini, 13:42:10</span>
+              </div>
+              <div class="tiny font-mono" style="background:#1e1e1e;color:#f8f8f2;padding:8px;border-radius:4px;overflow-x:auto">
+                FetchError: Request to https://api.openai.com/v1/chat/completions timed out after 30000ms at async generatePerangkatAjar (aiService.js:42)
+              </div>
+              <div class="tiny text-green mt-1">Status: Antrean otomatis mencoba ulang (Retry 1/3) berhasil diselesaikan.</div>
+            </div>
+
+            <div class="p-3" style="background:var(--bg-subtle);border-left:4px solid var(--warning);border-radius:6px">
+              <div class="flex justify-between align-center mb-1">
+                <b class="text-orange">Document Export: Memory Buffer Threshold Warning</b>
+                <span class="tiny muted font-mono">Kemarin, 16:15:02</span>
+              </div>
+              <div class="tiny font-mono" style="background:#1e1e1e;color:#f8f8f2;padding:8px;border-radius:4px;overflow-x:auto">
+                Warn: DOCX generator buffer allocation exceeded 15MB for large perangkat pembelajaran bundle.
+              </div>
+              <div class="tiny text-green mt-1">Status: Buffer berhasil di-flush dan dokumen berhasil diunduh.</div>
+            </div>
+
+            <div class="p-3" style="background:var(--bg-subtle);border-left:4px solid var(--blue-600);border-radius:6px">
+              <div class="flex justify-between align-center mb-1">
+                <b class="text-blue">Database Checkpoint: WAL Log Truncated Successfully</b>
+                <span class="tiny muted font-mono">23 Okt 2026, 04:00:00</span>
+              </div>
+              <div class="tiny font-mono" style="background:#1e1e1e;color:#f8f8f2;padding:8px;border-radius:4px;overflow-x:auto">
+                SQLite WAL PRAGMA wal_checkpoint(TRUNCATE) returned 0 (busy: 0, log: 120, checkpointed: 120)
+              </div>
+              <div class="tiny text-green mt-1">Status: Pemeliharaan rutin SQLite selesai 100%.</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: STATUS LAYANAN & SERVER HEALTH -->
+    <div class="tab-audit-pane" id="tab-status" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <h3 style="font-size:16px;margin:0">Status Layanan &amp; Diagnostik Runtime Server</h3>
+          <p class="tiny muted" style="margin:2px 0 0">Informasi lingkungan eksekusi Node.js, database, dan pemanfaatan sumber daya server.</p>
+        </div>
+        <div class="card-body">
+          <div class="grid grid-2 gap-3">
+            
+            <div class="p-3" style="border:1px solid var(--line);border-radius:8px">
+              <h4 style="font-size:14px;margin:0 0 12px">Runtime Platform Node.js</h4>
+              <div class="stack-sm" style="font-size:13px">
+                <div class="flex justify-between">
+                  <span class="muted">Node.js Version:</span>
+                  <b>v20.x LTS</b>
+                </div>
+                <div class="flex justify-between">
+                  <span class="muted">Platform OS:</span>
+                  <b>Windows 64-bit</b>
+                </div>
+                <div class="flex justify-between">
+                  <span class="muted">Server Uptime:</span>
+                  <b class="text-green">Online (Continuous Mode)</b>
+                </div>
+                <div class="flex justify-between">
+                  <span class="muted">Memory Heap Used:</span>
+                  <b>~42 MB / 128 MB Alloc</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3" style="border:1px solid var(--line);border-radius:8px">
+              <h4 style="font-size:14px;margin:0 0 12px">Database Engine (SQLite3)</h4>
+              <div class="stack-sm" style="font-size:13px">
+                <div class="flex justify-between">
+                  <span class="muted">Driver:</span>
+                  <b>better-sqlite3 v12.x</b>
+                </div>
+                <div class="flex justify-between">
+                  <span class="muted">Journal Mode:</span>
+                  <b class="text-green">WAL (Write-Ahead Logging)</b>
+                </div>
+                <div class="flex justify-between">
+                  <span class="muted">Foreign Keys:</span>
+                  <b class="text-green">ON (Enforced)</b>
+                </div>
+                <div class="flex justify-between">
+                  <span class="muted">Lokasi Database:</span>
+                  <b class="font-mono tiny">/data/sim_gtk.db</b>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function switchAuditTab(tabId, btn) {
+  document.querySelectorAll('.tab-audit-pane').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).style.display = 'block';
+  btn.classList.add('active');
+}
+
+function filterAudit() {
+  const q = document.getElementById('searchAudit').value.toLowerCase();
+  const rows = document.querySelectorAll('#tableAudit tbody tr');
+  rows.forEach(r => {
+    const s = r.getAttribute('data-search') || '';
+    r.style.display = (!q || s.includes(q)) ? '' : 'none';
+  });
+}
+</script>
+
+<%- include('../partials/footer') %>

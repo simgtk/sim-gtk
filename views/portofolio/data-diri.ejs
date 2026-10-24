@@ -1,0 +1,149 @@
+<%- include('../partials/head', { title: "Data Diri", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Data Diri</b>
+    </div>
+    <div class="page-head">
+      <h1>Data Diri</h1>
+      <p>Portofolio — data pribadi dan kepegawaian Anda</p>
+    </div>
+
+
+<div class="identity mb-3">
+  <div class="identity-top">
+    <div class="avatar">SR</div>
+    <div>
+      <h2>Siti Rahmawati, S.Kom</h2>
+      <div class="role">Tenaga Administrasi · MAN 2 KABUPATEN GORONTALO</div>
+    </div>
+    <div style="margin-left:auto;text-align:right">
+      <div class="tiny" style="color:#bff0e7">Kelengkapan data</div>
+      <div style="font-size:22px;font-weight:800">67%</div>
+    </div>
+  </div>
+  <div class="identity-grid">
+    <div><div class="lbl">NUPTK</div><div class="val">-</div></div>
+    <div><div class="lbl">NIP</div><div class="val">-</div></div>
+    <div><div class="lbl">NRG</div><div class="val">-</div></div>
+    <div><div class="lbl">Status NRG</div><div class="val">Terverifikasi</div></div>
+  </div>
+</div>
+
+<div class="grid" style="grid-template-columns:1.5fr 1fr">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>A. Biodata</h3><p>Data kependudukan dan identitas pribadi</p></div></div>
+      <div class="form-grid">
+        <div><div class="tiny muted">Nama Lengkap</div><b>Siti Rahmawati, S.Kom</b></div>
+        <div><div class="tiny muted">Jenis Kelamin</div><b>Perempuan</b></div>
+        <div><div class="tiny muted">Tempat Lahir</div><b>Gorontalo</b></div>
+        <div><div class="tiny muted">Tanggal Lahir</div><b>12 Apr 1985</b></div>
+        <div><div class="tiny muted">NIK</div><b>7501101010802236</b></div>
+        <div><div class="tiny muted">NPWP</div><b>-</b></div>
+        <div><div class="tiny muted">Email Pribadi</div><b>admin@man2gorontalo.sch.id</b></div>
+        <div><div class="tiny muted">Nomor HP</div><b>081242843901</b></div>
+        <div style="grid-column:span 2"><div class="tiny muted">Alamat</div><b>Kec. Limboto, Kabupaten Gorontalo</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>B. Kepegawaian</h3><p>Status, golongan, dan masa kerja</p></div></div>
+      <div class="form-grid">
+        <div><div class="tiny muted">Status Kepegawaian</div><b>PNS</b></div>
+        <div><div class="tiny muted">Jenis Pegawai</div><b>Tenaga Administrasi</b></div>
+        <div><div class="tiny muted">Golongan</div><b>III/a</b></div>
+        <div><div class="tiny muted">Masa Kerja Golongan</div><b>8 tahun 4 bulan</b></div>
+        <div><div class="tiny muted">TMT Golongan</div><b>1 Apr 2021</b></div>
+        <div><div class="tiny muted">TMT PNS/PPPK</div><b>1 Jan 2010</b></div>
+        <div><div class="tiny muted">Mata Pelajaran Utama</div><b>Informatika</b></div>
+        <div><div class="tiny muted">Status NUPTK</div><b>Terverifikasi</b></div>
+        <div><div class="tiny muted">Status Satminkal</div><b>Terverifikasi</b></div>
+        <div><div class="tiny muted">Instansi Induk</div><b>Kementerian Agama</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>C. Pendidikan &amp; Sertifikasi</h3><p>Kualifikasi akademik dan sertifikat pendidik</p></div></div>
+      <div class="form-grid">
+        <div><div class="tiny muted">Pendidikan Terakhir</div><b>S1</b></div>
+        <div><div class="tiny muted">Jurusan</div><b>Pendidikan Agama Islam</b></div>
+        <div><div class="tiny muted">Institusi</div><b>IAIN Sultan Amai Gorontalo</b></div>
+        <div><div class="tiny muted">Tahun Lulus</div><b>2009</b></div>
+        <div><div class="tiny muted">Status Sertifikasi</div><b>Belum Sertifikasi</b></div>
+        <div><div class="tiny muted">Nomor Sertifikat</div><b>-</b></div>
+        <div><div class="tiny muted">Tanggal Sertifikasi</div><b>-</b></div>
+        <div><div class="tiny muted">Akun AKGTK</div><b>Terhubung</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:12px">Kelengkapan Data</h3>
+      <div class="kelengkapan" style="grid-template-columns:1fr">
+        
+          <div class="item">
+            <span class="ok"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-check-circle"></use></svg></span>
+            <span>Biodata</span>
+            <span class="badge badge-success" style="margin-left:auto">Lengkap</span>
+          </div>
+        
+          <div class="item">
+            <span class="no"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"></use></svg></span>
+            <span>NUPTK</span>
+            <span class="badge badge-warning" style="margin-left:auto">Belum</span>
+          </div>
+        
+          <div class="item">
+            <span class="ok"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-check-circle"></use></svg></span>
+            <span>Pendidikan</span>
+            <span class="badge badge-success" style="margin-left:auto">Lengkap</span>
+          </div>
+        
+          <div class="item">
+            <span class="ok"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-check-circle"></use></svg></span>
+            <span>Kepegawaian</span>
+            <span class="badge badge-success" style="margin-left:auto">Lengkap</span>
+          </div>
+        
+          <div class="item">
+            <span class="no"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"></use></svg></span>
+            <span>Sertifikasi</span>
+            <span class="badge badge-warning" style="margin-left:auto">Belum</span>
+          </div>
+        
+          <div class="item">
+            <span class="ok"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-check-circle"></use></svg></span>
+            <span>Profil</span>
+            <span class="badge badge-success" style="margin-left:auto">Lengkap</span>
+          </div>
+        
+      </div>
+      <div class="progress mt-2"><i style="width:67%"></i></div>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:8px">Perlu Perbaikan Data?</h3>
+      <p class="small muted">Data pada halaman ini hanya dapat diubah melalui pengajuan perubahan dan diverifikasi admin madrasah.</p>
+      <div class="stack-sm mt-2">
+        <a class="btn btn-primary btn-sm" href="/sim-gtk/portofolio/perubahan-data"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-edit"></use></svg> Ajukan Perubahan Data</a>
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/portofolio/golongan-mkg"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trending"></use></svg> Update Golongan &amp; MKG</a>
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/administrasi/ijazah"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-graduation"></use></svg> Kelola Ijazah</a>
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/administrasi/sertifikasi"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-award"></use></svg> Kelola Sertifikasi</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

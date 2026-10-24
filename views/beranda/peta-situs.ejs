@@ -1,0 +1,209 @@
+<%- include('../partials/head', { title: "Peta Situs 6 Peran SIM-GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Peta Situs Navigasi 6 Panel Peran</b>
+    </div>
+    <div class="page-head">
+      <h1>Peta Situs Navigasi 6 Panel Pengguna</h1>
+      <p>Struktur komprehensif seluruh menu utama dan fitur breakdown yang dapat diakses oleh masing-masing dari 6 peran pengguna di SIM-GTK.</p>
+    </div>
+
+    <div class="grid grid-3 gap-2">
+      
+      <!-- PANEL SUPERADMIN -->
+      <div class="card p-3" style="border: 2px solid rgba(192,57,43,0.3);border-radius:10px">
+        <div class="card-head" style="margin-bottom:10px">
+          <div class="flex align-center gap-1">
+            <span class="avatar" style="width:32px;height:32px;font-size:11px;background:#c0392b;color:#fff">SA</span>
+            <div><h3 style="font-size:14px;color:#c0392b;margin:0">PANEL SUPERADMIN</h3><p class="tiny muted" style="margin:0">Platform SIM-GTK Terpusat</p></div>
+          </div>
+        </div>
+        <div class="stack-sm" style="font-size:12px">
+          <div class="tiny uppercase font-bold text-blue mt-1">Menu Utama</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/superadmin/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-blue"><use href="#i-home"></use></svg> Dashboard Platform</a>
+          
+          <div class="tiny uppercase font-bold text-blue mt-2">Tata Kelola Lembaga</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/superadmin/lembaga" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-blue"><use href="#i-school"></use></svg> Manajemen Sekolah/Madrasah</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/superadmin/pengawas-binaan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-blue"><use href="#i-map-pin"></use></svg> Wilayah &amp; Pengawas Binaan</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/superadmin/laporan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-blue"><use href="#i-print"></use></svg> Laporan Platform</a>
+          
+          <div class="tiny uppercase font-bold text-blue mt-2">Pengguna &amp; Keamanan</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/superadmin/admin-lembaga" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-blue"><use href="#i-users"></use></svg> Manajemen Pengguna</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/superadmin/hak-akses" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-blue"><use href="#i-lock"></use></svg> Hak Akses &amp; Peran</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/superadmin/monitoring-audit" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-blue"><use href="#i-check-circle"></use></svg> Monitoring &amp; Audit</a>
+          
+          <div class="tiny uppercase font-bold text-blue mt-2">Sistem &amp; Layanan</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/superadmin/konfigurasi" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-blue"><use href="#i-settings"></use></svg> Konfigurasi Sistem</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/superadmin/layanan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-blue"><use href="#i-bar-chart"></use></svg> Pengelolaan Layanan</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/superadmin/backup" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-blue"><use href="#i-save"></use></svg> Pencadangan &amp; Pemulihan</a>
+        </div>
+      </div>
+
+      <!-- PANEL ADMIN / OPERATOR LEMBAGA -->
+      <div class="card p-3" style="border: 2px solid rgba(21,101,184,0.3);border-radius:10px">
+        <div class="card-head" style="margin-bottom:10px">
+          <div class="flex align-center gap-1">
+            <span class="avatar" style="width:32px;height:32px;font-size:11px;background:var(--blue-700);color:#fff">ADM</span>
+            <div><h3 style="font-size:14px;color:var(--blue-700);margin:0">PANEL ADMIN / OPERATOR</h3><p class="tiny muted" style="margin:0">Operasional Madrasah Terpadu</p></div>
+          </div>
+        </div>
+        <div class="stack-sm" style="font-size:12px">
+          <div class="tiny uppercase font-bold text-blue mt-1">Menu Utama</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/beranda" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-home"></use></svg> Dashboard Lembaga</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/madrasah-saya" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-school"></use></svg> Profil Lembaga</a>
+          
+          <div class="tiny uppercase font-bold text-blue mt-2">Data Kepegawaian GTK</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/manajemen/gtk" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-users"></use></svg> Data Pokok GTK</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/portofolio/perubahan-data" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-folder"></use></svg> Dokumen Kepegawaian</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/manajemen/pengguna" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-user"></use></svg> Akun &amp; Keanggotaan GTK</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/portofolio/golongan-mkg" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-trending"></use></svg> Kompetensi &amp; Pelatihan PKB</a>
+          
+          <div class="tiny uppercase font-bold text-blue mt-2">Operasional Madrasah</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/manajemen/presensi" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-check-circle"></use></svg> Kehadiran &amp; Izin</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/manajemen/jadwal" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-calendar"></use></svg> Jadwal &amp; Pembagian Tugas</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pembelajaran/absensi" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-user-check"></use></svg> Absensi Siswa Harian</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pembelajaran/jurnal" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-notebook"></use></svg> Jurnal Mengajar Kelas</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pembelajaran/ai" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-sparkles"></use></svg> Generator AI Perangkat Ajar</a>
+
+          <div class="tiny uppercase font-bold text-blue mt-2">Penilaian &amp; Supervisi GTK</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/jadwal" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-calendar"></use></svg> Jadwal Supervisi</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/perangkat" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-folder"></use></svg> Perangkat Pembelajaran</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/akademik" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-check-square"></use></svg> Supervisi Akademik &amp; Mengajar</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/laporan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-print"></use></svg> Laporan &amp; Cetak Hasil</a>
+
+          <div class="tiny uppercase font-bold text-blue mt-2">Layanan &amp; Pengaturan</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/manajemen/persetujuan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-check-square"></use></svg> Layanan Administrasi</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pengaturan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-settings"></use></svg> Pengaturan Lembaga</a>
+        </div>
+      </div>
+
+      <!-- PANEL KEPALA MADRASAH -->
+      <div class="card p-3" style="border: 2px solid rgba(142,68,173,0.3);border-radius:10px">
+        <div class="card-head" style="margin-bottom:10px">
+          <div class="flex align-center gap-1">
+            <span class="avatar" style="width:32px;height:32px;font-size:11px;background:#8e44ad;color:#fff">KAM</span>
+            <div><h3 style="font-size:14px;color:#8e44ad;margin:0">PANEL KEPALA MADRASAH</h3><p class="tiny muted" style="margin:0">Pengendali &amp; Keputusan Satker</p></div>
+          </div>
+        </div>
+        <div class="stack-sm" style="font-size:12px">
+          <div class="tiny uppercase font-bold text-purple mt-1">Menu Utama</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/kamad/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-home"></use></svg> Dashboard Kepala Madrasah</a>
+          
+          <div class="tiny uppercase font-bold text-purple mt-2">Data GTK &amp; Disiplin</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/manajemen/gtk" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-school"></use></svg> Data GTK &amp; Profil Madrasah</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/referensi/presensi" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-check-circle"></use></svg> Kehadiran &amp; Disiplin GTK</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pembelajaran/jadwal" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-calendar"></use></svg> Jadwal &amp; Beban Kerja</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/portofolio/golongan-mkg" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-trending"></use></svg> Pengembangan Kompetensi</a>
+
+          <div class="tiny uppercase font-bold text-purple mt-2">Supervisi &amp; Mutu</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/jadwal" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-award"></use></svg> Supervisi Guru</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/manajerial" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-clipboard"></use></svg> Evaluasi Tenaga Kependidikan</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/kamad/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-refresh"></use></svg> Pembinaan &amp; Tindak Lanjut</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/laporan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-print"></use></svg> Laporan &amp; Analitik Mutu</a>
+
+          <div class="tiny uppercase font-bold text-purple mt-2">Kebijakan &amp; Layanan</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/kamad/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-check-square"></use></svg> Persetujuan &amp; Perizinan</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/kamad/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-bell"></use></svg> Pengumuman &amp; Agenda Lembaga</a>
+        </div>
+      </div>
+
+      <!-- PANEL PENGAWAS MADRASAH -->
+      <div class="card p-3" style="border: 2px solid rgba(42,157,79,0.3);border-radius:10px">
+        <div class="card-head" style="margin-bottom:10px">
+          <div class="flex align-center gap-1">
+            <span class="avatar" style="width:32px;height:32px;font-size:11px;background:var(--green-700);color:#fff">WAS</span>
+            <div><h3 style="font-size:14px;color:var(--green-700);margin:0">PANEL PENGAWAS BINAAN</h3><p class="tiny muted" style="margin:0">Pembina &amp; Penjamin Mutu Wilayah</p></div>
+          </div>
+        </div>
+        <div class="stack-sm" style="font-size:12px">
+          <div class="tiny uppercase font-bold text-green mt-1">Menu Utama</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pengawas/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-home"></use></svg> Dashboard Pengawas</a>
+          
+          <div class="tiny uppercase font-bold text-green mt-2">Binaan &amp; Program</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pengawas/binaan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-school"></use></svg> Sekolah / Madrasah Binaan</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pengawas/binaan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-map-pin"></use></svg> Peta &amp; Penugasan Binaan</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pengawas/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-book"></use></svg> Program Pengawasan Tahunan</a>
+
+          <div class="tiny uppercase font-bold text-green mt-2">Supervisi &amp; Pembinaan</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/jadwal" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-calendar"></use></svg> Jadwal Supervisi Binaan</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/manajerial" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-clipboard"></use></svg> Supervisi Manajerial Lembaga</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/akademik" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-presentation"></use></svg> Supervisi Akademik Guru</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/perangkat" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-folder"></use></svg> Instrumen &amp; Hasil Supervisi</a>
+
+          <div class="tiny uppercase font-bold text-green mt-2">Evaluasi &amp; Tindak Lanjut</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pengawas/rekomendasi" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-check-square"></use></svg> Rekomendasi &amp; Tindak Lanjut</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/laporan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-print"></use></svg> Laporan Pengawasan Binaan</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pengawas/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm text-green"><use href="#i-bookmark"></use></svg> Portofolio Pembinaan GTK</a>
+        </div>
+      </div>
+
+      <!-- PANEL GURU -->
+      <div class="card p-3" style="border: 2px solid rgba(21,101,184,0.3);border-radius:10px">
+        <div class="card-head" style="margin-bottom:10px">
+          <div class="flex align-center gap-1">
+            <span class="avatar" style="width:32px;height:32px;font-size:11px;background:var(--blue-600);color:#fff">GTK</span>
+            <div><h3 style="font-size:14px;color:var(--blue-600);margin:0">PANEL GURU</h3><p class="tiny muted" style="margin:0">Profesional Pendidik Madrasah</p></div>
+          </div>
+        </div>
+        <div class="stack-sm" style="font-size:12px">
+          <div class="tiny uppercase font-bold text-blue mt-1">Menu Utama</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/beranda" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-home"></use></svg> Dashboard Guru</a>
+          
+          <div class="tiny uppercase font-bold text-blue mt-2">Profil &amp; Portofolio</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/portofolio/data-diri" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-id-card"></use></svg> Profil Saya</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/portofolio/golongan-mkg" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-trending"></use></svg> Riwayat Golongan &amp; Diklat</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/portofolio/perubahan-data" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-edit"></use></svg> Layanan Administrasi &amp; Usulan</a>
+
+          <div class="tiny uppercase font-bold text-blue mt-2">Pembelajaran &amp; Kelas</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pembelajaran/jadwal" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-calendar"></use></svg> Jadwal &amp; Tugas Mengajar</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pembelajaran/absensi" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-user-check"></use></svg> Kehadiran &amp; Absensi Siswa</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pembelajaran/jurnal" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-notebook"></use></svg> Jurnal Mengajar &amp; Refleksi</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/pembelajaran/ai" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-sparkles"></use></svg> AI Generator Perangkat Ajar</a>
+
+          <div class="tiny uppercase font-bold text-blue mt-2">Supervisi &amp; Rapor</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/perangkat" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-folder"></use></svg> Perangkat Pembelajaran</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/akademik" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-check-square"></use></svg> Hasil Supervisi Guru</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/manajerial" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-clipboard"></use></svg> Supervisi Tugas Tambahan</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/laporan" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-print"></use></svg> Laporan &amp; Rapor Supervisi</a>
+        </div>
+      </div>
+
+      <!-- PANEL TENAGA KEPENDIDIKAN -->
+      <div class="card p-3" style="border: 2px solid rgba(52,73,94,0.3);border-radius:10px">
+        <div class="card-head" style="margin-bottom:10px">
+          <div class="flex align-center gap-1">
+            <span class="avatar" style="width:32px;height:32px;font-size:11px;background:#34495e;color:#fff">TND</span>
+            <div><h3 style="font-size:14px;color:#34495e;margin:0">PANEL TENAGA KEPENDIDIKAN</h3><p class="tiny muted" style="margin:0">Tugas Administrasi Personal Satker</p></div>
+          </div>
+        </div>
+        <div class="stack-sm" style="font-size:12px">
+          <div class="tiny uppercase font-bold text-secondary mt-1">Menu Utama</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/tendik/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-home"></use></svg> Dashboard Saya</a>
+          
+          <div class="tiny uppercase font-bold text-secondary mt-2">Data Diri &amp; Berkas</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/portofolio/data-diri" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-id-card"></use></svg> Profil Saya</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/portofolio/perubahan-data" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-folder"></use></svg> Dokumen Kepegawaian</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/portofolio/golongan-mkg" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-trending"></use></svg> Pengembangan Kompetensi</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/portofolio/perubahan-data" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-file-text"></use></svg> Layanan Administrasi Tendik</a>
+
+          <div class="tiny uppercase font-bold text-secondary mt-2">Tugas Unit &amp; Kinerja</div>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/referensi/presensi" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-check-circle"></use></svg> Kehadiran &amp; Izin</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/tendik/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-calendar"></use></svg> Jadwal &amp; Tugas Unit</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/penilaian/manajerial" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-award"></use></svg> Kinerja &amp; Evaluasi Tendik</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/tendik/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-bell"></use></svg> Pengumuman Resmi Satker</a>
+          <a class="flex align-center gap-1 p-2" href="/sim-gtk/tendik/dashboard" style="border:1px solid var(--line);border-radius:6px;text-decoration:none;color:inherit"><svg class="ic ic-sm"><use href="#i-print"></use></svg> Riwayat &amp; Laporan Tugas</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

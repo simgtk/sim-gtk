@@ -1,0 +1,221 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/superadmin/dashboard">Super Admin</a>
+      <span class="sep">/</span>
+      <span>Pengelolaan Layanan</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-bar-chart"></use></svg>
+          Pengelolaan Layanan &amp; Kapasitas Platform
+        </h1>
+        <p class="muted">Pengaturan kapasitas resource per lembaga, status operasional layanan platform, dan pengelolaan paket tingkat layanan madrasah.</p>
+      </div>
+      <div>
+        <span class="badge badge-success"><svg class="ic ic-sm"><use href="#i-check-circle"></use></svg> Mode Layanan: Normal (Live)</span>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- STATUS OPERASIONAL LAYANAN -->
+    <div class="card mb-3" style="border-left: 4px solid var(--green-600)">
+      <div class="card-head flex justify-between align-center wrap gap-1">
+        <div>
+          <h3 style="font-size:16px;margin:0">Status Operasional Layanan Platform</h3>
+          <p class="tiny muted" style="margin:2px 0 0">Pilih status operasional platform saat ini. Perubahan akan langsung berdampak kepada seluruh pengguna yang aktif.</p>
+        </div>
+        <form method="post" action="/sim-gtk/superadmin/layanan/status-operasional" class="flex gap-1 align-center">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <select name="status_mode" class="form-control" style="width:220px">
+            <option value="normal" selected>Normal / Operasional Penuh</option>
+            <option value="maintenance">Mode Pemeliharaan (Maintenance)</option>
+            <option value="readonly">Mode Read-Only (Hanya Baca)</option>
+          </select>
+          <button type="submit" class="btn btn-primary btn-sm">Terapkan Mode</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MATRIKS PAKET TINGKAT LAYANAN -->
+    <div class="card mb-3">
+      <div class="card-head">
+        <h3 style="font-size:16px;margin:0">Matriks Paket Tingkat Layanan (Service Plans)</h3>
+        <p class="tiny muted" style="margin:2px 0 0">Standarisasi kuota kapasitas, penyimpanan berkas, dan kuota AI yang dialokasikan berdasarkan jenjang atau skema anggaran.</p>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nama Paket Layanan</th>
+                <th>Kapasitas GTK</th>
+                <th>Storage Dokumen</th>
+                <th>Kuota AI Token / Bulan</th>
+                <th>Model Pendanaan / Biaya</th>
+                <th>Status</th>
+                <th>Keterangan Alokasi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% plans.forEach(function(p) { %>
+                <tr>
+                  <td>
+                    <b style="font-size:14px"><%= p.nama_paket %></b>
+                  </td>
+                  <td><b><%= p.max_gtk %> GTK</b></td>
+                  <td><b><%= p.max_storage_mb >= 1024 ? (p.max_storage_mb / 1024) + ' GB' : p.max_storage_mb + ' MB' %></b></td>
+                  <td><span class="font-mono text-purple"><%= (p.ai_token_per_bulan).toLocaleString() %> Tokens</span></td>
+                  <td>
+                    <span class="badge badge-teal"><%= p.biaya %></span>
+                  </td>
+                  <td>
+                    <span class="badge badge-success">Aktif</span>
+                  </td>
+                  <td class="small muted"><%= p.keterangan %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PENGATURAN ALOKASI KAPASITAS PER LEMBAGA -->
+    <div class="card">
+      <div class="card-head flex justify-between align-center wrap gap-1">
+        <div>
+          <h3 style="font-size:16px;margin:0">Alokasi Kapasitas Lembaga / Madrasah Terdaftar</h3>
+          <p class="tiny muted" style="margin:2px 0 0">Sesuaikan kuota GTK dan batas penyimpanan untuk setiap madrasah secara individual.</p>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Satuan Madrasah</th>
+                <th>Jenjang</th>
+                <th>Paket Terpasang</th>
+                <th>Kapasitas GTK</th>
+                <th>Batas Penyimpanan</th>
+                <th>Batas Kuota AI Token</th>
+                <th style="width:160px;text-align:center">Sesuaikan Kuota</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% lembagas.forEach(function(l) { %>
+                <tr>
+                  <td>
+                    <b><%= l.nama %></b>
+                    <div class="tiny muted">NPSN: <%= l.npsn || '-' %> &middot; <%= l.kabupaten || '-' %></div>
+                  </td>
+                  <td><span class="badge badge-info"><%= l.jenjang %></span></td>
+                  <td>
+                    <span class="badge badge-teal"><%= l.paket_layanan || 'Standard Madrasah' %></span>
+                  </td>
+                  <td><b><%= l.kapasitas_gtk || 100 %> GTK</b></td>
+                  <td><%= l.storage_mb || 2048 %> MB</td>
+                  <td><span class="font-mono text-purple"><%= (l.ai_quota || 500000).toLocaleString() %> Token</span></td>
+                  <td style="text-align:center">
+                    <button class="btn btn-outline btn-xs" onclick='openModalKapasitas(<%= JSON.stringify(l) %>)'>
+                      <svg class="ic ic-sm"><use href="#i-edit"></use></svg> Sesuaikan
+                    </button>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL PENYESUAIAN KAPASITAS LEMBAGA -->
+    <div class="modal" id="modalKapasitas">
+      <div class="modal-dialog">
+        <form method="post" action="/sim-gtk/superadmin/layanan/alokasi">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <input type="hidden" name="id" id="kap_id">
+          <div class="modal-head">
+            <h3 style="font-size:16px;margin:0">Penyesuaian Kapasitas &amp; Kuota Lembaga</h3>
+            <button type="button" class="btn-close" onclick="closeModal('modalKapasitas')">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="p-2 mb-2" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line);font-size:13px">
+              <div style="font-weight:600" id="kap_nama"></div>
+              <div class="tiny muted" id="kap_meta"></div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label required">Tingkat Paket Layanan</label>
+              <select name="paket_layanan" id="kap_paket" class="form-control">
+                <option value="Starter Madrasah Swasta">Starter Madrasah Swasta</option>
+                <option value="Standard Madrasah">Standard Madrasah</option>
+                <option value="Enterprise Kanwil">Enterprise Kanwil</option>
+              </select>
+            </div>
+
+            <div class="grid grid-2 gap-1 mb-2">
+              <div>
+                <label class="form-label required">Kapasitas Maksimal GTK</label>
+                <input type="number" name="kapasitas_gtk" id="kap_gtk" class="form-control" required min="10" max="1000">
+              </div>
+              <div>
+                <label class="form-label required">Batas Penyimpanan (MB)</label>
+                <input type="number" name="storage_mb" id="kap_storage" class="form-control" required min="256" max="51200">
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label required">Alokasi AI Token per Bulan</label>
+              <input type="number" name="ai_quota" id="kap_ai" class="form-control" required min="50000" max="10000000">
+              <span class="tiny muted">Kuota token untuk modul AI Perangkat Ajar.</span>
+            </div>
+          </div>
+          <div class="modal-foot flex justify-end gap-1">
+            <button type="button" class="btn btn-outline" onclick="closeModal('modalKapasitas')">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan Alokasi Kuota</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function openModalKapasitas(data) {
+  document.getElementById('kap_id').value = data.id;
+  document.getElementById('kap_nama').innerText = data.nama;
+  document.getElementById('kap_meta').innerText = 'NPSN: ' + (data.npsn || '-') + ' | ' + (data.kabupaten || '-');
+  document.getElementById('kap_paket').value = data.paket_layanan || 'Standard Madrasah';
+  document.getElementById('kap_gtk').value = data.kapasitas_gtk || 100;
+  document.getElementById('kap_storage').value = data.storage_mb || 2048;
+  document.getElementById('kap_ai').value = data.ai_quota || 500000;
+  openModal('modalKapasitas');
+}
+</script>
+
+<%- include('../partials/footer') %>

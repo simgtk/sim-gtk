@@ -1,0 +1,56 @@
+<%- include('../partials/head', { title: "Klaim NUPTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Klaim NUPTK</b>
+    </div>
+    <div class="page-head">
+      <h1>Klaim NUPTK</h1>
+      <p>Klaim dan verifikasi Nomor Unik Pendidik dan Tenaga Kependidikan</p>
+    </div>
+
+
+<div class="grid grid-4 mb-3">
+  <div class="stat tint-1"><div><div class="lbl">NUPTK Terdaftar</div><div class="val" style="font-size:19px">-</div><div class="sub">Nomor Unik PTK</div></div><div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-hash"></use></svg></div></div>
+  <div class="stat tint-4"><div><div class="lbl">Status Klaim</div><div class="val" style="font-size:19px">Terverifikasi</div><div class="sub">Verifikasi admin madrasah</div></div><div class="ico ico-blue"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-check-circle"></use></svg></div></div>
+  <div class="stat tint-2"><div><div class="lbl">Status NRG</div><div class="val" style="font-size:19px">-</div><div class="sub">Terverifikasi</div></div><div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-shield"></use></svg></div></div>
+  <div class="stat tint-3"><div><div class="lbl">Satminkal</div><div class="val" style="font-size:19px">Terverifikasi</div><div class="sub">MAN 2 KABUPATEN GORONTALO</div></div><div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-anchor"></use></svg></div></div>
+</div>
+
+<div class="grid" style="grid-template-columns:1fr 1.2fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Formulir Klaim NUPTK</h3><p>Masukkan NUPTK resmi Anda sesuai data pusat</p></div></div>
+    <form method="post" action="/sim-gtk/administrasi/klaim-nuptk">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field mb-2">
+        <label>NUPTK</label>
+        <input type="text" name="nuptk" value="" placeholder="16 digit NUPTK" required>
+        <span class="help">NUPTK dapat dilihat pada akun EMIS GTK atau SK penugasan Anda.</span>
+      </div>
+      <div class="field mb-2">
+        <label>Keterangan</label>
+        <textarea name="keterangan" placeholder="mis. klaim NUPTK pertama kali"></textarea>
+      </div>
+      <div class="alert alert-info"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Setelah dikirim, status klaim menjadi <b>Dalam Proses</b> hingga admin madrasah memverifikasi.</div></div>
+      <button class="btn btn-primary btn-block" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-shield"></use></svg> Kirim Klaim NUPTK</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h3>Riwayat Klaim</h3><p>Pengajuan klaim NUPTK dan statusnya</p></div></div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-hash"></use></svg><b>Belum ada pengajuan</b>Klaim NUPTK Anda akan tercatat di sini.</div>
+    
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,67 @@
+<%- include('../partials/head', { title: "Data Sertifikasi", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Data Sertifikasi</b>
+    </div>
+    <div class="page-head">
+      <h1>Data Sertifikasi</h1>
+      <p>Sertifikat pendidik, PKB, dan sertifikasi kompetensi</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1fr 1.5fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Tambah Sertifikasi</h3><p>Sertifikat pendidik, PKB, atau kompetensi</p></div></div>
+    <form method="post" action="/sim-gtk/administrasi/sertifikasi">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="form-grid">
+        <div class="field span-2">
+          <label>Jenis Sertifikat</label>
+          <select name="jenis" required>
+            <option value="">— pilih —</option>
+            <option>Sertifikasi Pendidik (PPG)</option><option>Sertifikat PKB</option><option>Sertifikasi Kompetensi</option><option>Sertifikat Pendidik (Portofolio)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Bidang / Mapel</label>
+          <input type="text" name="bidang" value="Informatika">
+        </div>
+        <div class="field">
+          <label>Tanggal Terbit</label>
+          <input type="date" name="tgl_terbit">
+        </div>
+        <div class="field span-2">
+          <label>Nomor Sertifikat</label>
+          <input type="text" name="no_sertifikat" placeholder="SER-PKB-2021-004571" required>
+        </div>
+        <div class="field span-2">
+          <label>Lembaga Penerbit</label>
+          <input type="text" name="lembaga" placeholder="Kementerian Agama RI / BDK Manado">
+        </div>
+      </div>
+      <div class="alert alert-info mt-2"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Nomor sertifikat yang Anda simpan dapat diverifikasi publik melalui halaman <b>Cek Sertifikat PKB</b> di halaman awal aplikasi.</div></div>
+      <button class="btn btn-primary btn-block" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Simpan Sertifikasi</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div><h3>Daftar Sertifikasi</h3><p>0 sertifikat tercatat</p></div>
+      <span class="badge badge-warning">Belum Sertifikasi</span>
+    </div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-award"></use></svg><b>Belum ada sertifikasi</b>Tambahkan sertifikat pendidik atau PKB Anda.</div>
+    
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

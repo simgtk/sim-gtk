@@ -1,0 +1,33 @@
+<%- include('../partials/head', { title: title, bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <a href="/sim-gtk/pembelajaran/ai">AI Perangkat Ajar</a> <span>/</span> <b>Hasil Dokumen</b>
+    </div>
+    
+    <div class="flex between align-center wrap gap-2 mb-3 no-print">
+      <div class="page-head" style="margin-bottom:0">
+        <h1><%= doc.jenis %> — <%= doc.materi %></h1>
+        <p><%= doc.mapel %> &middot; <%= doc.kelas %> &middot; Alokasi: <%= doc.jp %> JP &middot; Dibuat: <%= new Date(doc.created_at).toLocaleString('id-ID') %></p>
+      </div>
+      <div class="flex gap-1 wrap">
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/pembelajaran/ai"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-arrow-right" style="transform:rotate(180deg)"></use></svg> Kembali</a>
+        <button type="button" class="btn btn-outline btn-sm" onclick="window.print()"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-print"></use></svg> Cetak / PDF</button>
+        <a class="btn btn-primary btn-sm" href="/sim-gtk/pembelajaran/ai/export/<%= doc.id %>/docx"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-download"></use></svg> Unduh Word (.docx)</a>
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/pembelajaran/ai/export/<%= doc.id %>/xlsx"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-download"></use></svg> Unduh Excel (.xlsx)</a>
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/pembelajaran/ai/export/<%= doc.id %>/pptx"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-download"></use></svg> Unduh PPT (.pptx)</a>
+      </div>
+    </div>
+
+    <div class="card" style="padding:32px 36px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04);border-radius:12px;line-height:1.75">
+      <div class="doc-rendered" style="white-space:pre-wrap;font-family:inherit;font-size:14px;color:#1a202c"><%= doc.konten_markdown %></div>
+    </div>
+
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

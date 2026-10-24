@@ -1,0 +1,9 @@
+
+<% if (typeof flash !== 'undefined' && flash && flash.message) { %>
+<div id="flashBar" class="alert alert-<%= flash.type || 'info' %>" style="position:fixed;bottom:24px;right:24px;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.15);border-radius:12px;display:flex;align-items:center;gap:12px;padding:14px 20px;">
+  <span><%= flash.message %></span>
+</div>
+<% } %>
+<script src="/sim-gtk/js/app.js"></script>
+</body>
+</html>

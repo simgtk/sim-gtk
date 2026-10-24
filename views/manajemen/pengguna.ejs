@@ -1,0 +1,266 @@
+<%- include('../partials/head', { title: "Akun Pengguna", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Akun Pengguna</b>
+    </div>
+    <div class="page-head">
+      <h1>Akun Pengguna</h1>
+      <p>Kelola akun admin, guru, dan tenaga kependidikan</p>
+    </div>
+
+<div class="grid grid-4 mb-3">
+  <div class="stat tint-1"><div><div class="lbl">Total Akun</div><div class="val">8</div><div class="sub">Madrasah Anda</div></div><div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-users"></use></svg></div></div>
+  <div class="stat tint-2"><div><div class="lbl">Aktif</div><div class="val">8</div><div class="sub">Dapat masuk aplikasi</div></div><div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-check-circle"></use></svg></div></div>
+  <div class="stat tint-3"><div><div class="lbl">Menunggu Persetujuan</div><div class="val">0</div><div class="sub">Belum aktif</div></div><div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-clock"></use></svg></div></div>
+  <div class="stat tint-4"><div><div class="lbl">Nonaktif</div><div class="val">0</div><div class="sub">Akses dicabut</div></div><div class="ico ico-blue"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-lock"></use></svg></div></div>
+</div>
+
+<div class="card mb-3" style="padding:0">
+  <div class="table-wrap plain">
+    <table class="tbl">
+      <thead><tr><th>Nama</th><th>Email</th><th>Peran</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        
+          <tr>
+            <td>
+              <div class="flex align-center gap-1">
+                <span class="avatar" style="width:28px;height:28px;font-size:10.5px">SR</span>
+                <div><b class="strong">Siti Rahmawati, S.Kom</b><div class="tiny muted">admin_man2</div></div>
+              </div>
+            </td>
+            <td class="small">admin@man2gorontalo.sch.id</td>
+            
+            <td><span class="badge badge-teal">admin</span></td>
+            <td><span class="badge badge-success">aktif</span></td>
+            <td class="right nowrap">
+              <form method="post" action="/sim-gtk/manajemen/pengguna/2/reset" style="display:inline" data-confirm="Reset kata sandi Siti Rahmawati, S.Kom?">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-ghost btn-sm" type="submit" title="Reset kata sandi"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-key"></use></svg></button>
+              </form>
+              
+                <form method="post" action="/sim-gtk/manajemen/pengguna/2/status" style="display:inline" data-confirm="Ubah status akun Siti Rahmawati, S.Kom?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-outline btn-sm" type="submit">Nonaktifkan</button>
+                </form>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td>
+              <div class="flex align-center gap-1">
+                <span class="avatar" style="width:28px;height:28px;font-size:10.5px">AF</span>
+                <div><b class="strong">Ahmad Fauzi, S.Ag</b><div class="tiny muted">fauzi</div></div>
+              </div>
+            </td>
+            <td class="small">fauzi@man2gorontalo.sch.id</td>
+            
+            <td><span class="badge badge-muted">guru</span></td>
+            <td><span class="badge badge-success">aktif</span></td>
+            <td class="right nowrap">
+              <form method="post" action="/sim-gtk/manajemen/pengguna/5/reset" style="display:inline" data-confirm="Reset kata sandi Ahmad Fauzi, S.Ag?">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-ghost btn-sm" type="submit" title="Reset kata sandi"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-key"></use></svg></button>
+              </form>
+              
+                <form method="post" action="/sim-gtk/manajemen/pengguna/5/status" style="display:inline" data-confirm="Ubah status akun Ahmad Fauzi, S.Ag?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-outline btn-sm" type="submit">Nonaktifkan</button>
+                </form>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td>
+              <div class="flex align-center gap-1">
+                <span class="avatar" style="width:28px;height:28px;font-size:10.5px">DK</span>
+                <div><b class="strong">Dewi Kartika, S.Pd</b><div class="tiny muted">dewi</div></div>
+              </div>
+            </td>
+            <td class="small">dewi@man2gorontalo.sch.id</td>
+            
+            <td><span class="badge badge-muted">guru</span></td>
+            <td><span class="badge badge-success">aktif</span></td>
+            <td class="right nowrap">
+              <form method="post" action="/sim-gtk/manajemen/pengguna/6/reset" style="display:inline" data-confirm="Reset kata sandi Dewi Kartika, S.Pd?">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-ghost btn-sm" type="submit" title="Reset kata sandi"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-key"></use></svg></button>
+              </form>
+              
+                <form method="post" action="/sim-gtk/manajemen/pengguna/6/status" style="display:inline" data-confirm="Ubah status akun Dewi Kartika, S.Pd?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-outline btn-sm" type="submit">Nonaktifkan</button>
+                </form>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td>
+              <div class="flex align-center gap-1">
+                <span class="avatar" style="width:28px;height:28px;font-size:10.5px">FZ</span>
+                <div><b class="strong">Fatimah Zahra, S.Pd</b><div class="tiny muted">fatimah</div></div>
+              </div>
+            </td>
+            <td class="small">fatimah@man2gorontalo.sch.id</td>
+            
+            <td><span class="badge badge-muted">guru</span></td>
+            <td><span class="badge badge-success">aktif</span></td>
+            <td class="right nowrap">
+              <form method="post" action="/sim-gtk/manajemen/pengguna/8/reset" style="display:inline" data-confirm="Reset kata sandi Fatimah Zahra, S.Pd?">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-ghost btn-sm" type="submit" title="Reset kata sandi"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-key"></use></svg></button>
+              </form>
+              
+                <form method="post" action="/sim-gtk/manajemen/pengguna/8/status" style="display:inline" data-confirm="Ubah status akun Fatimah Zahra, S.Pd?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-outline btn-sm" type="submit">Nonaktifkan</button>
+                </form>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td>
+              <div class="flex align-center gap-1">
+                <span class="avatar" style="width:28px;height:28px;font-size:10.5px">HS</span>
+                <div><b class="strong">Herman Susanto Buhungo</b><div class="tiny muted">herman</div></div>
+              </div>
+            </td>
+            <td class="small">herman@man2gorontalo.sch.id</td>
+            
+            <td><span class="badge badge-muted">guru</span></td>
+            <td><span class="badge badge-success">aktif</span></td>
+            <td class="right nowrap">
+              <form method="post" action="/sim-gtk/manajemen/pengguna/3/reset" style="display:inline" data-confirm="Reset kata sandi Herman Susanto Buhungo?">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-ghost btn-sm" type="submit" title="Reset kata sandi"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-key"></use></svg></button>
+              </form>
+              
+                <form method="post" action="/sim-gtk/manajemen/pengguna/3/status" style="display:inline" data-confirm="Ubah status akun Herman Susanto Buhungo?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-outline btn-sm" type="submit">Nonaktifkan</button>
+                </form>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td>
+              <div class="flex align-center gap-1">
+                <span class="avatar" style="width:28px;height:28px;font-size:10.5px">HS</span>
+                <div><b class="strong">Herman Susanto Buhungo, S.Pd</b><div class="tiny muted">hermansusantobuhungo43</div></div>
+              </div>
+            </td>
+            <td class="small">hermansusantobuhungo@gmail.com</td>
+            
+            <td><span class="badge badge-muted">guru</span></td>
+            <td><span class="badge badge-success">aktif</span></td>
+            <td class="right nowrap">
+              <form method="post" action="/sim-gtk/manajemen/pengguna/12/reset" style="display:inline" data-confirm="Reset kata sandi Herman Susanto Buhungo, S.Pd?">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-ghost btn-sm" type="submit" title="Reset kata sandi"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-key"></use></svg></button>
+              </form>
+              
+                <form method="post" action="/sim-gtk/manajemen/pengguna/12/status" style="display:inline" data-confirm="Ubah status akun Herman Susanto Buhungo, S.Pd?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-outline btn-sm" type="submit">Nonaktifkan</button>
+                </form>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td>
+              <div class="flex align-center gap-1">
+                <span class="avatar" style="width:28px;height:28px;font-size:10.5px">N</span>
+                <div><b class="strong">Nurhayati, S.Pd</b><div class="tiny muted">nurhayati</div></div>
+              </div>
+            </td>
+            <td class="small">nurhayati@man2gorontalo.sch.id</td>
+            
+            <td><span class="badge badge-muted">guru</span></td>
+            <td><span class="badge badge-success">aktif</span></td>
+            <td class="right nowrap">
+              <form method="post" action="/sim-gtk/manajemen/pengguna/4/reset" style="display:inline" data-confirm="Reset kata sandi Nurhayati, S.Pd?">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-ghost btn-sm" type="submit" title="Reset kata sandi"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-key"></use></svg></button>
+              </form>
+              
+                <form method="post" action="/sim-gtk/manajemen/pengguna/4/status" style="display:inline" data-confirm="Ubah status akun Nurhayati, S.Pd?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-outline btn-sm" type="submit">Nonaktifkan</button>
+                </form>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td>
+              <div class="flex align-center gap-1">
+                <span class="avatar" style="width:28px;height:28px;font-size:10.5px">RH</span>
+                <div><b class="strong">Rahmat Hidayat, S.Pd.I</b><div class="tiny muted">rahmat</div></div>
+              </div>
+            </td>
+            <td class="small">rahmat@man2gorontalo.sch.id</td>
+            
+            <td><span class="badge badge-muted">guru</span></td>
+            <td><span class="badge badge-success">aktif</span></td>
+            <td class="right nowrap">
+              <form method="post" action="/sim-gtk/manajemen/pengguna/7/reset" style="display:inline" data-confirm="Reset kata sandi Rahmat Hidayat, S.Pd.I?">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-ghost btn-sm" type="submit" title="Reset kata sandi"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-key"></use></svg></button>
+              </form>
+              
+                <form method="post" action="/sim-gtk/manajemen/pengguna/7/status" style="display:inline" data-confirm="Ubah status akun Rahmat Hidayat, S.Pd.I?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-outline btn-sm" type="submit">Nonaktifkan</button>
+                </form>
+              
+            </td>
+          </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="grid grid-2">
+  
+    <div class="card">
+      <div class="card-head"><div><h3>Tambah Akun Pengguna</h3><p>Akun langsung aktif</p></div></div>
+      <form method="post" action="/sim-gtk/manajemen/pengguna">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-grid">
+          <div class="field span-2"><label>Nama Lengkap</label><input name="nama" type="text" required></div>
+          <div class="field span-2"><label>Email</label><input name="email" type="email" required></div>
+          <div class="field"><label>Kata Sandi</label><input name="password" type="text" required minlength="6"></div>
+          <div class="field"><label>Peran</label><select name="role"><option value="guru">Guru / GTK</option><option value="admin">Admin Madrasah</option></select></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-primary" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"></use></svg> Tambah Akun</button></div>
+      </form>
+    </div>
+    <div class="card">
+      <div class="card-head"><div><h3>Kebijakan Akun</h3><p>Keamanan akses madrasah</p></div></div>
+      <ul class="small muted" style="margin:0;padding-left:18px;line-height:1.8">
+        <li>Setiap akun hanya dapat mengakses data madrasahnya sendiri.</li>
+        <li>Guru yang mendaftar sendiri harus disetujui pada menu Persetujuan.</li>
+        <li>Reset kata sandi menghasilkan kata sandi sementara yang harus segera diganti.</li>
+        <li>Nonaktifkan akun GTK yang sudah tidak bertugas, jangan menghapusnya agar riwayat tetap utuh.</li>
+      </ul>
+    </div>
+  
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

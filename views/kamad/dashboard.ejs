@@ -1,0 +1,281 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <span>Panel Kepala Madrasah</span>
+      <span class="sep">/</span>
+      <span>Dashboard</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-school"></use></svg>
+          Dashboard Kepala Madrasah
+        </h1>
+        <p class="muted"><%= user.madrasahNama || 'MAN 2 KABUPATEN GORONTALO' %> &middot; Pemantauan mutu, persetujuan perizinan, supervisi guru &amp; evaluasi tendik.</p>
+      </div>
+      <div>
+        <span class="badge badge-teal"><svg class="ic ic-sm"><use href="#i-award"></use></svg> Kamad: <%= user.nama %></span>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- KPI STAT CARDS KEPALA MADRASAH -->
+    <div class="grid grid-4 mb-3">
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(21, 101, 184, 0.1);color:var(--blue-700)">
+          <svg class="ic"><use href="#i-users"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Total Pendidik &amp; Tendik</div>
+          <div class="stat-value"><%= gtks.length %> GTK</div>
+          <div class="tiny text-green">100% Data Terverifikasi</div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(42, 157, 79, 0.1);color:var(--green-700)">
+          <svg class="ic"><use href="#i-check-circle"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Kehadiran Hari Ini</div>
+          <div class="stat-value">95.8%</div>
+          <div class="tiny text-blue">Sesuai Presensi Digital</div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(230, 126, 34, 0.1);color:#d35400">
+          <svg class="ic"><use href="#i-bell"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Menunggu Persetujuan</div>
+          <div class="stat-value"><%= pendingPersetujuan.length %> Berkas</div>
+          <div class="tiny text-orange">Perlu Disetujui Kamad</div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(142, 68, 173, 0.1);color:#8e44ad">
+          <svg class="ic"><use href="#i-award"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Supervisi Terlaksana</div>
+          <div class="stat-value"><%= supervisiList.length %> Sesi</div>
+          <div class="tiny text-purple">Semester Ganjil 2026/2027</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PENGAJUAN PERSETUJUAN PERIZINAN & KEPEGAWAIAN -->
+    <div class="card mb-3">
+      <div class="card-head flex justify-between align-center">
+        <div class="flex align-center gap-1">
+          <svg class="ic text-blue"><use href="#i-check-square"></use></svg>
+          <h3 style="font-size:15px;margin:0">Pengajuan Berkas Membutuhkan Persetujuan Kepala Madrasah</h3>
+        </div>
+        <span class="badge badge-warning"><%= pendingPersetujuan.length %> Pengajuan</span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nama GTK Pemohon</th>
+                <th>Jenis Pengajuan</th>
+                <th>Uraian / Keterangan</th>
+                <th>Tanggal Pengajuan</th>
+                <th style="width:190px;text-align:center">Aksi Keputusan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (pendingPersetujuan.length === 0) { %>
+                <tr><td colspan="5" class="text-center p-3 muted">Tidak ada pengajuan pending saat ini.</td></tr>
+              <% } %>
+              <% pendingPersetujuan.forEach(function(p) { %>
+                <tr>
+                  <td><b><%= p.gtk_nama || 'Guru Madrasah' %></b></td>
+                  <td><span class="badge badge-info"><%= p.jenis %></span></td>
+                  <td><%= p.judul %> - <span class="tiny muted"><%= p.detail || '' %></span></td>
+                  <td class="tiny muted"><%= p.tanggal_pengajuan || 'Hari ini' %></td>
+                  <td style="text-align:center">
+                    <form method="post" action="/sim-gtk/kamad/persetujuan/<%= p.id %>/setuju" style="display:inline">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <button type="submit" class="btn btn-success btn-xs">
+                        <svg class="ic ic-sm"><use href="#i-check"></use></svg> Setujui
+                      </button>
+                    </form>
+                    <form method="post" action="/sim-gtk/kamad/persetujuan/<%= p.id %>/tolak" style="display:inline">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <button type="submit" class="btn btn-danger btn-xs">
+                        <svg class="ic ic-sm"><use href="#i-x"></use></svg> Tolak
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- DUA KOLOM: SUPERVISI GURU & PEMBINAAN TINDAK LANJUT -->
+    <div class="grid grid-2 mb-3">
+      
+      <!-- SUPERVISI GURU INTERNAL -->
+      <div class="card">
+        <div class="card-head flex justify-between align-center">
+          <h3 style="font-size:15px;margin:0">Supervisi Guru &amp; Hasil Evaluasi</h3>
+          <a href="/sim-gtk/penilaian/jadwal" class="small text-blue">Lihat Jadwal Lengkap &rarr;</a>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Guru Sasaran</th>
+                  <th>Mapel &amp; Kelas</th>
+                  <th>Tanggal</th>
+                  <th>Nilai &amp; Predikat</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% supervisiList.slice(0, 5).forEach(function(s) { %>
+                  <tr>
+                    <td><b><%= s.gtk_nama %></b></td>
+                    <td><%= s.mapel %> (<%= s.kelas %>)</td>
+                    <td class="tiny muted"><%= s.tanggal %></td>
+                    <td>
+                      <span class="badge badge-sm badge-success"><%= s.skor_total || 90 %> - <%= s.predikat || 'Amat Baik' %></span>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- REKOMENDASI TINDAK LANJUT PENGAWAS -->
+      <div class="card">
+        <div class="card-head flex justify-between align-center">
+          <h3 style="font-size:15px;margin:0">Tindak Lanjut Rekomendasi Pengawas Binaan</h3>
+          <span class="badge badge-info">Pemantauan Mutu</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Uraian Rekomendasi</th>
+                  <th>Penanggung Jawab</th>
+                  <th>Tenggat</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% rekomendasiList.slice(0, 4).forEach(function(r) { %>
+                  <tr>
+                    <td>
+                      <div style="font-weight:600"><%= r.judul_rekomendasi %></div>
+                      <div class="tiny muted"><%= r.aspek %></div>
+                    </td>
+                    <td><%= r.penanggung_jawab || '-' %></td>
+                    <td class="tiny muted"><%= r.tenggat_waktu || '-' %></td>
+                    <td>
+                      <span class="badge badge-sm badge-<%= r.status === 'Selesai' ? 'success' : (r.status === 'Menunggu verifikasi' ? 'teal' : (r.status === 'Dalam proses' ? 'warning' : 'secondary')) %>">
+                        <%= r.status %>
+                      </span>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PENGUMUMAN & AGENDA RESMI KEPALA MADRASAH -->
+    <div class="card">
+      <div class="card-head flex justify-between align-center">
+        <h3 style="font-size:15px;margin:0">Arahan &amp; Pengumuman Resmi Kepala Madrasah</h3>
+        <button class="btn btn-outline btn-sm" onclick="openModal('modalPengumuman')">
+          <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Terbitkan Pengumuman
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="stack gap-2">
+          <% pengumumans.forEach(function(pgm) { %>
+            <div class="p-3" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line)">
+              <div class="flex justify-between align-center mb-1">
+                <b style="font-size:14px"><%= pgm.judul %></b>
+                <span class="tiny muted"><%= pgm.created_at %></span>
+              </div>
+              <p class="small" style="margin:4px 0 6px"><%= pgm.isi %></p>
+              <div class="tiny muted">Diterbitkan oleh: <b><%= pgm.penulis %></b> &middot; Target: <span class="badge badge-xs badge-info"><%= pgm.target_role %></span></div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL TERBITKAN PENGUMUMAN -->
+    <div class="modal" id="modalPengumuman">
+      <div class="modal-dialog">
+        <form method="post" action="/sim-gtk/kamad/pengumuman">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="modal-head">
+            <h3 style="font-size:16px;margin:0">Terbitkan Arahan / Pengumuman Baru</h3>
+            <button type="button" class="btn-close" onclick="closeModal('modalPengumuman')">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-2">
+              <label class="form-label required">Judul Pengumuman</label>
+              <input type="text" name="judul" class="form-control" required placeholder="Contoh: Agenda Rapat Dinas Evaluasi Kinerja Semester Ganjil">
+            </div>
+            <div class="mb-2">
+              <label class="form-label required">Sasaran Target Penerima</label>
+              <select name="target_role" class="form-control">
+                <option value="semua">Semua GTK &amp; Tendik</option>
+                <option value="guru">Khusus Bapak/Ibu Guru</option>
+                <option value="tendik">Khusus Tenaga Kependidikan</option>
+              </select>
+            </div>
+            <div class="mb-2">
+              <label class="form-label required">Isi Arahan / Pengumuman</label>
+              <textarea name="isi" class="form-control" rows="4" required placeholder="Tuliskan isi pengumuman atau instruksi resmi..."></textarea>
+            </div>
+          </div>
+          <div class="modal-foot flex justify-end gap-1">
+            <button type="button" class="btn btn-outline" onclick="closeModal('modalPengumuman')">Batal</button>
+            <button type="submit" class="btn btn-primary">Terbitkan Sekarang</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+</script>
+
+<%- include('../partials/footer') %>

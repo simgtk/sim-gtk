@@ -1,0 +1,205 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <span>Panel Pengawas</span>
+      <span class="sep">/</span>
+      <span>Dashboard Pembinaan</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-green" style="width:28px;height:28px"><use href="#i-eye"></use></svg>
+          Dashboard Pengawas Madrasah Pembina
+        </h1>
+        <p class="muted">Ruang kerja pembinaan, perencanaan supervisi, pemantauan perangkat pembelajaran, dan tindak lanjut madrasah binaan resmi.</p>
+      </div>
+      <div>
+        <span class="badge badge-success"><svg class="ic ic-sm"><use href="#i-check"></use></svg> Pengawas: <%= user.nama %></span>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- KPI STAT CARDS PENGAWAS -->
+    <div class="grid grid-4 mb-3">
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(42, 157, 79, 0.1);color:var(--green-700)">
+          <svg class="ic"><use href="#i-school"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Madrasah Binaan Resmi</div>
+          <div class="stat-value"><%= binaans.length %> Satker</div>
+          <div class="tiny text-green">Sesuai SK Penugasan Kanwil</div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(21, 101, 184, 0.1);color:var(--blue-700)">
+          <svg class="ic"><use href="#i-calendar"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Agenda Supervisi Semester</div>
+          <div class="stat-value"><%= jadwalList.length %> Kunjungan</div>
+          <div class="tiny text-blue">Akademik &amp; Manajerial</div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(230, 126, 34, 0.1);color:#d35400">
+          <svg class="ic"><use href="#i-clipboard"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Tindak Lanjut Perbaikan</div>
+          <div class="stat-value"><%= rekomendasiList.filter(r => r.status !== 'Selesai').length %> Rekomendasi</div>
+          <div class="tiny text-orange">Menunggu / Dalam Proses</div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(142, 68, 173, 0.1);color:#8e44ad">
+          <svg class="ic"><use href="#i-award"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Program Pengawasan</div>
+          <div class="stat-value"><%= programs.length %> Program</div>
+          <div class="tiny text-purple">T.A 2026/2027 Ganjil</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAFTAR MADRASAH BINAAN RESMI PENGAWAS -->
+    <div class="card mb-3">
+      <div class="card-head flex justify-between align-center">
+        <div>
+          <h3 style="font-size:16px;margin:0">Daftar Sekolah / Madrasah Binaan Ditugaskan</h3>
+          <p class="tiny muted" style="margin:2px 0 0">Akses dibatasi hanya pada madrasah yang tercatat aktif dalam penugasan resmi.</p>
+        </div>
+        <a href="/sim-gtk/pengawas/binaan" class="small text-green">Kelola Detail Binaan &rarr;</a>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Satuan Madrasah</th>
+                <th>Jenjang</th>
+                <th>Wilayah Pembinaan</th>
+                <th>Kepala Madrasah</th>
+                <th>Nomor SK Dinas</th>
+                <th>Masa Tugas</th>
+                <th style="width:140px;text-align:center">Aksi Pengawas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% binaans.forEach(function(b) { %>
+                <tr>
+                  <td>
+                    <div style="font-weight:600"><%= b.nama %></div>
+                    <div class="tiny muted">NPSN: <%= b.npsn || '-' %></div>
+                  </td>
+                  <td><span class="badge badge-info"><%= b.jenjang %></span></td>
+                  <td><b><%= b.wilayah || 'Kabupaten Gorontalo' %></b></td>
+                  <td><%= b.nama_kamad || '-' %></td>
+                  <td><span class="font-mono tiny"><%= b.nomor_sk || '-' %></span></td>
+                  <td class="tiny muted"><%= b.tanggal_mulai %> s.d. <%= b.tanggal_selesai %></td>
+                  <td style="text-align:center">
+                    <a href="/sim-gtk/penilaian/jadwal" class="btn btn-outline btn-xs">
+                      <svg class="ic ic-sm"><use href="#i-calendar"></use></svg> Supervisi
+                    </a>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- DUA KOLOM: REKOMENDASI TINDAK LANJUT & AGENDA KUNJUNGAN -->
+    <div class="grid grid-2 mb-3">
+      
+      <!-- REKOMENDASI PEMBINAAN & TINDAK LANJUT -->
+      <div class="card">
+        <div class="card-head flex justify-between align-center">
+          <h3 style="font-size:15px;margin:0">Rekomendasi &amp; Status Tindak Lanjut</h3>
+          <a href="/sim-gtk/pengawas/rekomendasi" class="small text-green">Semua Rekomendasi &rarr;</a>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Madrasah / Rekomendasi</th>
+                  <th>Penanggung Jawab</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% rekomendasiList.slice(0, 5).forEach(function(r) { %>
+                  <tr>
+                    <td>
+                      <div style="font-weight:600"><%= r.judul_rekomendasi %></div>
+                      <div class="tiny muted"><%= r.madrasah_nama %> &middot; <%= r.aspek %></div>
+                    </td>
+                    <td><%= r.penanggung_jawab || '-' %></td>
+                    <td>
+                      <% if (r.status === 'Selesai') { %>
+                        <span class="badge badge-success">Selesai</span>
+                      <% } else if (r.status === 'Menunggu verifikasi') { %>
+                        <span class="badge badge-teal">Menunggu Verifikasi</span>
+                      <% } else if (r.status === 'Dalam proses') { %>
+                        <span class="badge badge-warning">Dalam Proses</span>
+                      <% } else if (r.status === 'Perlu perbaikan') { %>
+                        <span class="badge badge-danger">Perlu Perbaikan</span>
+                      <% } else { %>
+                        <span class="badge badge-secondary">Belum Dimulai</span>
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROGRAM PENGAWASAN AKTIF -->
+      <div class="card">
+        <div class="card-head flex justify-between align-center">
+          <h3 style="font-size:15px;margin:0">Program Pengawasan &amp; Sasaran Mutu</h3>
+          <span class="badge badge-teal">T.A 2026/2027</span>
+        </div>
+        <div class="card-body">
+          <div class="stack gap-2">
+            <% programs.forEach(function(prog) { %>
+              <div class="p-2" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line);font-size:13px">
+                <div class="flex justify-between align-center">
+                  <b class="text-green"><%= prog.nama_program %></b>
+                  <span class="badge badge-xs badge-info"><%= prog.jenis_program %></span>
+                </div>
+                <p class="tiny muted" style="margin:4px 0"><%= prog.tujuan %></p>
+                <div class="tiny"><b>Sasaran:</b> <%= prog.sasaran_binaan %> &middot; <span class="muted"><%= prog.jadwal_rencana %></span></div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

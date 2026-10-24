@@ -1,0 +1,95 @@
+<%- include('../partials/head', { title: "Dispensasi JTM", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Dispensasi JTM</b>
+    </div>
+    <div class="page-head">
+      <h1>Dispensasi JTM</h1>
+      <p>Ajukan dispensasi pemenuhan JTM karena tugas kedinasan, sakit, atau alasan lain yang dibenarkan.</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1fr 1.4fr">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head">
+        <div class="flex align-center gap-1">
+          <span class="ico ico-teal" style="width:38px;height:38px;border-radius:10px;display:grid;place-items:center"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-clock"></use></svg></span>
+          <div><h3 style="font-size:15px">Dispensasi JTM</h3><p class="tiny">Formulir pengajuan</p></div>
+        </div>
+      </div>
+      <form method="post" action="/sim-gtk/pengajuan">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input type="hidden" name="slug" value="dispensasi">
+        <input type="hidden" name="back_path" value="/tunjangan/dispensasi">
+        <div class="form-grid">
+          
+            <div class="field ">
+              <label>Periode / Bulan *</label>
+              
+                <input type="text" name="periode" placeholder="mis. Oktober 2026" required
+                  value="">
+              
+            </div>
+          
+            <div class="field ">
+              <label>JTM yang Didispensasi *</label>
+              
+                <input type="number" name="jtm" step="0.5" min="0" required
+                  value="" placeholder="">
+              
+            </div>
+          
+            <div class="field ">
+              <label>Tanggal Mulai *</label>
+              
+                <input type="date" name="tanggal" placeholder="" required
+                  value="2026-10-23">
+              
+            </div>
+          
+            <div class="field span-2">
+              <label>Alasan Dispensasi *</label>
+              
+                <textarea name="keterangan" placeholder="" required></textarea>
+              
+            </div>
+          
+        </div>
+        <div class="alert alert-info mt-2"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Pengajuan akan diverifikasi admin madrasah. Anda dapat memantau statusnya pada tabel riwayat.</div></div>
+        <button class="btn btn-primary btn-block" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Kirim Pengajuan</button>
+      </form>
+    </div>
+
+    <div class="card tight">
+      <h3 style="font-size:14px;margin-bottom:8px">Ketentuan</h3>
+      <ul class="small muted" style="margin:0;padding-left:18px;line-height:1.7">
+        <li>Pastikan seluruh dokumen pendukung sudah diserahkan kepada admin madrasah.</li>
+        <li>Pengajuan yang disetujui akan memperbarui data portofolio Anda secara otomatis.</li>
+        <li>Pengajuan yang ditolak dapat diajukan kembali setelah data diperbaiki.</li>
+        <li>Beban kerja minimal untuk tunjangan profesi adalah 24 JTM per minggu.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div><h3>Riwayat Dispensasi JTM</h3><p>0 pengajuan tercatat</p></div>
+      <span class="badge badge-warning">0 menunggu</span>
+    </div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-file-text"></use></svg><b>Belum ada pengajuan</b>Gunakan formulir di samping untuk mengirim pengajuan pertama Anda.</div>
+    
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

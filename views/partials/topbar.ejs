@@ -1,0 +1,84 @@
+<header class="topbar">
+  <div class="flex align-center gap-1">
+    <button class="icon-btn mobile-toggle" id="navToggle" aria-label="Buka menu"><svg class="ic " aria-hidden="true"><use href="#i-menu"></use></svg></button>
+    <a class="brand" href="/sim-gtk/beranda">
+      <span class="brand-mark" aria-hidden="true">
+  <svg viewBox="0 0 96 96" role="img" aria-label="Logo SIM-GTK">
+    <defs>
+      <linearGradient id="bltop" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#1565b8"/><stop offset="1" stop-color="#0d3f7c"/>
+      </linearGradient>
+      <linearGradient id="bgtop" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#2a9d4f"/><stop offset="1" stop-color="#8dc63f"/>
+      </linearGradient>
+    </defs>
+    <rect x="9" y="20" width="78" height="58" rx="11" fill="#ffffff" stroke="url(#bltop)" stroke-width="5"/>
+    <circle cx="36" cy="45" r="8" fill="#0d3f7c"/>
+    <path d="M22 66c0-8 6-13 14-13s14 5 14 13z" fill="#0d3f7c"/>
+    <rect x="58" y="56" width="7" height="11" rx="2" fill="#8dc63f"/>
+    <rect x="68" y="49" width="7" height="18" rx="2" fill="url(#bgtop)"/>
+    <rect x="78" y="42" width="7" height="25" rx="2" fill="#2a9d4f"/>
+    <path d="M30 17 56 6l26 11-26 11z" fill="url(#bltop)"/>
+    <path d="M74 17v9" stroke="#0d3f7c" stroke-width="2.4" stroke-linecap="round"/>
+    <circle cx="74" cy="28" r="3" fill="#2a9d4f"/>
+    <path d="M16 70c22 12 44 12 66-6" fill="none" stroke="url(#bgtop)" stroke-width="5.5" stroke-linecap="round"/>
+  </svg>
+</span>
+<span class="brand-text">
+  <span class="wordmark"><span class="w-sim">SIM-</span><span class="w-gtk">GTK</span></span>
+  <span class="brand-sub">Sistem Informasi Manajemen GTK</span>
+</span>
+
+    </a>
+  </div>
+  <div class="topbar-right">
+    <span class="badge badge-teal hide-sm"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-school"></use></svg> <%= user.madrasahNama || "MAN 2 KABUPATEN GORONTALO" %></span>
+    <a class="icon-btn" href="/sim-gtk/peta-situs" title="Peta situs"><svg class="ic " aria-hidden="true"><use href="#i-grid"></use></svg></a>
+    
+      <a class="icon-btn" href="/sim-gtk/manajemen/persetujuan" title="Persetujuan &amp; verifikasi">
+        <svg class="ic " aria-hidden="true"><use href="#i-bell"></use></svg>
+        <span class="dot-badge">6</span>
+      </a>
+    
+    <span class="badge badge-teal hide-sm" style="padding:6px 10px">
+      <%= user.roleLabel || "Admin Madrasah" %>
+    </span>
+    <details class="dropdown">
+      <summary class="user-chip">
+        <span class="avatar">SR</span>
+        <span class="user-meta">
+          <b><%= user.nama %></b>
+          <span><%= user.roleLabel || "Admin Madrasah" %></span>
+        </span>
+        <svg class="ic ic-sm" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+      </summary>
+      <div class="dropdown-menu">
+        <div class="dropdown-head">
+          <b class="small"><%= user.nama %></b>
+          <div class="tiny muted"><%= user.email %></div>
+        </div>
+        <a href="/sim-gtk/beranda"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-home"></use></svg> Beranda</a>
+        <a href="/sim-gtk/superadmin/dashboard"><svg class="ic ic-sm text-blue" aria-hidden="true"><use href="#i-shield"></use></svg> <b>Platform Super Admin</b></a>
+        <a href="/sim-gtk/pengaturan"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-settings"></use></svg> Pengaturan Akun</a>
+        <a href="/sim-gtk/madrasah-saya"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-school"></use></svg> Madrasah Saya</a>
+        <a href="/sim-gtk/panduan"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-book"></use></svg> Panduan Penggunaan</a>
+        <div class="sep"></div>
+        <div style="padding:6px 14px 4px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase">
+          Beralih Peran (Demo Switch)
+        </div>
+        <a href="/sim-gtk/switch-role/superadmin" style="font-size:12px;padding:4px 14px"><span class="badge badge-sm badge-danger" style="margin-right:6px">SA</span> Super Admin Platform</a>
+        <a href="/sim-gtk/switch-role/admin" style="font-size:12px;padding:4px 14px"><span class="badge badge-sm badge-primary" style="margin-right:6px">ADM</span> Admin Madrasah</a>
+        <a href="/sim-gtk/switch-role/kamad" style="font-size:12px;padding:4px 14px"><span class="badge badge-sm badge-purple" style="margin-right:6px">KMD</span> Kepala Madrasah</a>
+        <a href="/sim-gtk/switch-role/pengawas" style="font-size:12px;padding:4px 14px"><span class="badge badge-sm badge-success" style="margin-right:6px">WAS</span> Pengawas Madrasah</a>
+        <a href="/sim-gtk/switch-role/guru" style="font-size:12px;padding:4px 14px"><span class="badge badge-sm badge-info" style="margin-right:6px">GTK</span> Guru (Herman Buhungo)</a>
+        <a href="/sim-gtk/switch-role/guru_penilai" style="font-size:12px;padding:4px 14px"><span class="badge badge-sm badge-warning" style="margin-right:6px">PNL</span> Guru Penilai (Supervisi)</a>
+        <a href="/sim-gtk/switch-role/tendik" style="font-size:12px;padding:4px 14px"><span class="badge badge-sm badge-secondary" style="margin-right:6px">TDK</span> Tenaga Kependidikan</a>
+        <div class="sep"></div>
+        <form method="post" action="/sim-gtk/logout">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit" class="btn btn-ghost btn-sm btn-block" style="justify-content:flex-start"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-logout"></use></svg> Keluar</button>
+        </form>
+      </div>
+    </details>
+  </div>
+</header>

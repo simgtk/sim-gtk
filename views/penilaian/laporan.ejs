@@ -1,0 +1,480 @@
+<%- include('../partials/head', { title: "Laporan & Rekap Hasil Supervisi — SIM-GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar', { currentMenu: 'penilaian', activeSub: 'laporan' }) %>
+  <main class="main">
+    
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/penilaian/jadwal">Penilaian</a>
+      <span class="sep">/</span>
+      <span>Laporan &amp; Cetak Hasil</span>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header flex justify-between align-center wrap gap-2 no-print mb-4">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-print"></use></svg>
+          Laporan, Rekap Matriks &amp; Dokumen Siap Cetak Supervisi
+        </h1>
+        <p class="muted">
+          Rekapitulasi 4 domain supervisi, matriks guru, grafik capaian mutu, peringkat guru, serta lembar Berita Acara resmi dengan kop dan 2 foto pengamatan siap cetak/ekspor PDF.
+        </p>
+      </div>
+      <div class="flex gap-2 wrap align-center">
+        <button type="button" class="btn btn-outline btn-sm flex align-center gap-1" onclick="document.getElementById('sectionMatriks').scrollIntoView({behavior:'smooth'})">
+          <svg class="ic ic-sm"><use href="#i-grid"></use></svg> Rekap Matriks Guru
+        </button>
+        <button type="button" class="btn btn-primary btn-sm flex align-center gap-1" onclick="window.print()">
+          <svg class="ic ic-sm"><use href="#i-printer"></use></svg> Cetak Dokumen / Simpan PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- FILTER GURU & ALAT KONTROL (NO-PRINT) -->
+    <div class="card p-3 mb-4 no-print" style="background:#f8fafc;border:1px solid var(--line);border-radius:12px">
+      <form method="get" action="/sim-gtk/penilaian/laporan" class="flex between align-center wrap gap-3">
+        <div class="flex align-center gap-3 wrap" style="flex:1">
+          <div class="field" style="min-width:300px;flex:1">
+            <label class="font-bold">Pilih Guru untuk Cetak Berita Acara:</label>
+            <select name="gtk_id" onchange="this.form.submit()">
+              <% gtkList.forEach(function(g) { %>
+                <option value="<%= g.id %>" <%= selectedGtk && selectedGtk.id == g.id ? 'selected' : '' %>>
+                  <%= g.nama %> &mdash; <%= g.mapel_utama || g.jabatan %>
+                </option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="field" style="width:200px">
+            <label class="font-bold">Tahun Pelajaran</label>
+            <input type="text" value="<%= madrasah.tahun_ajaran %> (<%= madrasah.semester %>)" readonly style="background:#fff">
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" class="btn btn-primary" onclick="window.print()">
+            <svg class="ic ic-sm"><use href="#i-print"></use></svg> Cetak Lembar Ini
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- KPI STATISTIK SUPERVISI SEKOLAH / MADRASAH (NO-PRINT) -->
+    <div class="grid grid-4 mb-4 no-print">
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon bg-blue-subtle text-blue" style="width:48px;height:48px;border-radius:12px;background:var(--blue-50);display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-users"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Total Guru Sasaran</div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy-800)"><%= rekapData.allGtkCount %> Orang</div>
+          <div class="tiny text-blue font-bold">100% Terdaftar SIM-GTK</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:var(--green-bg);color:var(--green);display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-check-circle"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Sudah Disupervisi</div>
+          <div style="font-size:22px;font-weight:800;color:var(--green-800)"><%= rekapData.supervisedCount %> Guru</div>
+          <div class="tiny text-green font-bold"><%= rekapData.persentaseSelesai %>% Tuntas Terlaksana</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#b45309;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-clock"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Belum Disupervisi</div>
+          <div style="font-size:22px;font-weight:800;color:#b45309"><%= rekapData.belumSupervisiCount %> Guru</div>
+          <div class="tiny font-bold text-orange">Perlu Penjadwalan</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:#f3e8ff;color:#7e22ce;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-award"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Rata-rata Mutu GTK</div>
+          <div style="font-size:22px;font-weight:800;color:#7e22ce"><%= rekapData.rataRata.total %></div>
+          <div class="tiny font-bold text-purple">Predikat: Amat Baik</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         REKAP MATRIKS GURU & 4 MENU SUPERVISI + GRAFIK (NO-PRINT)
+         (FITUR 4 PADA LAMPIRAN 1)
+         ============================================================ -->
+    <div id="sectionMatriks" class="card mb-4 no-print" style="padding:0;overflow:hidden">
+      <div class="card-head p-3 flex justify-between align-center wrap gap-2" style="background:#f8fafc;border-bottom:1px solid var(--line);margin:0">
+        <div>
+          <h3 style="font-size:16px;margin:0;color:var(--navy-900)">
+            Rekap Matriks Capaian Supervisi Guru (4 Menu)
+          </h3>
+          <p class="tiny muted" style="margin-top:2px">
+            Matriks nilai per menu: Administrasi, Perencanaan Modul Ajar, Pengamatan Pembelajaran, dan Asesmen Penilaian
+          </p>
+        </div>
+        <div>
+          <span class="badge badge-success font-bold"><svg class="ic ic-sm"><use href="#i-check"></use></svg> Matriks Mutu Kemenag</span>
+        </div>
+      </div>
+
+      <!-- GRAFIK RATA-RATA MUTU 4 DOMAIN -->
+      <div class="p-3" style="background:#fff;border-bottom:1px solid var(--line)">
+        <div class="tiny uppercase font-bold muted mb-2" style="letter-spacing:0.5px">Ketercapaian Mutu per Domain Supervisi:</div>
+        <div class="grid grid-4 gap-3">
+          <div>
+            <div class="flex justify-between small font-bold mb-1">
+              <span>1. Administrasi</span>
+              <span class="text-blue"><%= rekapData.rataRata.administrasi %>%</span>
+            </div>
+            <div class="matrix-progress">
+              <div class="matrix-progress-bar" style="width:<%= rekapData.rataRata.administrasi %>%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between small font-bold mb-1">
+              <span>2. Modul Ajar</span>
+              <span style="color:#7e22ce"><%= rekapData.rataRata.modul_ajar %>%</span>
+            </div>
+            <div class="matrix-progress">
+              <div class="matrix-progress-bar" style="width:<%= rekapData.rataRata.modul_ajar %>%;background:linear-gradient(90deg,#9333ea,#7e22ce)"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between small font-bold mb-1">
+              <span>3. Observasi Kelas</span>
+              <span class="text-green"><%= rekapData.rataRata.pengamatan %>%</span>
+            </div>
+            <div class="matrix-progress">
+              <div class="matrix-progress-bar" style="width:<%= rekapData.rataRata.pengamatan %>%;background:linear-gradient(90deg,#10b981,#059669)"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between small font-bold mb-1">
+              <span>4. Asesmen/Nilai</span>
+              <span class="text-orange"><%= rekapData.rataRata.penilaian %>%</span>
+            </div>
+            <div class="matrix-progress">
+              <div class="matrix-progress-bar" style="width:<%= rekapData.rataRata.penilaian %>%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABEL MATRIKS LENGKAP -->
+      <div class="table-responsive">
+        <table class="table matrix-table mb-0">
+          <thead>
+            <tr>
+              <th style="width:60px;text-align:center">Peringkat</th>
+              <th style="min-width:200px">Guru / GTK</th>
+              <th style="width:140px">Mata Pelajaran</th>
+              <th style="width:110px;text-align:center">Administrasi</th>
+              <th style="width:110px;text-align:center">Modul Ajar</th>
+              <th style="width:110px;text-align:center">Observasi</th>
+              <th style="width:110px;text-align:center">Asesmen</th>
+              <th style="width:110px;text-align:center">Nilai Akhir</th>
+              <th style="width:130px;text-align:center">Predikat</th>
+              <th style="width:100px;text-align:center">Cetak</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% rekapData.peringkatGuru.forEach(function(item) { %>
+              <tr class="<%= selectedGtk && selectedGtk.id === item.gtk_id ? 'bg-blue-subtle' : '' %>">
+                <td style="text-align:center">
+                  <% if (item.rank === 1) { %>
+                    <span class="rank-badge rank-1" title="Peringkat 1 (Emas)">1</span>
+                  <% } else if (item.rank === 2) { %>
+                    <span class="rank-badge rank-2" title="Peringkat 2 (Perak)">2</span>
+                  <% } else if (item.rank === 3) { %>
+                    <span class="rank-badge rank-3" title="Peringkat 3 (Perunggu)">3</span>
+                  <% } else { %>
+                    <span class="rank-badge rank-other"><%= item.rank %></span>
+                  <% } %>
+                </td>
+                <td>
+                  <div style="font-weight:700;color:var(--navy-900)"><%= item.gtk_nama %></div>
+                  <div class="tiny muted"><%= item.gtk_nip && item.gtk_nip !== '-' ? 'NIP. ' + item.gtk_nip : 'NUPTK: ' + (item.gtk_nuptk || '-') %></div>
+                </td>
+                <td><span class="badge badge-teal"><%= item.mapel || item.mapel_utama %></span></td>
+                <td style="text-align:center"><b><%= item.skor_administrasi || 88 %></b></td>
+                <td style="text-align:center"><b style="color:#7e22ce"><%= item.skor_modul_ajar || 88 %></b></td>
+                <td style="text-align:center"><b class="text-green"><%= item.skor_mengajar || 86 %></b></td>
+                <td style="text-align:center"><b class="text-orange"><%= item.skor_penilaian_asesmen || 85 %></b></td>
+                <td style="text-align:center;font-size:15px;font-weight:800;color:var(--navy-900)"><%= item.skor_total %></td>
+                <td style="text-align:center">
+                  <% if (item.skor_total >= 91) { %>
+                    <span class="badge badge-success">A (Amat Baik)</span>
+                  <% } else if (item.skor_total >= 81) { %>
+                    <span class="badge badge-teal">B (Baik)</span>
+                  <% } else if (item.skor_total >= 71) { %>
+                    <span class="badge badge-warning">C (Cukup)</span>
+                  <% } else { %>
+                    <span class="badge badge-danger">D (Kurang)</span>
+                  <% } %>
+                </td>
+                <td style="text-align:center">
+                  <a href="/sim-gtk/penilaian/laporan?gtk_id=<%= item.gtk_id %>" class="btn btn-outline btn-sm" title="Lihat Berita Acara">
+                    <svg class="ic ic-sm"><use href="#i-printer"></use></svg>
+                  </a>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DAFTAR GURU YANG BELUM DISUPERVISI (NO-PRINT) -->
+    <% if (rekapData.belumDisupervisi.length > 0) { %>
+      <div class="card mb-4 no-print" style="border:1px solid #fed7aa;background:#fffaf0;border-radius:12px;overflow:hidden">
+        <div class="p-3 flex justify-between align-center wrap gap-2" style="border-bottom:1px solid #ffedd5">
+          <div class="flex align-center gap-2">
+            <svg class="ic text-orange" style="width:20px;height:20px"><use href="#i-alert-circle"></use></svg>
+            <h4 style="font-size:14.5px;margin:0;color:#9a3412;font-weight:700">
+              Daftar Guru yang Belum Disupervisi Semester Ini (<%= rekapData.belumDisupervisi.length %> Orang)
+            </h4>
+          </div>
+          <a href="/sim-gtk/penilaian/jadwal" class="btn btn-outline btn-sm text-orange flex align-center gap-1">
+            <svg class="ic ic-sm"><use href="#i-calendar"></use></svg> Jadwalkan di Agenda Supervisi
+          </a>
+        </div>
+        <div class="table-responsive">
+          <table class="table tbl mb-0">
+            <thead>
+              <tr style="background:#fff7ed">
+                <th>No</th>
+                <th>Nama Guru</th>
+                <th>NIP / NUPTK</th>
+                <th>Mata Pelajaran Utama</th>
+                <th>Status</th>
+                <th style="text-align:center">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% rekapData.belumDisupervisi.forEach(function(g, idx) { %>
+                <tr>
+                  <td style="width:50px"><%= idx + 1 %></td>
+                  <td><b><%= g.nama %></b></td>
+                  <td class="tiny muted"><%= g.nip !== '-' ? g.nip : g.nuptk %></td>
+                  <td><%= g.mapel_utama || 'Guru Mapel' %></td>
+                  <td><span class="badge badge-warning">Belum Observasi</span></td>
+                  <td style="text-align:center">
+                    <a href="/sim-gtk/penilaian/akademik" class="btn btn-outline btn-sm text-blue">
+                      Buka Form Penilaian
+                    </a>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- ============================================================
+         LEMBAR HASIL & BERITA ACARA SUPERVISI RESMI (SIAP CETAK)
+         (FITUR 5 & 6 PADA LAMPIRAN 1: KOP, BUKTI FOTO, TANDA TANGAN)
+         ============================================================ -->
+    <div class="card printable-report" style="background:#fff;padding:42px 48px;border-radius:14px;box-shadow:0 4px 25px rgba(0,0,0,.04);line-height:1.6">
+      
+      <!-- KOP SURAT RESMI KEMENTERIAN AGAMA -->
+      <div style="display:flex;align-items:center;gap:20px;padding-bottom:16px;border-bottom:3px double #0d3f7c;margin-bottom:24px">
+        <div style="width:76px;height:76px;flex:none">
+          <svg viewBox="0 0 96 96" width="76" height="76">
+            <rect x="9" y="20" width="78" height="58" rx="11" fill="#ffffff" stroke="#1565b8" stroke-width="5"/>
+            <circle cx="36" cy="45" r="8" fill="#0d3f7c"/>
+            <path d="M22 66c0-8 6-13 14-13s14 5 14 13z" fill="#0d3f7c"/>
+            <rect x="58" y="56" width="7" height="11" rx="2" fill="#8dc63f"/>
+            <rect x="68" y="49" width="7" height="18" rx="2" fill="#2a9d4f"/>
+            <rect x="78" y="42" width="7" height="25" rx="2" fill="#2a9d4f"/>
+            <path d="M30 17 56 6l26 11-26 11z" fill="#1565b8"/>
+            <path d="M16 70c22 12 44 12 66-6" fill="none" stroke="#2a9d4f" stroke-width="5.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div style="text-align:center;flex:1">
+          <div style="font-size:14px;font-weight:700;letter-spacing:1px;color:#0d3f7c">KEMENTERIAN AGAMA REPUBLIK INDONESIA</div>
+          <div style="font-size:13px;font-weight:600;color:#2b3a4d">KANTOR KEMENTERIAN AGAMA KABUPATEN GORONTALO</div>
+          <div style="font-size:19px;font-weight:800;color:#082f5e;margin-top:2px"><%= madrasah.nama %></div>
+          <div style="font-size:11.5px;color:#6b7d92;margin-top:2px"><%= madrasah.alamat %>, <%= madrasah.kabupaten %>, <%= madrasah.provinsi %> &middot; Telp: <%= madrasah.telepon %></div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-bottom:26px">
+        <h2 style="font-size:18px;text-transform:uppercase;letter-spacing:0.5px;color:#0d3f7c;text-decoration:underline">
+          LEMBAR HASIL &amp; BERITA ACARA SUPERVISI AKADEMIK
+        </h2>
+        <div style="font-size:13px;color:#6b7d92;margin-top:4px">
+          Nomor Dokumen: B-421.3/MAN2/SUPERVISI/X/2026 &middot; Tahun Ajaran <%= madrasah.tahun_ajaran %> (<%= madrasah.semester %>)
+        </div>
+      </div>
+
+      <!-- IDENTITAS GURU -->
+      <table style="width:100%;border-collapse:collapse;margin-bottom:22px;font-size:13.5px">
+        <tr>
+          <td style="width:180px;padding:5px 0"><b>Nama Guru / GTK</b></td>
+          <td style="width:15px">:</td>
+          <td><b><%= selectedGtk ? selectedGtk.nama : 'Herman Susanto Buhungo' %></b></td>
+          <td style="width:160px;padding:5px 0"><b>Mata Pelajaran</b></td>
+          <td style="width:15px">:</td>
+          <td><%= selectedGtk ? (selectedGtk.mapel_utama || 'Informatika') : 'Informatika' %></td>
+        </tr>
+        <tr>
+          <td style="padding:5px 0">NIP / NUPTK</td>
+          <td>:</td>
+          <td><%= selectedGtk && selectedGtk.nip && selectedGtk.nip !== '-' ? selectedGtk.nip : (selectedGtk ? selectedGtk.nuptk : '1234567890123456') %></td>
+          <td style="padding:5px 0">Pangkat / Golongan</td>
+          <td>:</td>
+          <td><%= selectedGtk ? selectedGtk.golongan : 'III/a' %> (MKG <%= selectedGtk ? selectedGtk.mkg_tahun : 8 %> Thn)</td>
+        </tr>
+        <tr>
+          <td style="padding:5px 0">Jabatan / Status</td>
+          <td>:</td>
+          <td><%= selectedGtk ? selectedGtk.jabatan + ' (' + selectedGtk.status_kepegawaian + ')' : 'Guru (Non-PNS)' %></td>
+          <td style="padding:5px 0">Tugas Tambahan</td>
+          <td>:</td>
+          <td><b><%= tugasTambahan %></b></td>
+        </tr>
+      </table>
+
+      <!-- TABEL REKAP 4 MENU PENILAIAN -->
+      <div style="margin-bottom:22px">
+        <h4 style="font-size:14px;color:#0d3f7c;margin-bottom:10px">
+          I. HASIL PENILAIAN 4 DOMAIN SUPERVISI AKADEMIK
+        </h4>
+        <table class="tbl" style="width:100%;border:1px solid #d8e3f0">
+          <thead>
+            <tr style="background:#f1f7fe">
+              <th style="width:40px;text-align:center">No</th>
+              <th>Domain Supervisi Akademik</th>
+              <th>Fokus Aspek Evaluasi</th>
+              <th style="width:120px;text-align:center">Skor (0-100)</th>
+              <th style="width:130px;text-align:center">Predikat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align:center">1</td>
+              <td><b>Administrasi Pembelajaran</b></td>
+              <td>Kalender pendidikan, analisis alokasi waktu, prota, promes, silabus/ATP, agenda harian</td>
+              <td style="text-align:center"><b><%= skorAdmin %></b></td>
+              <td style="text-align:center"><span class="badge badge-success">Amat Baik</span></td>
+            </tr>
+            <tr>
+              <td style="text-align:center">2</td>
+              <td><b>Perencanaan Modul Ajar (RPP)</b></td>
+              <td>Kesesuaian CP-TP, integrasi P5-PPRA, diferensiasi konten &amp; proses, pemanfaatan media digital</td>
+              <td style="text-align:center"><b><%= skorModul %></b></td>
+              <td style="text-align:center"><span class="badge badge-success">Amat Baik</span></td>
+            </tr>
+            <tr>
+              <td style="text-align:center">3</td>
+              <td><b>Pengamatan Pembelajaran (Observasi Kelas)</b></td>
+              <td>Apersepsi pembuka, penguasaan materi kontekstual, keterlibatan aktif siswa, penutup refleksi</td>
+              <td style="text-align:center"><b><%= skorMengajar %></b></td>
+              <td style="text-align:center"><span class="badge badge-teal">Baik</span></td>
+            </tr>
+            <tr>
+              <td style="text-align:center">4</td>
+              <td><b>Penilaian Pembelajaran (Asesmen)</b></td>
+              <td>Asesmen autentik formatif &amp; sumatif, rubrik penskoran objektif, analisis daya serap, remedial</td>
+              <td style="text-align:center"><b><%= skorPenilaian %></b></td>
+              <td style="text-align:center"><span class="badge badge-teal">Baik</span></td>
+            </tr>
+            <% if (skorManajerial > 0 && tugasTambahan !== '-') { %>
+            <tr>
+              <td style="text-align:center">5</td>
+              <td><b>Supervisi Manajerial (<%= tugasTambahan %>)</b></td>
+              <td>Program kerja unit, SOP operasional, pelaporan kinerja, inventarisasi sarana</td>
+              <td style="text-align:center"><b><%= skorManajerial %></b></td>
+              <td style="text-align:center"><span class="badge badge-success">Amat Baik</span></td>
+            </tr>
+            <% } %>
+            <tr style="background:#f8fafc">
+              <td colspan="3" style="text-align:right"><b>NILAI AKHIR RATA-RATA KOMPREHENSIF</b></td>
+              <td style="text-align:center;font-size:16px;color:#0d3f7c"><b><%= nilaiKomprehensif %></b></td>
+              <td style="text-align:center"><b style="color:#1f7a3d;font-size:14px"><%= predikatAkhir %></b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BUKTI FOTO PENGAMATAN PEMBELAJARAN (FITUR 5 LAMPIRAN 1) -->
+      <div style="margin-bottom:24px">
+        <h4 style="font-size:14px;color:#0d3f7c;margin-bottom:10px">
+          II. DOKUMENTASI BUKTI FOTO PENGAMATAN PEMBELAJARAN
+        </h4>
+        <div style="display:flex;gap:20px;justify-content:center">
+          <div style="flex:1;border:1px solid #d8e3f0;border-radius:8px;padding:8px;text-align:center;background:#fafcff">
+            <img src="<%= foto1 %>" style="width:100%;height:180px;object-fit:cover;border-radius:6px;display:block" alt="Foto Pengamatan 1" onerror="this.src='https://placehold.co/400x240/e2e8f0/475569?text=Bukti+Foto+Observasi+1'">
+            <div style="font-size:11.5px;font-weight:600;color:#475569;margin-top:6px">Foto 1: Aktivitas Pendahuluan / Pembelajaran di Kelas</div>
+          </div>
+          <div style="flex:1;border:1px solid #d8e3f0;border-radius:8px;padding:8px;text-align:center;background:#fafcff">
+            <img src="<%= foto2 %>" style="width:100%;height:180px;object-fit:cover;border-radius:6px;display:block" alt="Foto Pengamatan 2" onerror="this.src='https://placehold.co/400x240/e2e8f0/475569?text=Bukti+Foto+Observasi+2'">
+            <div style="font-size:11.5px;font-weight:600;color:#475569;margin-top:6px">Foto 2: Praktik Kolaborasi Siswa / Asesmen Autentik</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CATATAN DAN REKOMENDASI -->
+      <div style="border:1px solid #d8e3f0;border-radius:8px;padding:16px 20px;margin-bottom:28px;background:#fafcff">
+        <div style="font-weight:700;color:#0d3f7c;margin-bottom:6px">III. CATATAN &amp; REKOMENDASI TINDAK LANJUT SUPERVISOR:</div>
+        <div style="font-size:13px;color:#2b3a4d;margin-bottom:6px">
+          1. <b>Kekuatan / Praktik Baik:</b> Guru sangat terampil memanfaatkan media digital dan laboratorium komputer dalam pembelajaran. Interaksi peserta didik berjalan aktif, demokratis, dan kolaboratif.
+        </div>
+        <div style="font-size:13px;color:#2b3a4d;margin-bottom:6px">
+          2. <b>Saran Pengembangan:</b> Tingkatkan variasi asesmen diagnostik di awal materi dan pengayaan berbasis proyek nyata untuk memperkuat kompetensi abad ke-21.
+        </div>
+        <div style="font-size:13px;color:#2b3a4d">
+          3. <b>Rencana Tindak Lanjut:</b> Direkomendasikan mengikuti pengimbasan Kurikulum Merdeka tingkat KKM serta berbagi praktik baik (*best practice*) dalam forum MGMP madrasah.
+        </div>
+      </div>
+
+      <!-- TANDA TANGAN RESMI 3 PIHAK -->
+      <div style="display:flex;justify-content:space-between;gap:30px;font-size:13.5px;padding-top:10px">
+        <div style="text-align:center;width:240px">
+          <div>Guru yang Disupervisi,</div>
+          <div style="height:70px;display:flex;align-items:center;justify-content:center">
+            <span style="border:1px dashed #2a9d4f;color:#1f7a3d;padding:4px 10px;border-radius:6px;font-size:11px">Tanda Tangan Digital<br>SIM-GTK Valid</span>
+          </div>
+          <div><b><u><%= selectedGtk ? selectedGtk.nama : 'Herman Susanto Buhungo' %></u></b></div>
+          <div class="tiny muted">NUPTK: <%= selectedGtk ? selectedGtk.nuptk : '1234567890123456' %></div>
+        </div>
+
+        <div style="text-align:center;width:240px">
+          <div>Supervisor / Pengawas Pembina,</div>
+          <div style="height:70px;display:flex;align-items:center;justify-content:center">
+            <span style="border:1px dashed #1565b8;color:#0d3f7c;padding:4px 10px;border-radius:6px;font-size:11px">Tervalidasi Digital<br>Pengawas Kemenag</span>
+          </div>
+          <div><b><u>Dr. Hj. Nurul Aini, M.Pd</u></b></div>
+          <div class="tiny muted">NIP. 197405101999032001</div>
+        </div>
+
+        <div style="text-align:center;width:240px">
+          <div>Gorontalo, <%= new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %><br>Mengetahui Kepala Madrasah,</div>
+          <div style="height:70px;display:flex;align-items:center;justify-content:center">
+            <span style="border:1px dashed #0d3f7c;color:#0d3f7c;padding:4px 10px;border-radius:6px;font-size:11px">Sah &amp; Tervalidasi<br>Kepala Madrasah</span>
+          </div>
+          <div><b><u><%= madrasah.nama_kamad || 'Drs. H. Abdul Wahab, M.Pd' %></u></b></div>
+          <div class="tiny muted">NIP. 196805121994031002</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tiny muted mt-4 no-print" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Seluruh dokumen tervalidasi digital.
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

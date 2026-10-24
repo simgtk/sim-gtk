@@ -1,0 +1,278 @@
+<%- include('../partials/head', { title: "Perangkat Pembelajaran — SIM-GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar', { currentMenu: 'penilaian', activeSub: 'perangkat' }) %>
+  <main class="main">
+    
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/penilaian/jadwal">Penilaian</a>
+      <span class="sep">/</span>
+      <span>Perangkat Pembelajaran</span>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header flex justify-between align-center wrap gap-2 no-print mb-4">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-folder"></use></svg>
+          Supervisi &amp; Telaah Perangkat Pembelajaran
+        </h1>
+        <p class="muted">
+          Pemeriksaan kelengkapan Modul Ajar, ATP, Program Tahunan (Prota), Program Semester (Promes), LKPD, dan KKTP Kurikulum Merdeka.
+        </p>
+      </div>
+      <div class="flex gap-2 wrap align-center">
+        <a class="btn btn-outline btn-sm flex align-center gap-1" href="/sim-gtk/pembelajaran/ai">
+          <svg class="ic ic-sm text-purple"><use href="#i-sparkles"></use></svg> Generator AI Perangkat
+        </a>
+        <button type="button" class="btn btn-primary btn-sm flex align-center gap-1" onclick="document.getElementById('modalUnggahPerangkat').style.display='flex'">
+          <svg class="ic ic-sm"><use href="#i-upload"></use></svg> Unggah &amp; Daftarkan Perangkat
+        </button>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-4">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- KPI STATISTIK PERANGKAT -->
+    <div class="grid grid-4 mb-4">
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon bg-blue-subtle text-blue" style="width:48px;height:48px;border-radius:12px;background:var(--blue-50);display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-folder"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Total Dokumen</div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy-800)"><%= perangkatList.length %> Dokumen</div>
+          <div class="tiny text-blue font-bold">Terdaftar di Sistem</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:var(--green-bg);color:var(--green);display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-check-circle"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Terverifikasi Lengkap</div>
+          <div style="font-size:22px;font-weight:800;color:var(--green-800)">
+            <%= perangkatList.filter(p => p.status_verifikasi === 'Lengkap').length %> Berkas
+          </div>
+          <div class="tiny text-green font-bold">Memenuhi Standar BSKAP</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:#f3e8ff;color:#7e22ce;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-bar-chart"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Rata-rata Skor Telaah</div>
+          <div style="font-size:22px;font-weight:800;color:#7e22ce"><%= avgScore %> / 100</div>
+          <div class="tiny font-bold text-purple">Predikat: Amat Baik</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#b45309;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-edit"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Perlu Revisi</div>
+          <div style="font-size:22px;font-weight:800;color:#b45309">
+            <%= perangkatList.filter(p => p.status_verifikasi === 'Perlu Revisi').length %> Dokumen
+          </div>
+          <div class="tiny font-bold text-orange">Menunggu Tindak Lanjut</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABEL BERKAS PERANGKAT AJAR -->
+    <div class="card mb-4" style="padding:0;overflow:hidden">
+      <div class="card-head p-3 flex justify-between align-center wrap gap-2" style="background:#f8fafc;border-bottom:1px solid var(--line);margin:0">
+        <div>
+          <h3 style="font-size:16px;margin:0;color:var(--navy-900)">
+            Daftar Berkas Perangkat Ajar &amp; Modul Pembelajaran
+          </h3>
+          <p class="tiny muted" style="margin-top:2px">
+            Verifikasi butir telaah perencanaan ajar, rubrik asesmen, dan alur capaian kompetensi.
+          </p>
+        </div>
+        <div>
+          <span class="badge badge-teal">Tahun 2026/2027 Ganjil</span>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table tbl mb-0">
+          <thead>
+            <tr>
+              <th style="width:50px;text-align:center">No</th>
+              <th style="min-width:210px">Guru Pengampu</th>
+              <th style="width:160px">Jenis Perangkat</th>
+              <th style="width:170px">Mata Pelajaran &amp; Kelas</th>
+              <th style="min-width:180px">Nama File / Dokumen</th>
+              <th style="width:110px;text-align:center">Skor Telaah</th>
+              <th style="width:130px;text-align:center">Status</th>
+              <th style="min-width:220px">Catatan Supervisor</th>
+              <th style="width:110px;text-align:center" class="no-print">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (perangkatList.length === 0) { %>
+              <tr>
+                <td colspan="9" class="center muted p-4">Belum ada perangkat terdaftar. Klik "Unggah &amp; Daftarkan Perangkat" untuk menambahkan.</td>
+              </tr>
+            <% } %>
+            <% perangkatList.forEach(function(item, idx) { %>
+              <tr>
+                <td style="text-align:center;font-weight:700;color:var(--muted)"><%= idx + 1 %></td>
+                <td>
+                  <div style="font-weight:700;color:var(--navy-900)"><%= item.gtk_nama %></div>
+                  <div class="tiny muted"><%= item.gtk_nip && item.gtk_nip !== '-' ? 'NIP. ' + item.gtk_nip : 'NUPTK: ' + (item.gtk_nuptk || '-') %></div>
+                </td>
+                <td>
+                  <span class="badge badge-teal"><%= item.jenis_perangkat %></span>
+                </td>
+                <td>
+                  <div style="font-weight:600"><%= item.mapel %></div>
+                  <div class="tiny muted">Kelas <%= item.kelas %></div>
+                </td>
+                <td>
+                  <div class="flex align-center gap-1 small">
+                    <svg class="ic ic-sm text-blue"><use href="#i-file-text"></use></svg>
+                    <span><%= item.file_nama || 'Modul_Ajar_Kurikulum_Merdeka.docx' %></span>
+                  </div>
+                </td>
+                <td style="text-align:center">
+                  <b style="font-size:15px;color:var(--navy-900)"><%= item.skor || 85 %></b>
+                </td>
+                <td style="text-align:center">
+                  <% if (item.status_verifikasi === 'Lengkap') { %>
+                    <span class="badge badge-success font-bold"><svg class="ic ic-sm"><use href="#i-check"></use></svg> Lengkap</span>
+                  <% } else if (item.status_verifikasi === 'Perlu Revisi') { %>
+                    <span class="badge badge-danger font-bold">Perlu Revisi</span>
+                  <% } else { %>
+                    <span class="badge badge-warning font-bold">Belum Diperiksa</span>
+                  <% } %>
+                </td>
+                <td class="small muted"><%= item.catatan || 'Komponen perangkat ajar telah memenuhi kriteria telaah Kurikulum Merdeka.' %></td>
+                <td class="no-print nowrap" style="text-align:center">
+                  <a class="btn btn-outline btn-sm flex align-center gap-1" href="/sim-gtk/pembelajaran/ai">
+                    <svg class="ic ic-sm"><use href="#i-eye"></use></svg> Tinjau
+                  </a>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL UNGGAH & DAFTARKAN PERANGKAT (LEGA & RAPI)
+         ============================================================ -->
+    <div class="modal-overlay" id="modalUnggahPerangkat">
+      <div class="modal-card-lg" style="max-width:660px">
+        <form method="post" action="/sim-gtk/penilaian/perangkat/tambah">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+          <div class="modal-header">
+            <div>
+              <h3 style="font-size:17px;margin:0;color:var(--navy-900);font-weight:700">
+                Pendaftaran &amp; Telaah Perangkat Pembelajaran
+              </h3>
+              <p class="tiny muted" style="margin-top:2px">
+                Daftarkan berkas Modul Ajar, ATP, atau Asesmen guru untuk diverifikasi supervisor.
+              </p>
+            </div>
+            <button type="button" class="btn btn-ghost" onclick="document.getElementById('modalUnggahPerangkat').style.display='none'">
+              <svg class="ic"><use href="#i-x"></use></svg>
+            </button>
+          </div>
+
+          <div class="modal-body-scroll">
+            <div class="grid grid-2 gap-3">
+              <div class="field span-2">
+                <label class="font-bold">Guru Pengampu</label>
+                <select name="gtk_id" required>
+                  <% gtkList.forEach(function(g) { %>
+                    <option value="<%= g.id %>"><%= g.nama %> &mdash; <%= g.mapel_utama || g.jabatan %></option>
+                  <% }); %>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Jenis Perangkat</label>
+                <select name="jenis_perangkat" required>
+                  <option value="Modul Ajar (RPP)">Modul Ajar (RPP)</option>
+                  <option value="Alur Tujuan Pembelajaran (ATP)">Alur Tujuan Pembelajaran (ATP)</option>
+                  <option value="Program Tahunan & Semester">Program Tahunan &amp; Semester</option>
+                  <option value="Instrumen Asesmen & Rubrik">Instrumen Asesmen &amp; Rubrik</option>
+                  <option value="Lembar Kerja Peserta Didik (LKPD)">Lembar Kerja Peserta Didik (LKPD)</option>
+                  <option value="Kriteria Ketercapaian (KKTP)">Kriteria Ketercapaian (KKTP)</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Kelas</label>
+                <select name="kelas" required>
+                  <option value="X-A">Kelas X-A</option>
+                  <option value="X-B">Kelas X-B</option>
+                  <option value="XI-MIPA 1">Kelas XI-MIPA 1</option>
+                  <option value="XI-IPS 1">Kelas XI-IPS 1</option>
+                  <option value="XII-MIPA 1">Kelas XII-MIPA 1</option>
+                </select>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Mata Pelajaran</label>
+                <input type="text" name="mapel" placeholder="Informatika" value="Informatika" required>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Nama File / Dokumen</label>
+                <input type="text" name="file_nama" placeholder="Modul_Ajar_Informatika_Fase_E.docx" value="Modul_Ajar_Informatika_Fase_E.docx" required>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Skor Telaah (1 - 100)</label>
+                <input type="number" name="skor" min="50" max="100" value="90" required>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Status Verifikasi</label>
+                <select name="status_verifikasi">
+                  <option value="Lengkap">Lengkap (Memenuhi Standar)</option>
+                  <option value="Perlu Revisi">Perlu Revisi</option>
+                  <option value="Belum Diperiksa">Belum Diperiksa</option>
+                </select>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Catatan Supervisor</label>
+                <textarea name="catatan" rows="3" placeholder="Berikan catatan telaah komponen modul ajar, ATP, atau rubrik asesmen...">Komponen modul ajar telah memenuhi kriteria pembelajaran berdiferensiasi dan integrasi nilai P5-PPRA.</textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('modalUnggahPerangkat').style.display='none'">
+              Batal
+            </button>
+            <button type="submit" class="btn btn-primary flex align-center gap-1">
+              <svg class="ic ic-sm"><use href="#i-check"></use></svg> Simpan &amp; Verifikasi Dokumen
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,636 @@
+<%- include('../partials/head', { title: "Absensi Siswa", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Absensi Siswa</b>
+    </div>
+    <div class="page-head">
+      <h1>Absensi Siswa</h1>
+      <p>Isi kehadiran peserta didik per kelas dan pantau rekapnya</p>
+    </div>
+
+<div class="card mb-3">
+  <form method="get" action="/sim-gtk/pembelajaran/absensi" class="flex gap-2 wrap align-end">
+    <div class="field" style="min-width:170px"><label>Tanggal</label><input type="date" name="tanggal" value="2026-10-23"></div>
+    <div class="field" style="min-width:320px;flex:1">
+      <label>Jadwal Mengajar (Jumat)</label>
+      <select name="jadwal_id">
+        
+          <option value="17" selected>
+            07:00–08:30 · Matematika · XII IPA 1 · Nurhayati, S.Pd
+          </option>
+        
+          <option value="18" >
+            08:30–10:00 · Bahasa Inggris · XII IPS 1 · Dewi Kartika, S.Pd
+          </option>
+        
+          <option value="19" >
+            10:15–11:45 · Sejarah Kebudayaan Islam · X IPA 1 · Rahmat Hidayat, S.Pd.I
+          </option>
+        
+        
+      </select>
+    </div>
+    <button class="btn btn-primary" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-search"></use></svg> Tampilkan</button>
+  </form>
+  
+</div>
+
+
+<div class="card mb-3">
+  <div class="card-head">
+    <div>
+      <h3>Matematika — XII IPA 1</h3>
+      <p>Jumat, 23 Okt 2026 · 07:00–08:30 · Ruang R-101</p>
+    </div>
+    <div class="flex gap-1">
+      <button type="button" class="btn btn-outline btn-sm" data-mark-hadir="#formAbsensi"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-check"></use></svg> Tandai Semua Hadir</button>
+    </div>
+  </div>
+
+  
+  <form method="post" action="/sim-gtk/pembelajaran/absensi/simpan" id="formAbsensi">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <input type="hidden" name="jadwal_id" value="17">
+    <input type="hidden" name="tanggal" value="2026-10-23">
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th style="width:44px">No</th><th>Nama Peserta Didik</th><th>NIS</th><th style="width:180px">Kehadiran</th><th>Keterangan</th></tr></thead>
+        <tbody>
+          
+            <tr>
+              <td class="muted">1</td>
+              <td><b class="strong">Abdul Dunggio</b><div class="tiny muted">Laki-laki</div></td>
+              <td class="muted small">20290503</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_58" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_58" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_58" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_58" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_58" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">2</td>
+              <td><b class="strong">Abdul Ibrahim</b><div class="tiny muted">Laki-laki</div></td>
+              <td class="muted small">20290513</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_68" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_68" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_68" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_68" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_68" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">3</td>
+              <td><b class="strong">Ayu Rahman</b><div class="tiny muted">Perempuan</div></td>
+              <td class="muted small">20290502</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_57" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_57" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_57" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_57" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_57" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">4</td>
+              <td><b class="strong">Fatimah Suleman</b><div class="tiny muted">Perempuan</div></td>
+              <td class="muted small">20290511</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_66" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_66" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_66" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_66" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_66" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">5</td>
+              <td><b class="strong">Ilham Nurhayati</b><div class="tiny muted">Laki-laki</div></td>
+              <td class="muted small">20290510</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_65" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_65" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_65" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_65" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_65" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">6</td>
+              <td><b class="strong">Muhammad Suleman</b><div class="tiny muted">Laki-laki</div></td>
+              <td class="muted small">20290508</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_63" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_63" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_63" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_63" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_63" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">7</td>
+              <td><b class="strong">Mutiara Ibrahim</b><div class="tiny muted">Perempuan</div></td>
+              <td class="muted small">20290501</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_56" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_56" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_56" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_56" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_56" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">8</td>
+              <td><b class="strong">Mutiara Suleman</b><div class="tiny muted">Perempuan</div></td>
+              <td class="muted small">20290505</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_60" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_60" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_60" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_60" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_60" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">9</td>
+              <td><b class="strong">Nur Tome</b><div class="tiny muted">Perempuan</div></td>
+              <td class="muted small">20290509</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_64" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_64" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_64" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_64" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_64" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">10</td>
+              <td><b class="strong">Rahma Abdullah</b><div class="tiny muted">Perempuan</div></td>
+              <td class="muted small">20290507</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_62" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_62" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_62" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_62" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_62" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">11</td>
+              <td><b class="strong">Rara Rahman</b><div class="tiny muted">Perempuan</div></td>
+              <td class="muted small">20290506</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_61" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_61" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_61" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_61" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_61" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">12</td>
+              <td><b class="strong">Siti Umar</b><div class="tiny muted">Perempuan</div></td>
+              <td class="muted small">20290504</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_59" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_59" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_59" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_59" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_59" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+            <tr>
+              <td class="muted">13</td>
+              <td><b class="strong">Zulfikar Abdullah</b><div class="tiny muted">Laki-laki</div></td>
+              <td class="muted small">20290512</td>
+              <td>
+                <div class="status-pick">
+                  
+                    <label>
+                      <input type="radio" name="status_67" value="H" checked>
+                      <span data-st="H">H</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_67" value="S" >
+                      <span data-st="S">S</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_67" value="I" >
+                      <span data-st="I">I</span>
+                    </label>
+                  
+                    <label>
+                      <input type="radio" name="status_67" value="A" >
+                      <span data-st="A">A</span>
+                    </label>
+                  
+                </div>
+              </td>
+              <td><input type="text" name="ket_67" value="" placeholder="opsional" style="padding:7px 10px;font-size:12px"></td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+    <div class="form-actions">
+      <span class="tiny muted" style="margin-right:auto">H = Hadir · S = Sakit · I = Izin · A = Alfa. Absensi dapat diperbaiki dengan menyimpan ulang.</span>
+      <button class="btn btn-primary" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Simpan Absensi</button>
+    </div>
+  </form>
+  
+</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-head"><div><h3>Rekap Kehadiran Kelas</h3><p>XII IPA 1 · bulan 2026-10</p></div></div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Nama</th><th class="num">H</th><th class="num">S</th><th class="num">I</th><th class="num">A</th><th class="num">%</th></tr></thead>
+        <tbody>
+          
+            <tr>
+              <td><b class="strong">Abdul Dunggio</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Abdul Ibrahim</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Ayu Rahman</b></td>
+              <td class="num">1</td>
+              <td class="num">1</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-danger">50%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Fatimah Suleman</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Ilham Nurhayati</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Muhammad Suleman</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Mutiara Ibrahim</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Mutiara Suleman</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Nur Tome</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Rahma Abdullah</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Rara Rahman</b></td>
+              <td class="num">1</td>
+              <td class="num">0</td>
+              <td class="num">1</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-danger">50%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Siti Umar</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+            <tr>
+              <td><b class="strong">Zulfikar Abdullah</b></td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num"><span class="badge badge-success">100%</span></td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h3>Riwayat Absensi Terakhir</h3><p>Absensi yang telah Anda isi</p></div></div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-user-check"></use></svg><b>Belum ada riwayat</b></div>
+    
+  </div>
+</div>
+
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

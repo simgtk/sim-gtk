@@ -1,0 +1,119 @@
+<%- include('../partials/head', { title: "Perubahan Data Diri", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Perubahan Data Diri</b>
+    </div>
+    <div class="page-head">
+      <h1>Perubahan Data Diri</h1>
+      <p>Ajukan koreksi data — akan diverifikasi admin madrasah</p>
+    </div>
+
+
+<div class="grid" style="grid-template-columns:1fr 1.3fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Ajukan Perubahan Data</h3><p>Perubahan akan diverifikasi admin madrasah</p></div></div>
+    <form method="post" action="/sim-gtk/portofolio/perubahan-data">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field mb-2">
+        <label>Kolom Data yang Diubah</label>
+        <select name="field_key" id="fieldKey" required>
+          <option value="">— pilih kolom —</option>
+          
+            <option value="nama">Nama Lengkap</option>
+          
+            <option value="gelar_depan">Gelar Depan</option>
+          
+            <option value="gelar_belakang">Gelar Belakang</option>
+          
+            <option value="jenis_kelamin">Jenis Kelamin</option>
+          
+            <option value="tempat_lahir">Tempat Lahir</option>
+          
+            <option value="tgl_lahir">Tanggal Lahir</option>
+          
+            <option value="nik">NIK</option>
+          
+            <option value="nuptk">NUPTK</option>
+          
+            <option value="nip">NIP</option>
+          
+            <option value="npwp">NPWP</option>
+          
+            <option value="status_kepegawaian">Status Kepegawaian</option>
+          
+            <option value="golongan">Golongan</option>
+          
+            <option value="alamat">Alamat</option>
+          
+            <option value="telepon">Nomor HP</option>
+          
+            <option value="email_pribadi">Email Pribadi</option>
+          
+            <option value="mapel_utama">Mata Pelajaran Utama</option>
+          
+            <option value="pendidikan">Pendidikan Terakhir</option>
+          
+            <option value="jurusan">Jurusan</option>
+          
+            <option value="institusi">Institusi Pendidikan</option>
+          
+            <option value="thn_lulus">Tahun Lulus</option>
+          
+        </select>
+      </div>
+      <div class="field mb-2">
+        <label>Nilai Saat Ini</label>
+        <input type="text" id="nilaiLama" value="" readonly placeholder="otomatis terisi">
+      </div>
+      <div class="field mb-2">
+        <label>Nilai Baru</label>
+        <input type="text" name="nilai_baru" required placeholder="masukkan nilai yang benar">
+      </div>
+      <div class="field mb-2">
+        <label>Alasan Perubahan</label>
+        <textarea name="alasan" required placeholder="mis. salah input data, perubahan status kepegawaian, perbaikan ejaan nama sesuai ijazah"></textarea>
+      </div>
+      <div class="alert alert-info"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Lampirkan dokumen pendukung kepada admin madrasah bila diperlukan (KK, SK, ijazah).</div></div>
+      <button class="btn btn-primary btn-block" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Kirim Pengajuan</button>
+    </form>
+  </div>
+
+  <div class="stack">
+    <div class="card tight">
+      <div class="kpi-mini">
+        <div class="item"><div class="k">Total Pengajuan</div><div class="v">0</div></div>
+        <div class="item"><div class="k">Menunggu</div><div class="v" style="color:var(--amber)">0</div></div>
+        <div class="item"><div class="k">Disetujui</div><div class="v" style="color:var(--green)">0</div></div>
+        <div class="item"><div class="k">Ditolak</div><div class="v" style="color:var(--red)">0</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>Riwayat Pengajuan</h3><p>Status verifikasi perubahan data diri Anda</p></div></div>
+      
+        <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-edit"></use></svg><b>Belum ada pengajuan</b>Perubahan data yang Anda ajukan akan tampil di sini.</div>
+      
+    </div>
+  </div>
+</div>
+<script>
+  var current = {"id":1,"user_id":2,"madrasah_id":1,"gelar_depan":"","gelar_belakang":"","jenis_kelamin":"P","tempat_lahir":"Gorontalo","tgl_lahir":"1985-04-12","nik":"7501101010802236","nuptk":null,"nip":null,"npwp":"","status_kepegawaian":"PNS","golongan":"III/a","mkg_tahun":8,"mkg_bulan":4,"tmt_golongan":"2021-04-01","tmt_pns":"2010-01-01","instansi_induk":"Kementerian Agama","pendidikan":"S1","jurusan":"Pendidikan Agama Islam","institusi":"IAIN Sultan Amai Gorontalo","thn_lulus":2009,"alamat":"Kec. Limboto, Kabupaten Gorontalo","telepon":"081242843901","email_pribadi":"admin@man2gorontalo.sch.id","mapel_utama":"Informatika","jenis_pegawai":"Tenaga Administrasi","sertifikasi":0,"no_sertifikat":null,"tgl_sertifikasi":null,"nrg":null,"status_nrg":"Terverifikasi","status_nuptk":"Terverifikasi","status_satminkal":"Terverifikasi","foto_url":null,"nama":"Siti Rahmawati, S.Kom","email":"admin@man2gorontalo.sch.id","role":"admin","username":"admin_man2","status_akun":"aktif"};
+  var sel = document.getElementById('fieldKey');
+  var out = document.getElementById('nilaiLama');
+  sel.addEventListener('change', function () {
+    var v = current[sel.value];
+    out.value = (typeof v === 'undefined' || v === null || v === '') ? '-' : v;
+  });
+</script>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

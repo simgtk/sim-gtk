@@ -1,0 +1,252 @@
+<%- include('../partials/head', { title: "Daftar Hadir Supervisi — SIM-GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar', { currentMenu: 'penilaian', activeSub: 'daftar-hadir' }) %>
+  <main class="main">
+    
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/penilaian/jadwal">Penilaian</a>
+      <span class="sep">/</span>
+      <span>Daftar Hadir Supervisi</span>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header flex justify-between align-center wrap gap-2 no-print mb-4">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-user-check"></use></svg>
+          Daftar Hadir Pelaksanaan Supervisi GTK
+        </h1>
+        <p class="muted">
+          Pencatatan presensi kehadiran, jam observasi, dan validasi tanda tangan digital kegiatan supervisi madrasah.
+        </p>
+      </div>
+      <div class="flex gap-2 wrap align-center">
+        <button type="button" class="btn btn-outline btn-sm flex align-center gap-1" onclick="window.print()">
+          <svg class="ic ic-sm"><use href="#i-print"></use></svg> Cetak Presensi
+        </button>
+        <button type="button" class="btn btn-primary btn-sm flex align-center gap-1" onclick="document.getElementById('modalTambahHadir').style.display='flex'">
+          <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Catat Kehadiran Baru
+        </button>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-4">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- KPI STATISTIK DAFTAR HADIR -->
+    <div class="grid grid-4 mb-4">
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon bg-blue-subtle text-blue" style="width:48px;height:48px;border-radius:12px;background:var(--blue-50);display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-user-check"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Total Presensi</div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy-800)"><%= hadirList.length %> Log</div>
+          <div class="tiny text-blue font-bold">Tercatat di Sistem</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:var(--green-bg);color:var(--green);display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-clock"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Hadir Tepat Waktu</div>
+          <div style="font-size:22px;font-weight:800;color:var(--green-800)">
+            <%= hadirList.filter(h => h.status_kehadiran === 'Hadir').length %> Orang
+          </div>
+          <div class="tiny text-green font-bold">100% Disiplin Waktu</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:#f3e8ff;color:#7e22ce;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-check-circle"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Validasi Digital</div>
+          <div style="font-size:22px;font-weight:800;color:#7e22ce">
+            <%= hadirList.filter(h => h.tanda_tangan && h.tanda_tangan.includes('Tervalidasi')).length %> Valid
+          </div>
+          <div class="tiny font-bold text-purple">Otentikasi Sah</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#b45309;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-school"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Madrasah</div>
+          <div style="font-size:22px;font-weight:800;color:#b45309">MAN 2</div>
+          <div class="tiny font-bold text-orange">Kabupaten Gorontalo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABEL DAFTAR HADIR -->
+    <div class="card mb-4" style="padding:0;overflow:hidden">
+      <div class="card-head p-3 flex justify-between align-center wrap gap-2" style="background:#f8fafc;border-bottom:1px solid var(--line);margin:0">
+        <div>
+          <h3 style="font-size:16px;margin:0;color:var(--navy-900)">
+            Lembar Presensi Kehadiran &amp; Tanda Tangan Supervisi
+          </h3>
+          <p class="tiny muted" style="margin-top:2px">
+            Bukti autentik kehadiran fisik pendidik dan supervisor dalam pelaksanaan evaluasi pembelajaran.
+          </p>
+        </div>
+        <div>
+          <span class="badge badge-teal">Tahun 2026/2027 Ganjil</span>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table tbl mb-0">
+          <thead>
+            <tr>
+              <th style="width:50px;text-align:center">No</th>
+              <th style="width:120px">Tanggal</th>
+              <th style="min-width:210px">Nama Guru / GTK</th>
+              <th style="width:160px">NIP / NUPTK</th>
+              <th style="width:180px">Jenis Kegiatan Supervisi</th>
+              <th style="min-width:160px">Supervisor</th>
+              <th style="width:120px">Jam Hadir</th>
+              <th style="width:110px;text-align:center">Status</th>
+              <th style="width:150px;text-align:center">Tanda Tangan</th>
+              <th style="min-width:200px">Keterangan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (hadirList.length === 0) { %>
+              <tr>
+                <td colspan="10" class="center muted p-4">Belum ada daftar hadir supervisi.</td>
+              </tr>
+            <% } %>
+            <% hadirList.forEach(function(item, idx) { %>
+              <tr>
+                <td style="text-align:center;font-weight:700;color:var(--muted)"><%= idx + 1 %></td>
+                <td class="nowrap tiny" style="font-weight:600"><%= item.tanggal %></td>
+                <td>
+                  <div style="font-weight:700;color:var(--navy-900)"><%= item.gtk_nama %></div>
+                  <div class="tiny muted"><%= item.gtk_jabatan || 'Guru Mapel' %></div>
+                </td>
+                <td class="tiny muted"><%= item.gtk_nip && item.gtk_nip !== '-' ? item.gtk_nip : (item.gtk_nuptk || '-') %></td>
+                <td><span class="badge badge-teal"><%= item.jenis_supervisi %></span></td>
+                <td class="small"><%= item.supervisor_nama %></td>
+                <td class="nowrap small"><b><%= item.jam_hadir || '07:30' %></b> WITA</td>
+                <td style="text-align:center">
+                  <span class="badge badge-success font-bold"><svg class="ic ic-sm"><use href="#i-check"></use></svg> <%= item.status_kehadiran || 'Hadir' %></span>
+                </td>
+                <td style="text-align:center">
+                  <span class="badge badge-info font-bold"><svg class="ic ic-sm"><use href="#i-shield"></use></svg> <%= item.tanda_tangan || 'Tervalidasi Digital' %></span>
+                </td>
+                <td class="small muted"><%= item.keterangan || 'Hadir tepat waktu dan seluruh berkas telah siap.' %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL ISI KEHADIRAN SUPERVISI (LEGA & RAPI)
+         ============================================================ -->
+    <div class="modal-overlay" id="modalTambahHadir">
+      <div class="modal-card-lg" style="max-width:640px">
+        <form method="post" action="/sim-gtk/penilaian/daftar-hadir/simpan">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+          <div class="modal-header">
+            <div>
+              <h3 style="font-size:17px;margin:0;color:var(--navy-900);font-weight:700">
+                Pencatatan Presensi Kehadiran Supervisi
+              </h3>
+              <p class="tiny muted" style="margin-top:2px">
+                Verifikasi jam kehadiran guru dan supervisor pada sesi supervisi.
+              </p>
+            </div>
+            <button type="button" class="btn btn-ghost" onclick="document.getElementById('modalTambahHadir').style.display='none'">
+              <svg class="ic"><use href="#i-x"></use></svg>
+            </button>
+          </div>
+
+          <div class="modal-body-scroll">
+            <div class="grid grid-2 gap-3">
+              <div class="field span-2">
+                <label class="font-bold">Guru / GTK yang Disupervisi</label>
+                <select name="gtk_id" required>
+                  <% gtkList.forEach(function(g) { %>
+                    <option value="<%= g.id %>"><%= g.nama %> &mdash; <%= g.mapel_utama || g.jabatan %></option>
+                  <% }); %>
+                </select>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Jenis Kegiatan Supervisi</label>
+                <select name="jenis_supervisi" required>
+                  <option value="Supervisi Akademik 4 Menu">Supervisi Akademik 4 Menu</option>
+                  <option value="Observasi Praktik Mengajar">Observasi Praktik Mengajar</option>
+                  <option value="Telaah Perangkat & Modul Ajar">Telaah Perangkat &amp; Modul Ajar</option>
+                  <option value="Supervisi Manajerial Tugas Tambahan">Supervisi Manajerial Tugas Tambahan</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Tanggal Pelaksanaan</label>
+                <input type="date" name="tanggal" value="<%= new Date().toISOString().slice(0, 10) %>" required>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Jam Kehadiran</label>
+                <input type="time" name="jam_hadir" value="07:30" required>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Nama Supervisor</label>
+                <input type="text" name="supervisor_nama" value="<%= user ? user.nama : 'Drs. H. Abdul Wahab, M.Pd' %>" required>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Status Kehadiran</label>
+                <select name="status_kehadiran">
+                  <option value="Hadir">Hadir Tepat Waktu</option>
+                  <option value="Izin">Izin Tugas Kedinasan</option>
+                  <option value="Sakit">Sakit</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Tanda Tangan Digital</label>
+                <input type="text" value="Tervalidasi Digital SIM-GTK" readonly style="background:#f1f5f9">
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Keterangan Tambahan</label>
+                <textarea name="keterangan" rows="2" placeholder="Catatan kesiapan berkas atau kehadiran...">Hadir tepat waktu dan berkas perangkat ajar telah siap disupervisi.</textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('modalTambahHadir').style.display='none'">
+              Batal
+            </button>
+            <button type="submit" class="btn btn-primary flex align-center gap-1">
+              <svg class="ic ic-sm"><use href="#i-check"></use></svg> Simpan Presensi Supervisi
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

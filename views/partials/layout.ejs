@@ -1,0 +1,12 @@
+<%- include('partials/head', { title: title, bodyClass: '' }) %>
+<%- include('partials/topbar') %>
+<div class="shell">
+  <%- include('partials/sidebar') %>
+  <main class="main">
+    <%- body %>
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('partials/footer') %>

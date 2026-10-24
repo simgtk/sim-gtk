@@ -1,0 +1,455 @@
+<%- include('../partials/head', { title: "Panduan Arsitektur & Hak Akses 6 Peran — SIM-GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar', { currentMenu: 'panduan' }) %>
+  <main class="main">
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Panduan Penggunaan &amp; Hak Akses 6 Peran</b>
+    </div>
+
+    <div class="page-head">
+      <h1>Panduan Lengkap Arsitektur &amp; Hak Akses 6 Peran SIM-GTK</h1>
+      <p>Peta hubungan pengguna, matriks kewenangan, pembatasan akses, dan modul pembinaan pengawas madrasah binaan</p>
+    </div>
+
+    <!-- 1. PETA HUBUNGAN PENGGUNA SIM-GTK (SESUAI BLUEPRINT) -->
+    <div class="card mb-4" style="border: 2px solid var(--line);border-radius:12px;padding:24px;background:#ffffff">
+      <h3 style="font-size:16px;margin:0 0 16px;font-weight:700">1. Peta Hubungan Pengguna SIM-GTK</h3>
+      
+      <div style="max-width:760px;margin:0 auto">
+        
+        <!-- LEVEL 1: SUPERADMIN PLATFORM -->
+        <div class="card p-3 text-center" style="border:1px solid var(--line);border-radius:10px;background:#fafbfc">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(21,101,184,0.1);color:var(--blue-700);margin-bottom:6px">
+            <svg class="ic ic-sm"><use href="#i-shield"></use></svg>
+          </div>
+          <div style="font-weight:700;font-size:15px;letter-spacing:0.5px">SUPERADMIN PLATFORM</div>
+          <p class="small muted" style="margin:4px 0 0">Mengelola platform, registrasi lembaga, akun admin, konfigurasi, dan monitoring teknis.</p>
+        </div>
+
+        <!-- PANAH KE BAWAH -->
+        <div style="text-align:center;font-size:20px;color:var(--muted);margin:8px 0">&darr;</div>
+
+        <!-- LEVEL 2: JARINGAN LEMBAGA SIM-GTK -->
+        <div class="card p-3 text-center" style="border:1px solid var(--line);border-radius:10px;background:#fafbfc">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(42,157,79,0.1);color:var(--green-700);margin-bottom:6px">
+            <svg class="ic ic-sm"><use href="#i-grid"></use></svg>
+          </div>
+          <div style="font-weight:700;font-size:15px;letter-spacing:0.5px">JARINGAN LEMBAGA SIM-GTK</div>
+          <p class="small muted" style="margin:4px 0 0">Identitas lembaga, hak akses, penugasan, data, dan audit.</p>
+        </div>
+
+        <!-- PANAH KE BAWAH CABANG DUA -->
+        <div style="text-align:center;font-size:20px;color:var(--muted);margin:8px 0">&darr;</div>
+
+        <!-- LEVEL 3: DUA CABANG (PANEL MADRASAH & PANEL PENGAWAS) -->
+        <div class="grid grid-2 gap-2">
+          
+          <div class="card p-3 text-center" style="border:1px solid var(--line);border-radius:10px;background:#fafbfc">
+            <div style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(52,73,94,0.1);color:#34495e;margin-bottom:6px">
+              <svg class="ic ic-sm"><use href="#i-school"></use></svg>
+            </div>
+            <div style="font-weight:700;font-size:14px">Panel Madrasah</div>
+            <p class="tiny muted" style="margin:4px 0 0">Admin, Kepala Madrasah, Guru, dan Tenaga Kependidikan</p>
+          </div>
+
+          <div class="card p-3 text-center" style="border:1px solid var(--line);border-radius:10px;background:#fafbfc">
+            <div style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(42,157,79,0.1);color:var(--green-700);margin-bottom:6px">
+              <svg class="ic ic-sm"><use href="#i-eye"></use></svg>
+            </div>
+            <div style="font-weight:700;font-size:14px">Panel Pengawas</div>
+            <p class="tiny muted" style="margin:4px 0 0">Daftar binaan, supervisi, pembinaan, dan laporan lintas lembaga yang ditugaskan</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="p-3 mt-3" style="background:var(--bg-subtle);border-radius:8px;border-left:4px solid var(--green-600);font-size:13px;line-height:1.6">
+        <b>Catatan Hubungan Pengawas:</b> Pengawas merupakan peran lintas lembaga yang istimewa: ia dapat memiliki beberapa lembaga binaan, tetapi aksesnya harus dibatasi pada lembaga yang secara resmi ditugaskan kepadanya. Penetapan wilayah dan daftar binaan dapat dikelola oleh Superadmin atau administrator berwenang sesuai struktur organisasi yang berlaku.
+      </div>
+    </div>
+
+    <!-- 8. MATRIKS RINGKAS MENU PER PENGGUNA (SESUAI TABEL RESMI) -->
+    <div class="card mb-4">
+      <div class="card-head">
+        <h3 style="font-size:16px;margin:0">8. Matriks Ringkas Menu per Pengguna (6 Peran)</h3>
+        <p class="tiny muted" style="margin:2px 0 0">Memastikan setiap panel mempunyai fungsi yang berbeda, meskipun menggunakan data dan platform yang sama</p>
+      </div>
+      <div class="table-wrap plain">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Menu / Modul</th>
+              <th>Superadmin</th>
+              <th>Admin / Operator</th>
+              <th>Kepala Madrasah</th>
+              <th>Pengawas</th>
+              <th>Guru</th>
+              <th>Tenaga Kependidikan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Dashboard</b></td>
+              <td><span class="badge badge-danger">Platform</span></td>
+              <td><span class="badge badge-primary">Lembaga</span></td>
+              <td><span class="badge badge-purple">Lembaga</span></td>
+              <td><span class="badge badge-success">Binaan</span></td>
+              <td><span class="badge badge-info">Pribadi</span></td>
+              <td><span class="badge badge-secondary">Pribadi</span></td>
+            </tr>
+            <tr>
+              <td><b>Manajemen Lembaga</b></td>
+              <td><span class="badge badge-danger">Penuh</span></td>
+              <td><span class="badge badge-primary">Profil Sendiri</span></td>
+              <td><span class="badge badge-purple">Lihat</span></td>
+              <td><span class="badge badge-success">Lihat Binaan</span></td>
+              <td><span class="muted">&mdash;</span></td>
+              <td><span class="muted">&mdash;</span></td>
+            </tr>
+            <tr>
+              <td><b>Data GTK</b></td>
+              <td><span class="badge badge-secondary">Administrasi Terbatas</span></td>
+              <td><span class="badge badge-primary">Kelola</span></td>
+              <td><span class="badge badge-purple">Pantau</span></td>
+              <td><span class="badge badge-success">Sesuai Binaan</span></td>
+              <td><span class="badge badge-info">Profil Sendiri</span></td>
+              <td><span class="badge badge-secondary">Profil Sendiri</span></td>
+            </tr>
+            <tr>
+              <td><b>Dokumen Kepegawaian</b></td>
+              <td><span class="badge badge-secondary">Teknis Terbatas</span></td>
+              <td><span class="badge badge-primary">Kelola</span></td>
+              <td><span class="badge badge-purple">Sesuai Kewenangan</span></td>
+              <td><span class="badge badge-success">Bukti Relevan</span></td>
+              <td><span class="badge badge-info">Dokumen Sendiri</span></td>
+              <td><span class="badge badge-secondary">Dokumen Sendiri</span></td>
+            </tr>
+            <tr>
+              <td><b>Kehadiran &amp; Izin</b></td>
+              <td><span class="badge badge-secondary">Monitoring Teknis</span></td>
+              <td><span class="badge badge-primary">Kelola</span></td>
+              <td><span class="badge badge-purple">Pantau / Setujui</span></td>
+              <td><span class="badge badge-success">Ringkasan Relevan</span></td>
+              <td><span class="badge badge-info">Pribadi</span></td>
+              <td><span class="badge badge-secondary">Pribadi</span></td>
+            </tr>
+            <tr>
+              <td><b>Jadwal dan Tugas</b></td>
+              <td><span class="muted">&mdash;</span></td>
+              <td><span class="badge badge-primary">Kelola</span></td>
+              <td><span class="badge badge-purple">Pantau / Tetapkan</span></td>
+              <td><span class="badge badge-success">Agenda Binaan</span></td>
+              <td><span class="badge badge-info">Jadwal Sendiri</span></td>
+              <td><span class="badge badge-secondary">Jadwal Sendiri</span></td>
+            </tr>
+            <tr>
+              <td><b>Supervisi &amp; Kinerja</b></td>
+              <td><span class="badge badge-secondary">Konfigurasi Teknis</span></td>
+              <td><span class="badge badge-primary">Administrasi</span></td>
+              <td><span class="badge badge-purple">Supervisi Internal</span></td>
+              <td><span class="badge badge-success">Pengawasan Binaan</span></td>
+              <td><span class="badge badge-info">Hasil Sendiri</span></td>
+              <td><span class="badge badge-secondary">Evaluasi Sendiri</span></td>
+            </tr>
+            <tr>
+              <td><b>Kompetensi &amp; Pelatihan</b></td>
+              <td><span class="badge badge-secondary">Statistik Platform</span></td>
+              <td><span class="badge badge-primary">Kelola Data</span></td>
+              <td><span class="badge badge-purple">Pantau</span></td>
+              <td><span class="badge badge-success">Pembinaan</span></td>
+              <td><span class="badge badge-info">Pribadi</span></td>
+              <td><span class="badge badge-secondary">Pribadi</span></td>
+            </tr>
+            <tr>
+              <td><b>Laporan &amp; Cetak</b></td>
+              <td><span class="badge badge-danger">Agregat Platform</span></td>
+              <td><span class="badge badge-primary">Lembaga</span></td>
+              <td><span class="badge badge-purple">Lembaga</span></td>
+              <td><span class="badge badge-success">Binaan</span></td>
+              <td><span class="badge badge-info">Pribadi</span></td>
+              <td><span class="badge badge-secondary">Pribadi</span></td>
+            </tr>
+            <tr>
+              <td><b>Pengaturan</b></td>
+              <td><span class="badge badge-danger">Global</span></td>
+              <td><span class="badge badge-primary">Lembaga Sendiri</span></td>
+              <td><span class="badge badge-purple">Terbatas</span></td>
+              <td><span class="badge badge-secondary">Preferensi Sendiri</span></td>
+              <td><span class="badge badge-secondary">Preferensi Sendiri</span></td>
+              <td><span class="badge badge-secondary">Preferensi Sendiri</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-foot tiny muted" style="padding:10px 14px">
+        <i>Keterangan:</i> <b>&mdash;</b> berarti tidak menjadi menu operasional utama, bukan berarti pengguna tidak pernah memiliki akses teknis khusus. Akses baca, edit, verifikasi, persetujuan, dan ekspor ditentukan terpisah di tingkat backend.
+      </div>
+    </div>
+
+    <!-- 9. FITUR KHUSUS PENGAWAS & MADRASAH BINAAN (5 STATUS ALUR) -->
+    <div class="card mb-4" style="border-left: 4px solid var(--green-600)">
+      <div class="card-head">
+        <h3 style="font-size:16px;margin:0">9. Fitur Khusus Hubungan Pengawas dan Madrasah Binaan</h3>
+        <p class="tiny muted" style="margin:2px 0 0">Modul pembeda utama SIM-GTK dari aplikasi kepegawaian biasa</p>
+      </div>
+      <div class="card-body">
+        
+        <div class="grid grid-2 gap-2 mb-3">
+          <div class="p-3" style="background:var(--bg-subtle);border-radius:8px">
+            <h4 style="font-size:14px;margin:0 0 6px">Data Penugasan Pengawas</h4>
+            <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6">
+              <li><b>Identitas pengawas:</b> NIP, nama lengkap, kontak resmi.</li>
+              <li><b>Sekolah/Madrasah binaan:</b> Relasi Many-to-Many terdaftar resmi.</li>
+              <li><b>Wilayah &amp; Jenjang:</b> Pembagian wilayah kerja Kemenag.</li>
+              <li><b>Masa Penugasan:</b> Tanggal mulai &amp; berakhirnya SK dinas.</li>
+              <li><b>Status Penugasan:</b> <i>Menunggu, Aktif, Berakhir, Dicabut</i>.</li>
+              <li><b>Dasar SK:</b> Nomor surat keputusan penugasan resmi dari Kanwil.</li>
+            </ul>
+          </div>
+
+          <div class="p-3" style="background:var(--bg-subtle);border-radius:8px">
+            <h4 style="font-size:14px;margin:0 0 6px">Pemantauan Lintas Binaan</h4>
+            <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6">
+              <li>Ringkasan status supervisi setiap lembaga binaan.</li>
+              <li>Kalender kunjungan observasi dan agenda pembinaan.</li>
+              <li>Daftar laporan pendampingan yang belum disampaikan.</li>
+              <li>Daftar rekomendasi tindak lanjut yang belum diselesaikan.</li>
+              <li>Laporan komparasi individual per lembaga dan rekap seluruh binaan.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4 style="font-size:14px;margin:0 0 10px">Alur 5 Status Tindak Lanjut Rekomendasi</h4>
+        <div class="grid grid-5 gap-1 mb-3" style="display:grid;grid-template-columns:repeat(5, 1fr)">
+          <div class="card p-2 text-center" style="border:1px solid var(--line)">
+            <b style="font-size:12px;color:var(--muted)">1. Belum dimulai</b>
+            <div class="tiny muted mt-1">Rekomendasi baru diterbitkan pengawas.</div>
+          </div>
+          <div class="card p-2 text-center" style="border:1px solid var(--warning);background:rgba(230,126,34,0.05)">
+            <b style="font-size:12px;color:#d35400">2. Dalam proses</b>
+            <div class="tiny muted mt-1">Madrasah sedang menyusun perbaikan.</div>
+          </div>
+          <div class="card p-2 text-center" style="border:1px solid var(--blue-600);background:rgba(21,101,184,0.05)">
+            <b style="font-size:12px;color:var(--blue-700)">3. Menunggu verifikasi</b>
+            <div class="tiny muted mt-1">Bukti perbaikan telah diunggah PJ.</div>
+          </div>
+          <div class="card p-2 text-center" style="border:1px solid var(--green-600);background:rgba(42,157,79,0.05)">
+            <b style="font-size:12px;color:var(--green-700)">4. Selesai</b>
+            <div class="tiny muted mt-1">Pengawas memvalidasi tuntas.</div>
+          </div>
+          <div class="card p-2 text-center" style="border:1px solid var(--danger);background:rgba(192,57,43,0.05)">
+            <b style="font-size:12px;color:#c0392b">5. Perlu perbaikan</b>
+            <div class="tiny muted mt-1">Bukti belum memenuhi target standar.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 10. PRIORITAS PEMBANGUNAN VERSI PERTAMA -->
+    <div class="card mb-4">
+      <div class="card-head">
+        <h3 style="font-size:16px;margin:0">10. Prioritas Pembangunan Sistem</h3>
+      </div>
+      <div class="table-wrap plain">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th style="width:70px">Tahap</th>
+              <th>Modul yang Dibangun</th>
+              <th>Hasil Utama</th>
+              <th style="width:140px;text-align:center">Status Sistem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Tahap 1</b></td>
+              <td>Autentikasi, multi-lembaga, enam peran, hak akses</td>
+              <td>Fondasi akun dan isolasi data yang aman</td>
+              <td style="text-align:center"><span class="badge badge-success">Selesai 100%</span></td>
+            </tr>
+            <tr>
+              <td><b>Tahap 2</b></td>
+              <td>Panel Superadmin dan manajemen lembaga</td>
+              <td>Registrasi lembaga dan pengelolaan pengawas binaan</td>
+              <td style="text-align:center"><span class="badge badge-success">Selesai 100%</span></td>
+            </tr>
+            <tr>
+              <td><b>Tahap 3</b></td>
+              <td>Panel Admin, data GTK, profil, dan dokumen</td>
+              <td>Administrasi data kepegawaian terpusat</td>
+              <td style="text-align:center"><span class="badge badge-success">Selesai 100%</span></td>
+            </tr>
+            <tr>
+              <td><b>Tahap 4</b></td>
+              <td>Panel Kepala Madrasah, jadwal, dan kehadiran</td>
+              <td>Pengelolaan operasional lembaga &amp; persetujuan</td>
+              <td style="text-align:center"><span class="badge badge-success">Selesai 100%</span></td>
+            </tr>
+            <tr>
+              <td><b>Tahap 5</b></td>
+              <td>Panel Pengawas dan program pengawasan</td>
+              <td>Supervisi lintas lembaga, laporan, dan tindak lanjut</td>
+              <td style="text-align:center"><span class="badge badge-success">Selesai 100%</span></td>
+            </tr>
+            <tr>
+              <td><b>Tahap 6</b></td>
+              <td>Panel Guru dan Tenaga Kependidikan</td>
+              <td>Layanan mandiri, dokumen, jadwal, dan evaluasi</td>
+              <td style="text-align:center"><span class="badge badge-success">Selesai 100%</span></td>
+            </tr>
+            <tr>
+              <td><b>Tahap 7</b></td>
+              <td>Laporan, notifikasi, audit, dan pengujian keamanan</td>
+              <td>Aplikasi siap diuji coba dan digunakan bertahap</td>
+              <td style="text-align:center"><span class="badge badge-success">Selesai 100%</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 11. REKOMENDASI KEPUTUSAN DESAIN -->
+    <div class="card mb-4" style="background:#fafbfc">
+      <div class="card-head">
+        <h3 style="font-size:16px;margin:0">11. Tiga Standar Desain Utama SIM-GTK</h3>
+      </div>
+      <div class="card-body">
+        <div class="stack gap-2" style="font-size:13px;line-height:1.6">
+          <div class="p-2" style="background:#fff;border:1px solid var(--line);border-radius:6px">
+            <b>1. Panel berbeda, sumber data konsisten:</b> Setiap peran mendapat dashboard dan menu sendiri, tetapi menggunakan sumber data database yang sama sesuai kewenangannya.
+          </div>
+          <div class="p-2" style="background:#fff;border:1px solid var(--line);border-radius:6px">
+            <b>2. Pengawas terhubung melalui penugasan binaan:</b> Hubungan pengawas dengan lembaga disimpan sebagai data penugasan (tabel <code>pengawas_penugasan</code>), bukan sekadar pilihan manual pada profil pengguna.
+          </div>
+          <div class="p-2" style="background:#fff;border:1px solid var(--line);border-radius:6px">
+            <b>3. Semua akses diverifikasi di backend:</b> Menyembunyikan menu tidak cukup untuk mengamankan data; operasi sensitif selalu memeriksa identitas pengguna, lembaga, penugasan, serta izinnya.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12. KATALOG PERANGKAT & SUMBER BELAJAR GTK (FITUR 9) -->
+    <div class="card mb-4" style="border-radius:16px">
+      <div class="card-head flex justify-between align-center wrap gap-2">
+        <div>
+          <h3 style="font-size:16px;color:var(--navy-900);font-weight:700">
+            12. Katalog Sumber Belajar &amp; Modul Panduan Resmi Kemenag
+          </h3>
+          <p class="tiny muted" style="margin-top:2px">
+            Koleksi instrumen kurikulum, modul pelatihan guru, dan pedoman supervisi akademik terakreditasi.
+          </p>
+        </div>
+        <span class="badge badge-teal font-bold"><svg class="ic ic-sm"><use href="#i-sparkles"></use></svg> Bahan Rujukan</span>
+      </div>
+
+      <div class="grid grid-3 gap-3">
+        <!-- PRODUK 1 -->
+        <div class="product-card">
+          <div class="product-thumb-wrap">
+            <span class="discount-badge">GRATIS 100%</span>
+            <button type="button" class="wishlist-btn" onclick="toggleWishlist(this)" title="Simpan ke Wishlist">
+              <svg class="ic ic-sm" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <img class="product-thumb" src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=500&auto=format&fit=crop" alt="Panduan IKM Madrasah">
+          </div>
+          <div class="p-3 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="star-rating mb-1">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="tiny font-bold text-muted" style="margin-left:4px">4.9 (142 ulasan)</span>
+              </div>
+              <h4 style="font-size:14.5px;font-weight:700;color:var(--navy-900);margin-bottom:6px">
+                Buku Saku Implementasi Kurikulum Merdeka (IKM) Madrasah
+              </h4>
+              <p class="tiny muted mb-3" style="line-height:1.5">
+                Panduan komprehensif penyusunan ATP, modul ajar berdiferensiasi, dan integrasi kokurikuler P5-PPRA.
+              </p>
+            </div>
+            <div class="flex justify-between align-center pt-2" style="border-top:1px solid var(--line)">
+              <div>
+                <span class="tiny muted" style="text-decoration:line-through">Rp 150.000</span>
+                <div class="font-bold text-green" style="font-size:16px">FREE / DIPA</div>
+              </div>
+              <a href="/sim-gtk/pembelajaran/ai" class="btn btn-primary btn-xs">Unduh Modul</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUK 2 -->
+        <div class="product-card">
+          <div class="product-thumb-wrap">
+            <span class="discount-badge">DISKON 40%</span>
+            <button type="button" class="wishlist-btn" onclick="toggleWishlist(this)" title="Simpan ke Wishlist">
+              <svg class="ic ic-sm" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <img class="product-thumb" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop" alt="Rubrik Supervisi">
+          </div>
+          <div class="p-3 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="star-rating mb-1">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="tiny font-bold text-muted" style="margin-left:4px">5.0 (98 ulasan)</span>
+              </div>
+              <h4 style="font-size:14.5px;font-weight:700;color:var(--navy-900);margin-bottom:6px">
+                Paket Rubrik Penilaian Observasi Kelas &amp; Instrumen Asesmen
+              </h4>
+              <p class="tiny muted mb-3" style="line-height:1.5">
+                Format baku skor 1-4, berita acara resmi kop Kemenag, dan instrumen telaah administrasi mengajar.
+              </p>
+            </div>
+            <div class="flex justify-between align-center pt-2" style="border-top:1px solid var(--line)">
+              <div>
+                <span class="tiny muted" style="text-decoration:line-through">Rp 220.000</span>
+                <div class="font-bold text-blue" style="font-size:16px">Rp 132.000</div>
+              </div>
+              <a href="/sim-gtk/penilaian/akademik" class="btn btn-outline btn-xs">Lihat Rubrik</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUK 3 -->
+        <div class="product-card">
+          <div class="product-thumb-wrap">
+            <span class="discount-badge">DISKON 25%</span>
+            <button type="button" class="wishlist-btn" onclick="toggleWishlist(this)" title="Simpan ke Wishlist">
+              <svg class="ic ic-sm" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <img class="product-thumb" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500&auto=format&fit=crop" alt="Pelatihan PKG">
+          </div>
+          <div class="p-3 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="star-rating mb-1">
+                <span>&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                <span class="tiny font-bold text-muted" style="margin-left:4px">4.8 (87 ulasan)</span>
+              </div>
+              <h4 style="font-size:14.5px;font-weight:700;color:var(--navy-900);margin-bottom:6px">
+                Modul Bimtek Guru Penilai &amp; Supervisor Pamong Madrasah
+              </h4>
+              <p class="tiny muted mb-3" style="line-height:1.5">
+                Bahan ajar pelatihan bagi guru berprestasi yang ditugaskan membantu Kepala Madrasah.
+              </p>
+            </div>
+            <div class="flex justify-between align-center pt-2" style="border-top:1px solid var(--line)">
+              <div>
+                <span class="tiny muted" style="text-decoration:line-through">Rp 180.000</span>
+                <div class="font-bold text-blue" style="font-size:16px">Rp 135.000</div>
+              </div>
+              <a href="/sim-gtk/guru-penilai/dashboard" class="btn btn-primary btn-xs">Akses Modul</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    function toggleWishlist(btn) {
+      btn.classList.toggle('active');
+    }
+    </script>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

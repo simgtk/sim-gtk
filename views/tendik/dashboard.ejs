@@ -1,0 +1,191 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <span>Panel Tenaga Kependidikan</span>
+      <span class="sep">/</span>
+      <span>Dashboard Personal</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-id-card"></use></svg>
+          Dashboard Tenaga Kependidikan
+        </h1>
+        <p class="muted">Ruang kerja administrasi dan tugas personal bagi tenaga kependidikan (Administrasi TU, Perpustakaan, Laboratorium, dan Teknisi).</p>
+      </div>
+      <div>
+        <span class="badge badge-teal"><svg class="ic ic-sm"><use href="#i-user"></use></svg> <%= user.nama %> &middot; Kepala Perpustakaan</span>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- KPI STAT CARDS TENDIK -->
+    <div class="grid grid-4 mb-3">
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(21, 101, 184, 0.1);color:var(--blue-700)">
+          <svg class="ic"><use href="#i-check-circle"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Kehadiran Bulan Ini</div>
+          <div class="stat-value">98.2%</div>
+          <div class="tiny text-green">22 Hadir &middot; Tepat Waktu</div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(42, 157, 79, 0.1);color:var(--green-700)">
+          <svg class="ic"><use href="#i-folder"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Kelengkapan Dokumen</div>
+          <div class="stat-value">90%</div>
+          <div class="tiny text-blue">SK, Ijazah, KGB Lengkap</div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(230, 126, 34, 0.1);color:#d35400">
+          <svg class="ic"><use href="#i-clipboard"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Evaluasi Kinerja Tendik</div>
+          <div class="stat-value">86.0 (Baik)</div>
+          <div class="tiny text-orange">Supervisi Manajerial</div>
+        </div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-icon" style="background:rgba(142, 68, 173, 0.1);color:#8e44ad">
+          <svg class="ic"><use href="#i-award"></use></svg>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-label">Pengembangan Diri</div>
+          <div class="stat-value">3 Pelatihan</div>
+          <div class="tiny text-purple">Sertifikat Terverifikasi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DUA KOLOM: TUGAS UNIT KERJA & PENGUMUMAN MADRASAH -->
+    <div class="grid grid-2 mb-3">
+      
+      <!-- AGENDA TUGAS UNIT KERJA (PERPUSTAKAAN / LAB / TU) -->
+      <div class="card">
+        <div class="card-head flex justify-between align-center">
+          <h3 style="font-size:15px;margin:0">Agenda Tugas Unit Kerja &amp; Jadwal Piket</h3>
+          <span class="badge badge-info">Unit Perpustakaan</span>
+        </div>
+        <div class="card-body">
+          <div class="stack gap-2">
+            
+            <div class="p-2" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line);font-size:13px">
+              <div class="flex justify-between">
+                <b>Piket Pelayanan Sirkulasi Buku &amp; Literasi</b>
+                <span class="badge badge-xs badge-success">Senin - Jumat</span>
+              </div>
+              <div class="tiny muted mt-1">Pelayanan peminjaman dan pengembalian buku Kurikulum Merdeka kelas X, XI, XII.</div>
+            </div>
+
+            <div class="p-2" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line);font-size:13px">
+              <div class="flex justify-between">
+                <b>Inventarisasi &amp; Barcode Buku Baru DIPA</b>
+                <span class="badge badge-xs badge-warning">Target: 30 Okt 2026</span>
+              </div>
+              <div class="tiny muted mt-1">Penempelan label barcode dan klasifikasi DDC 200 judul buku referensi.</div>
+            </div>
+
+            <div class="p-2" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line);font-size:13px">
+              <div class="flex justify-between">
+                <b>Tindak Lanjut Rekomendasi Supervisi SLIMS</b>
+                <span class="badge badge-xs badge-info">Dalam Proses</span>
+              </div>
+              <div class="tiny muted mt-1">Instalasi aplikasi otomasi perpustakaan madrasah berbasis SLIMS.</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- PENGUMUMAN RESMI MADRASAH UNTUK TENDIK -->
+      <div class="card">
+        <div class="card-head flex justify-between align-center">
+          <h3 style="font-size:15px;margin:0">Pengumuman &amp; Arahan Madrasah</h3>
+          <span class="badge badge-teal">Terbaru</span>
+        </div>
+        <div class="card-body">
+          <div class="stack gap-2">
+            <% pengumumans.forEach(function(pgm) { %>
+              <div class="p-2" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line);font-size:13px">
+                <div class="flex justify-between align-center">
+                  <b><%= pgm.judul %></b>
+                  <span class="tiny muted"><%= pgm.created_at %></span>
+                </div>
+                <p class="tiny muted" style="margin:4px 0"><%= pgm.isi %></p>
+                <div class="tiny muted">Penulis: <b><%= pgm.penulis %></b></div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAUTAN MENU PERSONAL TENDIK -->
+    <div class="card">
+      <div class="card-head">
+        <h3 style="font-size:15px;margin:0">Layanan Mandiri Tenaga Kependidikan</h3>
+      </div>
+      <div class="card-body">
+        <div class="grid grid-3 gap-2">
+          
+          <a href="/sim-gtk/portofolio/data-diri" class="card p-3 flex align-center gap-2 hover-elevate" style="border:1px solid var(--line);text-decoration:none;color:inherit">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(21, 101, 184, 0.1);color:var(--blue-700);display:flex;align-items:center;justify-content:center">
+              <svg class="ic"><use href="#i-id-card"></use></svg>
+            </div>
+            <div>
+              <b style="font-size:14px">Profil &amp; Berkas Saya</b>
+              <p class="tiny muted" style="margin:2px 0 0">Data pribadi, pendidikan, SK pangkat &amp; jabatan.</p>
+            </div>
+          </a>
+
+          <a href="/sim-gtk/referensi/presensi" class="card p-3 flex align-center gap-2 hover-elevate" style="border:1px solid var(--line);text-decoration:none;color:inherit">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(42, 157, 79, 0.1);color:var(--green-700);display:flex;align-items:center;justify-content:center">
+              <svg class="ic"><use href="#i-check-circle"></use></svg>
+            </div>
+            <div>
+              <b style="font-size:14px">Kehadiran &amp; Perizinan</b>
+              <p class="tiny muted" style="margin:2px 0 0">Rekap presensi kerja dan pengajuan izin/cuti.</p>
+            </div>
+          </a>
+
+          <a href="/sim-gtk/penilaian/manajerial" class="card p-3 flex align-center gap-2 hover-elevate" style="border:1px solid var(--line);text-decoration:none;color:inherit">
+            <div style="width:40px;height:40px;border-radius:8px;background:rgba(230, 126, 34, 0.1);color:#d35400;display:flex;align-items:center;justify-content:center">
+              <svg class="ic"><use href="#i-award"></use></svg>
+            </div>
+            <div>
+              <b style="font-size:14px">Kinerja &amp; Evaluasi Unit</b>
+              <p class="tiny muted" style="margin:2px 0 0">Hasil evaluasi manajerial perpustakaan/lab.</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

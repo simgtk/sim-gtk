@@ -1,0 +1,295 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/superadmin/dashboard">Super Admin</a>
+      <span class="sep">/</span>
+      <span>Manajemen Admin Lembaga</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-users"></use></svg>
+          Manajemen Akun Admin Lembaga
+        </h1>
+        <p class="muted">Pembuatan akun admin madrasah baru, pemulihan akses (reset kata sandi), serta kontrol status akses (aktif/nonaktif/terkunci).</p>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="openModal('modalTambahAdmin')">
+          <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Buat Akun Admin Lembaga
+        </button>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- SUMMARY CARDS -->
+    <div class="grid grid-3 mb-3">
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Total Admin Terdaftar</div>
+          <div class="h3" style="font-size:22px;font-weight:700"><%= admins.length %> Akun</div>
+        </div>
+        <span class="badge badge-primary">Satker Kemenag</span>
+      </div>
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Status Akses Aktif</div>
+          <div class="h3 text-green" style="font-size:22px;font-weight:700">
+            <%= admins.filter(a => a.status === 'aktif').length %>
+          </div>
+        </div>
+        <span class="badge badge-success">Diberi Izin</span>
+      </div>
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Nonaktif / Terkunci</div>
+          <div class="h3 text-danger" style="font-size:22px;font-weight:700">
+            <%= admins.filter(a => a.status !== 'aktif').length %>
+          </div>
+        </div>
+        <span class="badge badge-danger">Akses Dibatasi</span>
+      </div>
+    </div>
+
+    <!-- TABEL AKUN ADMIN -->
+    <div class="card">
+      <div class="card-head flex justify-between align-center wrap gap-1">
+        <div class="flex align-center gap-1">
+          <input type="text" id="searchAdmin" class="form-control" style="width:280px" placeholder="Cari nama admin, username, email..." onkeyup="filterAdmin()">
+          <select id="filterStatusAdmin" class="form-control" style="width:160px" onchange="filterAdmin()">
+            <option value="">Semua Status</option>
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Nonaktif</option>
+          </select>
+        </div>
+        <span class="tiny muted">Menampilkan <%= admins.length %> akun admin lembaga</span>
+      </div>
+
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table" id="tableAdmin">
+            <thead>
+              <tr>
+                <th>Nama Lengkap Administrator</th>
+                <th>Username &amp; Email</th>
+                <th>Satuan Lembaga / Madrasah</th>
+                <th>No. Telepon</th>
+                <th>Status Akses</th>
+                <th>Waktu Dibuat</th>
+                <th style="width:230px;text-align:center">Aksi Manajemen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% admins.forEach(function(a) { %>
+                <tr data-status="<%= a.status %>" data-search="<%= (a.nama + ' ' + a.username + ' ' + a.email + ' ' + (a.madrasah_nama || '')).toLowerCase() %>">
+                  <td>
+                    <div style="font-weight:600"><%= a.nama %></div>
+                    <span class="badge badge-sm badge-info">Admin Madrasah</span>
+                  </td>
+                  <td>
+                    <div class="font-mono small"><b><%= a.username %></b></div>
+                    <div class="tiny muted"><%= a.email %></div>
+                  </td>
+                  <td>
+                    <b><%= a.madrasah_nama || 'Belum Terhubung' %></b>
+                    <div class="tiny muted">NPSN: <%= a.madrasah_npsn || '-' %></div>
+                  </td>
+                  <td><%= a.telepon || '-' %></td>
+                  <td>
+                    <% if (a.status === 'aktif') { %>
+                      <span class="badge badge-success">Aktif</span>
+                    <% } else { %>
+                      <span class="badge badge-danger">Nonaktif / Terkunci</span>
+                    <% } %>
+                  </td>
+                  <td class="tiny muted"><%= a.created_at || 'Terdaftar' %></td>
+                  <td style="text-align:center">
+                    <div class="flex gap-1 justify-center align-center">
+                      
+                      <!-- TOMBOL PEMULIHAN AKUN / RESET PASSWORD -->
+                      <button type="button" class="btn btn-warning btn-xs" title="Pemulihan Akun / Reset Password" onclick='openResetModal(<%= JSON.stringify(a) %>)'>
+                        <svg class="ic ic-sm"><use href="#i-refresh"></use></svg> Pemulihan
+                      </button>
+
+                      <!-- PENGATURAN STATUS AKSES (TOGGLE AKTIF / NONAKTIF) -->
+                      <% if (a.status === 'aktif') { %>
+                        <form method="post" action="/sim-gtk/superadmin/admin-lembaga/<%= a.id %>/status" style="display:inline" onsubmit="return confirm('Kunci status akses akun admin ini?')">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <input type="hidden" name="status" value="nonaktif">
+                          <button type="submit" class="btn btn-danger btn-xs" title="Kunci Akses Admin">
+                            <svg class="ic ic-sm"><use href="#i-lock"></use></svg> Kunci
+                          </button>
+                        </form>
+                      <% } else { %>
+                        <form method="post" action="/sim-gtk/superadmin/admin-lembaga/<%= a.id %>/status" style="display:inline">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <input type="hidden" name="status" value="aktif">
+                          <button type="submit" class="btn btn-success btn-xs" title="Buka Kunci Akses Admin">
+                            <svg class="ic ic-sm"><use href="#i-check"></use></svg> Aktifkan
+                          </button>
+                        </form>
+                      <% } %>
+
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL PEMBUATAN AKUN ADMIN BARU -->
+    <div class="modal" id="modalTambahAdmin">
+      <div class="modal-dialog">
+        <form method="post" action="/sim-gtk/superadmin/admin-lembaga">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="modal-head">
+            <h3 style="font-size:16px;margin:0">Pembuatan Akun Admin Lembaga Baru</h3>
+            <button type="button" class="btn-close" onclick="closeModal('modalTambahAdmin')">&times;</button>
+          </div>
+          <div class="modal-body">
+            
+            <div class="mb-2">
+              <label class="form-label required">Pilih Lembaga / Madrasah Sasaran</label>
+              <select name="madrasah_id" class="form-control" required>
+                <option value="">-- Pilih Satuan Madrasah --</option>
+                <% lembagas.forEach(function(l) { %>
+                  <option value="<%= l.id %>"><%= l.nama %> (NPSN: <%= l.npsn || '-' %>)</option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label required">Nama Lengkap Administrator</label>
+              <input type="text" name="nama" class="form-control" required placeholder="Contoh: Ahmad Fadli, S.Kom">
+            </div>
+
+            <div class="grid grid-2 gap-1 mb-2">
+              <div>
+                <label class="form-label required">Username</label>
+                <input type="text" name="username" class="form-control" required placeholder="admin_madrasah">
+              </div>
+              <div>
+                <label class="form-label required">Email Resmi</label>
+                <input type="email" name="email" class="form-control" required placeholder="admin@madrasah.sch.id">
+              </div>
+            </div>
+
+            <div class="grid grid-2 gap-1 mb-2">
+              <div>
+                <label class="form-label required">Kata Sandi Awal</label>
+                <input type="text" name="password" class="form-control" required value="admin123">
+                <span class="tiny muted">Dapat diubah oleh admin saat login pertama kali.</span>
+              </div>
+              <div>
+                <label class="form-label">No. Telepon / WhatsApp</label>
+                <input type="text" name="telepon" class="form-control" placeholder="0812xxxx">
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Status Akses Awal</label>
+              <select name="status" class="form-control">
+                <option value="aktif">Langsung Diberi Izin Akses (Aktif)</option>
+                <option value="nonaktif">Tahan Sementara (Nonaktif)</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="modal-foot flex justify-end gap-1">
+            <button type="button" class="btn btn-outline" onclick="closeModal('modalTambahAdmin')">Batal</button>
+            <button type="submit" class="btn btn-primary">Terbitkan Akun Admin</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL PEMULIHAN AKUN / RESET PASSWORD -->
+    <div class="modal" id="modalResetPassword">
+      <div class="modal-dialog">
+        <form method="post" action="/sim-gtk/superadmin/admin-lembaga/reset-password">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <input type="hidden" name="id" id="reset_admin_id">
+          <div class="modal-head">
+            <h3 style="font-size:16px;margin:0">Pemulihan Akun &amp; Reset Kata Sandi</h3>
+            <button type="button" class="btn-close" onclick="closeModal('modalResetPassword')">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="p-2 mb-2" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line);font-size:13px">
+              <div>Administrator: <b id="reset_admin_nama"></b></div>
+              <div>Email: <span class="muted" id="reset_admin_email"></span></div>
+              <div>Lembaga: <span id="reset_admin_madrasah"></span></div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label required">Kata Sandi Baru</label>
+              <input type="text" name="new_password" class="form-control" required value="Bismillah123!">
+              <span class="tiny muted">Masukkan kata sandi baru untuk dipulihkan ke admin yang bersangkutan.</span>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Status Akun Pasca Pemulihan</label>
+              <select name="status" class="form-control">
+                <option value="aktif">Langsung Aktifkan Akun</option>
+                <option value="nonaktif">Biarkan Nonaktif</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-foot flex justify-end gap-1">
+            <button type="button" class="btn btn-outline" onclick="closeModal('modalResetPassword')">Batal</button>
+            <button type="submit" class="btn btn-warning">Konfirmasi Pemulihan Akun</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function openResetModal(admin) {
+  document.getElementById('reset_admin_id').value = admin.id;
+  document.getElementById('reset_admin_nama').innerText = admin.nama;
+  document.getElementById('reset_admin_email').innerText = admin.email;
+  document.getElementById('reset_admin_madrasah').innerText = admin.madrasah_nama || '-';
+  openModal('modalResetPassword');
+}
+
+function filterAdmin() {
+  const q = document.getElementById('searchAdmin').value.toLowerCase();
+  const s = document.getElementById('filterStatusAdmin').value;
+  const rows = document.querySelectorAll('#tableAdmin tbody tr');
+
+  rows.forEach(r => {
+    const rSearch = r.getAttribute('data-search') || '';
+    const rStatus = r.getAttribute('data-status') || '';
+    const matchQ = !q || rSearch.includes(q);
+    const matchS = !s || rStatus === s;
+    r.style.display = (matchQ && matchS) ? '' : 'none';
+  });
+}
+</script>
+
+<%- include('../partials/footer') %>

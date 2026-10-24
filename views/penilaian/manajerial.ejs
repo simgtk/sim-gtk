@@ -1,0 +1,269 @@
+<%- include('../partials/head', { title: "Supervisi Manajerial — SIM-GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar', { currentMenu: 'penilaian', activeSub: 'manajerial' }) %>
+  <main class="main">
+    
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/penilaian/jadwal">Penilaian</a>
+      <span class="sep">/</span>
+      <span>Supervisi Manajerial</span>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header flex justify-between align-center wrap gap-2 no-print mb-4">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-clipboard"></use></svg>
+          Supervisi Manajerial Tugas Tambahan Guru
+        </h1>
+        <p class="muted">
+          Penilaian kinerja manajerial bagi guru yang diberikan tugas tambahan: Kepala Lab, Kepala Perpustakaan, Wakamad, Pembina OSIS, dan Ekstrakurikuler.
+        </p>
+      </div>
+      <div class="flex gap-2 wrap align-center">
+        <button type="button" class="btn btn-outline btn-sm flex align-center gap-1" onclick="window.print()">
+          <svg class="ic ic-sm"><use href="#i-print"></use></svg> Cetak Hasil
+        </button>
+        <button type="button" class="btn btn-primary btn-sm flex align-center gap-1" onclick="document.getElementById('modalNilaiManajerial').style.display='flex'">
+          <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Input Supervisi Manajerial
+        </button>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-4">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- KPI STATISTIK MANAJERIAL -->
+    <div class="grid grid-4 mb-4">
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon bg-blue-subtle text-blue" style="width:48px;height:48px;border-radius:12px;background:var(--blue-50);display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-users"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">GTK Tugas Tambahan</div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy-800)"><%= manajerialList.length %> Orang</div>
+          <div class="tiny text-blue font-bold">Tercatat di Madrasah</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:var(--green-bg);color:var(--green);display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-check-circle"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Perencanaan Program</div>
+          <div style="font-size:22px;font-weight:800;color:var(--green-800)"><%= avgProgram %> / 100</div>
+          <div class="tiny text-green font-bold">Program Kerja Unit</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:#f3e8ff;color:#7e22ce;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-presentation"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Realisasi &amp; Pelaksanaan</div>
+          <div style="font-size:22px;font-weight:800;color:#7e22ce"><%= avgPelaksanaan %> / 100</div>
+          <div class="tiny font-bold text-purple">Pelayanan Satker</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div class="stat-icon" style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#b45309;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-award"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted" style="letter-spacing:0.5px">Rata-rata Skor Total</div>
+          <div style="font-size:22px;font-weight:800;color:#b45309"><%= avgTotal %></div>
+          <div class="tiny font-bold text-orange">Predikat: Amat Baik</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABEL MANAJERIAL -->
+    <div class="card mb-4" style="padding:0;overflow:hidden">
+      <div class="card-head p-3 flex justify-between align-center wrap gap-2" style="background:#f8fafc;border-bottom:1px solid var(--line);margin:0">
+        <div>
+          <h3 style="font-size:16px;margin:0;color:var(--navy-900)">
+            Daftar Penilaian Manajerial Guru Tugas Tambahan
+          </h3>
+          <p class="tiny muted" style="margin-top:2px">
+            Aspek evaluasi: Program Kerja (30%), Keterlaksanaan Unit (50%), dan Evaluasi Pelaporan (20%).
+          </p>
+        </div>
+        <div>
+          <span class="badge badge-teal">Tahun 2026/2027 Ganjil</span>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table tbl mb-0">
+          <thead>
+            <tr>
+              <th style="width:50px;text-align:center">No</th>
+              <th style="min-width:210px">Nama Guru / GTK</th>
+              <th style="width:190px">Tugas Tambahan</th>
+              <th style="width:120px">Tanggal</th>
+              <th style="min-width:160px">Supervisor</th>
+              <th style="width:90px;text-align:center">Program</th>
+              <th style="width:95px;text-align:center">Pelaksanaan</th>
+              <th style="width:90px;text-align:center">Evaluasi</th>
+              <th style="width:95px;text-align:center">Skor Akhir</th>
+              <th style="width:120px;text-align:center">Predikat</th>
+              <th style="min-width:240px">Catatan &amp; Rekomendasi</th>
+              <th style="width:110px;text-align:center" class="no-print">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (manajerialList.length === 0) { %>
+              <tr>
+                <td colspan="12" class="center muted p-4">Belum ada data supervisi manajerial.</td>
+              </tr>
+            <% } %>
+            <% manajerialList.forEach(function(item, idx) { %>
+              <tr>
+                <td style="text-align:center;font-weight:700;color:var(--muted)"><%= idx + 1 %></td>
+                <td>
+                  <div style="font-weight:700;color:var(--navy-900)"><%= item.gtk_nama %></div>
+                  <div class="tiny muted"><%= item.gtk_nip && item.gtk_nip !== '-' ? 'NIP. ' + item.gtk_nip : 'NUPTK: ' + (item.gtk_nuptk || '-') %></div>
+                </td>
+                <td><span class="badge badge-teal"><%= item.tugas_tambahan %></span></td>
+                <td class="nowrap tiny" style="font-weight:600"><%= item.tanggal %></td>
+                <td class="small"><%= item.supervisor_nama %></td>
+                <td style="text-align:center"><%= item.skor_program %></td>
+                <td style="text-align:center"><%= item.skor_pelaksanaan %></td>
+                <td style="text-align:center"><%= item.skor_evaluasi %></td>
+                <td style="text-align:center">
+                  <b style="font-size:15px;color:var(--navy-900)"><%= item.skor_total %></b>
+                </td>
+                <td style="text-align:center">
+                  <% if (item.predikat === 'Amat Baik' || item.skor_total >= 91) { %>
+                    <span class="badge badge-success font-bold">Amat Baik</span>
+                  <% } else { %>
+                    <span class="badge badge-teal font-bold"><%= item.predikat %></span>
+                  <% } %>
+                </td>
+                <td class="small muted">
+                  <div><b>Catatan:</b> <%= item.catatan || 'Kinerja sangat memuaskan.' %></div>
+                  <div class="mt-1"><b>Rekomendasi:</b> <%= item.rekomendasi || 'Pertahankan tata kelola unit yang tertib.' %></div>
+                </td>
+                <td class="no-print nowrap" style="text-align:center">
+                  <a class="btn btn-outline btn-sm flex align-center gap-1" href="/sim-gtk/penilaian/laporan?gtk_id=<%= item.gtk_id %>">
+                    <svg class="ic ic-sm"><use href="#i-print"></use></svg> Cetak
+                  </a>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL INPUT SUPERVISI MANAJERIAL (LEGA & RAPI)
+         ============================================================ -->
+    <div class="modal-overlay" id="modalNilaiManajerial">
+      <div class="modal-card-lg" style="max-width:680px">
+        <form method="post" action="/sim-gtk/penilaian/manajerial/simpan">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+          <div class="modal-header">
+            <div>
+              <h3 style="font-size:17px;margin:0;color:var(--navy-900);font-weight:700">
+                Input Supervisi Manajerial Tugas Tambahan
+              </h3>
+              <p class="tiny muted" style="margin-top:2px">
+                Penilaian program kerja unit, realisasi layanan, dan evaluasi berkala.
+              </p>
+            </div>
+            <button type="button" class="btn btn-ghost" onclick="document.getElementById('modalNilaiManajerial').style.display='none'">
+              <svg class="ic"><use href="#i-x"></use></svg>
+            </button>
+          </div>
+
+          <div class="modal-body-scroll">
+            <div class="grid grid-2 gap-3">
+              <div class="field span-2">
+                <label class="font-bold">Guru Pengemban Tugas Tambahan</label>
+                <select name="gtk_id" required>
+                  <% gtkList.forEach(function(g) { %>
+                    <option value="<%= g.id %>"><%= g.nama %> &mdash; <%= g.mapel_utama || g.jabatan %></option>
+                  <% }); %>
+                </select>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Nama Tugas Tambahan</label>
+                <select name="tugas_tambahan" required>
+                  <option value="Kepala Laboratorium Komputer">Kepala Laboratorium Komputer</option>
+                  <option value="Kepala Perpustakaan Madrasah">Kepala Perpustakaan Madrasah</option>
+                  <option value="Wakil Kepala Bidang Kurikulum">Wakil Kepala Bidang Kurikulum</option>
+                  <option value="Wakil Kepala Bidang Kesiswaan">Wakil Kepala Bidang Kesiswaan</option>
+                  <option value="Wakil Kepala Bidang Sarana Prasarana">Wakil Kepala Bidang Sarana Prasarana</option>
+                  <option value="Pembina OSIS & Ekstrakurikuler">Pembina OSIS &amp; Ekstrakurikuler</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Tanggal Penilaian</label>
+                <input type="date" name="tanggal" value="<%= new Date().toISOString().slice(0, 10) %>" required>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Nama Supervisor</label>
+                <input type="text" name="supervisor_nama" value="<%= user ? user.nama : 'Drs. H. Abdul Wahab, M.Pd' %>" required>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Skor Program Kerja (0 - 100)</label>
+                <input type="number" name="skor_program" min="0" max="100" value="90" required>
+                <span class="tiny muted">Bobot 30% (Kelengkapan Program Tahunan)</span>
+              </div>
+
+              <div class="field">
+                <label class="font-bold">Skor Pelaksanaan &amp; Layanan (0 - 100)</label>
+                <input type="number" name="skor_pelaksanaan" min="0" max="100" value="88" required>
+                <span class="tiny muted">Bobot 50% (Realisasi Program &amp; SOP)</span>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Skor Evaluasi &amp; Pelaporan (0 - 100)</label>
+                <input type="number" name="skor_evaluasi" min="0" max="100" value="86" required>
+                <span class="tiny muted">Bobot 20% (Laporan Kinerja &amp; Inventarisasi)</span>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Catatan Supervisor</label>
+                <textarea name="catatan" rows="3" placeholder="Catatan hasil peninjauan unit kerja...">Tata kelola laboratorium sangat rapi, SOP peminjaman alat dan jadwal praktikum berjalan tertib.</textarea>
+              </div>
+
+              <div class="field span-2">
+                <label class="font-bold">Rekomendasi Tindak Lanjut</label>
+                <textarea name="rekomendasi" rows="2" placeholder="Saran perbaikan ke depan...">Tingkatkan inventarisasi berkala software pembelajaran dan pemeliharaan perangkat cadangan.</textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('modalNilaiManajerial').style.display='none'">
+              Batal
+            </button>
+            <button type="submit" class="btn btn-primary flex align-center gap-1">
+              <svg class="ic ic-sm"><use href="#i-check"></use></svg> Simpan Hasil Manajerial
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

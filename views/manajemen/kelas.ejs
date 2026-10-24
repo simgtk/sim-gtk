@@ -1,0 +1,144 @@
+<%- include('../partials/head', { title: "Kelas &amp; Siswa", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Kelas &amp; Siswa</b>
+    </div>
+    <div class="page-head">
+      <h1>Kelas &amp; Siswa</h1>
+      <p>Kelola rombongan belajar, wali kelas, dan peserta didik</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1.6fr 1fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Rombongan Belajar</h3><p>6 kelas pada madrasah ini</p></div><a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/siswa"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-users"></use></svg> Data Siswa</a></div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Kelas</th><th>Tingkat</th><th>Wali Kelas</th><th class="num">Siswa</th><th class="num">Jadwal</th><th></th></tr></thead>
+        <tbody>
+          
+            <tr>
+              <td class="strong">X IPA 1</td>
+              <td><span class="badge badge-teal">X</span></td>
+              <td class="small">Herman Susanto Buhungo</td>
+              <td class="num">13</td>
+              <td class="num">3</td>
+              <td class="right nowrap">
+                <a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/siswa?kelas_id=1">Siswa</a>
+                <form method="post" action="/sim-gtk/manajemen/kelas/1/hapus" style="display:inline" data-confirm="Hapus kelas X IPA 1?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong">X IPA 2</td>
+              <td><span class="badge badge-teal">X</span></td>
+              <td class="small">Ahmad Fauzi, S.Ag</td>
+              <td class="num">16</td>
+              <td class="num">2</td>
+              <td class="right nowrap">
+                <a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/siswa?kelas_id=2">Siswa</a>
+                <form method="post" action="/sim-gtk/manajemen/kelas/2/hapus" style="display:inline" data-confirm="Hapus kelas X IPA 2?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong">XI IPA 1</td>
+              <td><span class="badge badge-teal">XI</span></td>
+              <td class="small">Dewi Kartika, S.Pd</td>
+              <td class="num">13</td>
+              <td class="num">5</td>
+              <td class="right nowrap">
+                <a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/siswa?kelas_id=3">Siswa</a>
+                <form method="post" action="/sim-gtk/manajemen/kelas/3/hapus" style="display:inline" data-confirm="Hapus kelas XI IPA 1?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong">XI IPS 1</td>
+              <td><span class="badge badge-teal">XI</span></td>
+              <td class="small">Rahmat Hidayat, S.Pd.I</td>
+              <td class="num">13</td>
+              <td class="num">7</td>
+              <td class="right nowrap">
+                <a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/siswa?kelas_id=4">Siswa</a>
+                <form method="post" action="/sim-gtk/manajemen/kelas/4/hapus" style="display:inline" data-confirm="Hapus kelas XI IPS 1?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong">XII IPA 1</td>
+              <td><span class="badge badge-teal">XII</span></td>
+              <td class="small">Fatimah Zahra, S.Pd</td>
+              <td class="num">13</td>
+              <td class="num">7</td>
+              <td class="right nowrap">
+                <a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/siswa?kelas_id=5">Siswa</a>
+                <form method="post" action="/sim-gtk/manajemen/kelas/5/hapus" style="display:inline" data-confirm="Hapus kelas XII IPA 1?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="strong">XII IPS 1</td>
+              <td><span class="badge badge-teal">XII</span></td>
+              <td class="small">Nurhayati, S.Pd</td>
+              <td class="num">16</td>
+              <td class="num">4</td>
+              <td class="right nowrap">
+                <a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/siswa?kelas_id=6">Siswa</a>
+                <form method="post" action="/sim-gtk/manajemen/kelas/6/hapus" style="display:inline" data-confirm="Hapus kelas XII IPS 1?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h3>Tambah / Ubah Kelas</h3><p>Wali kelas dapat ditetapkan dari daftar GTK</p></div></div>
+    <form method="post" action="/sim-gtk/manajemen/kelas">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field mb-2"><label>Nama Kelas</label><input name="nama" type="text" placeholder="mis. X IPA 1" required></div>
+      <div class="field mb-2"><label>Tingkat</label>
+        <select name="tingkat"><option value="X">X</option><option value="XI">XI</option><option value="XII">XII</option><option value="VII">VII</option><option value="VIII">VIII</option><option value="IX">IX</option><option value="I">I</option><option value="II">II</option><option value="III">III</option><option value="IV">IV</option><option value="V">V</option><option value="VI">VI</option></select>
+      </div>
+      <div class="field mb-2"><label>Wali Kelas</label>
+        <select name="wali_id"><option value="">— belum ditetapkan —</option>
+          <option value="5">Ahmad Fauzi, S.Ag</option><option value="6">Dewi Kartika, S.Pd</option><option value="8">Fatimah Zahra, S.Pd</option><option value="3">Herman Susanto Buhungo</option><option value="12">Herman Susanto Buhungo, S.Pd</option><option value="4">Nurhayati, S.Pd</option><option value="7">Rahmat Hidayat, S.Pd.I</option><option value="2">Siti Rahmawati, S.Kom</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"></use></svg> Simpan Kelas</button>
+    </form>
+    <div class="alert alert-info mt-2"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Kelas yang masih memiliki siswa tidak dapat dihapus. Pindahkan siswa terlebih dahulu.</div></div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

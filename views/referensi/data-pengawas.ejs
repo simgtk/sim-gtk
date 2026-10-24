@@ -1,0 +1,71 @@
+<%- include('../partials/head', { title: "Data Pengawas", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Data Pengawas</b>
+    </div>
+    <div class="page-head">
+      <h1>Data Pengawas</h1>
+      <p>Pengawas madrasah yang mendampingi satuan kerja Anda</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1.4fr 1fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Pengawas Pendamping</h3><p>Pengawas yang ditugaskan pada madrasah Anda</p></div><span class="badge badge-teal">1 pengawas</span></div>
+    
+      <div class="stack-sm">
+        
+          <div style="border:1px solid var(--line);border-radius:12px;padding:16px 18px">
+            <div class="flex align-center gap-2">
+              <span class="avatar avatar-lg">NA</span>
+              <div>
+                <b>Dr. Hj. Nurul Aini, M.Pd</b>
+                <div class="tiny muted">Pengawas Madrasah · Golongan -</div>
+              </div>
+              <span class="badge badge-success" style="margin-left:auto">Aktif</span>
+            </div>
+            <div class="divider"></div>
+            <div class="form-grid">
+              <div><div class="tiny muted">Email</div><b class="small">pengawas@kemenag.go.id</b></div>
+              <div><div class="tiny muted">Telepon</div><b class="small">-</b></div>
+              <div><div class="tiny muted">Pendidikan</div><b class="small">-</b></div>
+              <div><div class="tiny muted">Sertifikat Pendidik</div><b class="small">-</b></div>
+            </div>
+          </div>
+        
+      </div>
+    
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>Seluruh Pengawas</h3><p>Daftar pengawas pada platform</p></div></div>
+      
+        <div class="flex align-center gap-1" style="padding:9px 0;border-bottom:1px dashed var(--line)">
+          <span class="avatar" style="width:30px;height:30px;font-size:11px">NA</span>
+          <div><b class="small">Dr. Hj. Nurul Aini, M.Pd</b><div class="tiny muted">pengawas@kemenag.go.id</div></div>
+        </div>
+      
+    </div>
+    <div class="card tight">
+      <h3 style="font-size:14px;margin-bottom:8px">Tugas Pengawas</h3>
+      <ul class="small muted" style="margin:0;padding-left:18px;line-height:1.7">
+        <li>Melaksanakan supervisi akademik dan manajerial madrasah.</li>
+        <li>Menilai kinerja guru melalui instrumen supervisi.</li>
+        <li>Mendampingi madrasah dalam pemenuhan standar mutu.</li>
+        <li>Menyusun laporan pendampingan berkala.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

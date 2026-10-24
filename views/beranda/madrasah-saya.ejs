@@ -1,0 +1,201 @@
+<%- include('../partials/head', { title: "Madrasah Saya", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Madrasah Saya</b>
+    </div>
+    <div class="page-head">
+      <h1>Madrasah Saya</h1>
+      <p>Profil dan data madrasah tempat Anda bertugas</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1.5fr 1fr">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Profil Madrasah</h3><p>Identitas satuan kerja tempat Anda bertugas</p></div>
+        <span class="badge badge-teal">MA</span>
+      </div>
+      <div class="form-grid">
+        <div><div class="tiny muted">Nama Madrasah</div><b>MAN 2 KABUPATEN GORONTALO</b></div>
+        <div><div class="tiny muted">NPSN</div><b>40401234</b></div>
+        <div><div class="tiny muted">Kode Madrasah</div><b>MAN2GOR</b></div>
+        <div><div class="tiny muted">Kepala Madrasah</div><b>Drs. H. Abdul Wahab, M.Pd</b></div>
+        <div><div class="tiny muted">Alamat</div><b>Jl. Taman Pendidikan No. 12, Limboto</b></div>
+        <div><div class="tiny muted">Kabupaten / Kota</div><b>Kabupaten Gorontalo, Gorontalo</b></div>
+        <div><div class="tiny muted">Telepon</div><b>0435-881234</b></div>
+        <div><div class="tiny muted">Email</div><b>man2gorontalo@kemenag.go.id</b></div>
+        <div><div class="tiny muted">Tahun Ajaran</div><b>2026/2027</b></div>
+        <div><div class="tiny muted">Semester</div><b>1 (Ganjil)</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Guru &amp; Tenaga Kependidikan</h3><p>8 akun aktif pada madrasah ini</p></div>
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/gtk">Kelola Data GTK</a>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Nama</th><th>Jabatan</th><th>Mapel</th><th>Golongan</th><th>Sertifikasi</th></tr></thead>
+          <tbody>
+            
+              <tr>
+                <td>
+                  <div class="flex align-center gap-1">
+                    <span class="avatar" style="width:28px;height:28px;font-size:10.5px">SR</span>
+                    <div><b class="strong">Siti Rahmawati, S.Kom</b><div class="tiny muted">-</div></div>
+                  </div>
+                </td>
+                <td>Admin Madrasah</td>
+                <td>Informatika</td>
+                <td class="nowrap">III/a</td>
+                <td><span class="badge badge-muted">Belum</span></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <div class="flex align-center gap-1">
+                    <span class="avatar" style="width:28px;height:28px;font-size:10.5px">AF</span>
+                    <div><b class="strong">Ahmad Fauzi, S.Ag</b><div class="tiny muted">198203052008011004</div></div>
+                  </div>
+                </td>
+                <td>Guru</td>
+                <td>Al-Qur&#39;an Hadis</td>
+                <td class="nowrap">III/d</td>
+                <td><span class="badge badge-success">Sudah</span></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <div class="flex align-center gap-1">
+                    <span class="avatar" style="width:28px;height:28px;font-size:10.5px">DK</span>
+                    <div><b class="strong">Dewi Kartika, S.Pd</b><div class="tiny muted">199107152019032008</div></div>
+                  </div>
+                </td>
+                <td>Guru</td>
+                <td>Bahasa Inggris</td>
+                <td class="nowrap">III/b</td>
+                <td><span class="badge badge-muted">Belum</span></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <div class="flex align-center gap-1">
+                    <span class="avatar" style="width:28px;height:28px;font-size:10.5px">FZ</span>
+                    <div><b class="strong">Fatimah Zahra, S.Pd</b><div class="tiny muted">198806222012012005</div></div>
+                  </div>
+                </td>
+                <td>Guru</td>
+                <td>Bahasa Arab</td>
+                <td class="nowrap">III/c</td>
+                <td><span class="badge badge-success">Sudah</span></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <div class="flex align-center gap-1">
+                    <span class="avatar" style="width:28px;height:28px;font-size:10.5px">HS</span>
+                    <div><b class="strong">Herman Susanto Buhungo</b><div class="tiny muted">199006812019031015</div></div>
+                  </div>
+                </td>
+                <td>Guru</td>
+                <td>Fikih</td>
+                <td class="nowrap">III/b</td>
+                <td><span class="badge badge-success">Sudah</span></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <div class="flex align-center gap-1">
+                    <span class="avatar" style="width:28px;height:28px;font-size:10.5px">HS</span>
+                    <div><b class="strong">Herman Susanto Buhungo, S.Pd</b><div class="tiny muted">-</div></div>
+                  </div>
+                </td>
+                <td>Guru</td>
+                <td>Matematika</td>
+                <td class="nowrap">-</td>
+                <td><span class="badge badge-muted">Belum</span></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <div class="flex align-center gap-1">
+                    <span class="avatar" style="width:28px;height:28px;font-size:10.5px">N</span>
+                    <div><b class="strong">Nurhayati, S.Pd</b><div class="tiny muted">198504122010012003</div></div>
+                  </div>
+                </td>
+                <td>Guru</td>
+                <td>Matematika</td>
+                <td class="nowrap">III/c</td>
+                <td><span class="badge badge-success">Sudah</span></td>
+              </tr>
+            
+              <tr>
+                <td>
+                  <div class="flex align-center gap-1">
+                    <span class="avatar" style="width:28px;height:28px;font-size:10.5px">RH</span>
+                    <div><b class="strong">Rahmat Hidayat, S.Pd.I</b><div class="tiny muted">199303102020011009</div></div>
+                  </div>
+                </td>
+                <td>Guru</td>
+                <td>SKI</td>
+                <td class="nowrap">III/a</td>
+                <td><span class="badge badge-muted">Belum</span></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:14px">Statistik Madrasah</h3>
+      <div class="stack-sm">
+        <div class="info-row"><span class="k">Guru aktif</span><span class="v">7</span></div>
+        <div class="info-row"><span class="k">Admin / tenaga kependidikan</span><span class="v">1</span></div>
+        <div class="info-row"><span class="k">Rombongan belajar</span><span class="v">6</span></div>
+        <div class="info-row"><span class="k">Peserta didik</span><span class="v">84</span></div>
+        <div class="info-row"><span class="k">Mata pelajaran</span><span class="v">12</span></div>
+        <div class="info-row"><span class="k">Guru tersertifikasi</span><span class="v">4</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:12px">Pengawas Pendamping</h3>
+      
+        <div class="stack-sm">
+          
+            <div class="flex align-center gap-1">
+              <span class="avatar">NA</span>
+              <div><b class="small">Dr. Hj. Nurul Aini, M.Pd</b><div class="tiny muted">pengawas@kemenag.go.id</div></div>
+            </div>
+          
+        </div>
+      
+      <a class="btn btn-outline btn-sm btn-block mt-2" href="/sim-gtk/referensi/data-pengawas">Lihat Data Pengawas</a>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:10px">Kode Madrasah</h3>
+      <p class="small muted">Bagikan kode ini kepada GTK baru agar dapat mendaftar akun pada madrasah yang benar.</p>
+      <div class="flex align-center gap-1 mt-2">
+        <input type="text" value="MAN2GOR" readonly style="font-weight:700;letter-spacing:.08em">
+        <button type="button" class="btn btn-outline btn-sm" data-copy="MAN2GOR">Salin</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

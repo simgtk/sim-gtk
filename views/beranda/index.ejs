@@ -1,0 +1,262 @@
+<%- include('../partials/head', { title: "Beranda", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+      <div class="alert alert-success flash-bar no-print" id="flashBar">
+        <svg class="ic " aria-hidden="true"><use href="#i-check-circle"></use></svg>
+        <div>Selamat datang, Siti Rahmawati, S.Kom.</div>
+      </div>
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Beranda</b>
+    </div>
+    <div class="page-head">
+      <h1>Beranda</h1>
+      <p>Dashboard Personal — Data PTK Anda</p>
+    </div>
+
+
+
+  <div class="grid grid-4 mb-3">
+    <div class="stat tint-1">
+      <div><div class="lbl">GTK Aktif</div><div class="val">8</div><div class="sub">7 guru · 1 tenaga kependidikan</div></div>
+      <div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-users"></use></svg></div>
+    </div>
+    <div class="stat tint-2">
+      <div><div class="lbl">Kelas &amp; Siswa</div><div class="val">6</div><div class="sub">84 peserta didik terdaftar</div></div>
+      <div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-layers"></use></svg></div>
+    </div>
+    <div class="stat tint-3">
+      <div><div class="lbl">Menunggu Persetujuan</div><div class="val">6</div><div class="sub">0 pendaftaran akun baru</div></div>
+      <div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-clipboard"></use></svg></div>
+    </div>
+    <div class="stat tint-4">
+      <div><div class="lbl">Presensi GTK Hari Ini</div><div class="val">2</div><div class="sub">dari 8 GTK aktif</div></div>
+      <div class="ico ico-blue"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-check-circle"></use></svg></div>
+    </div>
+  </div>
+
+
+
+<div class="identity mb-3">
+  <div class="identity-top">
+    <div class="avatar">SR</div>
+    <div>
+      <h2>Siti Rahmawati, S.Kom</h2>
+      <div class="role">Tenaga Kependidikan / Admin Madrasah · MAN 2 KABUPATEN GORONTALO</div>
+    </div>
+  </div>
+  <div class="identity-grid">
+    <div><div class="lbl">NIK</div><div class="val">7501101010802236</div></div>
+    <div><div class="lbl">NIP</div><div class="val">-</div></div>
+    <div><div class="lbl">Status</div><div class="val">PNS</div></div>
+    <div><div class="lbl">Pendidikan</div><div class="val">S1</div></div>
+  </div>
+  <div class="identity-sep"></div>
+  <div class="identity-grid">
+    <div><div class="lbl">Golongan</div><div class="val">III/a <span class="tiny" style="color:#bff0e7">(MKG 8 th 4 bl)</span></div></div>
+    <div><div class="lbl">Mata Pelajaran</div><div class="val">Informatika</div></div>
+    <div><div class="lbl">Jenis Pegawai</div><div class="val">Tenaga Administrasi</div></div>
+    <div><div class="lbl">Sertifikasi</div><div class="val">
+      Belum Sertifikasi
+      <span class="badge badge-warning" style="margin-left:6px">Proses</span>
+    </div></div>
+  </div>
+</div>
+
+<div class="grid grid-4 mb-3">
+  <div class="stat tint-1">
+    <div>
+      <div class="lbl">Jadwal Supervisi</div>
+      <div class="val">Terjadwal</div>
+      <div class="sub">24 Okt 2026 · Lab Komputer</div>
+    </div>
+    <div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-calendar"></use></svg></div>
+  </div>
+  <div class="stat tint-2">
+    <div>
+      <div class="lbl">Skor Supervisi Akademik</div>
+      <div class="val" style="font-size:22px;color:var(--navy-900)">90 <span class="tiny" style="color:var(--green-700);font-weight:600">(Amat Baik)</span></div>
+      <div class="sub">Administrasi 92 &middot; Mengajar 88</div>
+    </div>
+    <div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-award"></use></svg></div>
+  </div>
+  <div class="stat tint-3">
+    <div>
+      <div class="lbl">Perangkat Pembelajaran</div>
+      <div class="val">3 Berkas</div>
+      <div class="sub">Modul Ajar, ATP &amp; LKPD Lengkap</div>
+    </div>
+    <div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-folder"></use></svg></div>
+  </div>
+  <div class="stat tint-4">
+    <div>
+      <div class="lbl">Berita Acara Supervisi</div>
+      <div class="val">Tervalidasi</div>
+      <div class="sub"><a href="/sim-gtk/penilaian/laporan" style="color:var(--blue-700)">Siap Cetak / PDF &rarr;</a></div>
+    </div>
+    <div class="ico ico-blue"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-print"></use></svg></div>
+  </div>
+</div>
+
+
+<div class="grid" style="grid-template-columns:1.4fr 1fr">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h3>Status Kelengkapan Data</h3>
+          <p>Data yang perlu dilengkapi agar rekam jejak portofolio dan supervisi berjalan lancar</p>
+        </div>
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/portofolio/data-diri">Kelola Data</a>
+      </div>
+      <div class="kelengkapan">
+        
+          <div class="item">
+            <span class="ok"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-check-circle"></use></svg></span>
+            Biodata
+          </div>
+        
+          <div class="item">
+            <span class="no"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"></use></svg></span>
+            NUPTK
+          </div>
+        
+          <div class="item">
+            <span class="ok"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-check-circle"></use></svg></span>
+            Pendidikan
+          </div>
+        
+          <div class="item">
+            <span class="ok"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-check-circle"></use></svg></span>
+            Kepegawaian
+          </div>
+        
+          <div class="item">
+            <span class="no"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"></use></svg></span>
+            Sertifikasi
+          </div>
+        
+          <div class="item">
+            <span class="ok"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-check-circle"></use></svg></span>
+            Profil
+          </div>
+        
+      </div>
+      <div class="mt-2">
+        <div class="flex between tiny muted mb-1"><span>Progres kelengkapan</span><span>67%</span></div>
+        <div class="progress"><i style="width:67%"></i></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h3>Jadwal Mengajar — Jumat</h3>
+          <p>Jadwal tatap muka Anda hari ini</p>
+        </div>
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/pembelajaran/jadwal">Semua Jadwal</a>
+      </div>
+      
+        <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-calendar"></use></svg><b>Tidak ada jadwal hari ini</b>Gunakan waktu untuk menyusun perangkat ajar atau memeriksa jurnal.</div>
+      
+    </div>
+
+    
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Pengajuan Terbaru GTK</h3><p>Pengajuan yang masuk dari guru dan tenaga kependidikan</p></div>
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/persetujuan">Buka Persetujuan</a>
+      </div>
+      
+        <div class="table-wrap plain">
+          <table class="tbl">
+            <thead><tr><th>Nama</th><th>Pengajuan</th><th>Status</th></tr></thead>
+            <tbody>
+              
+                <tr>
+                  <td class="strong">Herman Susanto Buhungo</td>
+                  <td>Pengajuan SKMT Periode Oktober 2026<div class="tiny muted">5 Okt 2026</div></td>
+                  <td><span class="badge badge-warning">Menunggu</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="strong">Herman Susanto Buhungo</td>
+                  <td>Pengajuan SKBK Bulan September 2026<div class="tiny muted">3 Sep 2026</div></td>
+                  <td><span class="badge badge-success">Disetujui</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="strong">Herman Susanto Buhungo</td>
+                  <td>Dispensasi JTM karena Tugas Pendampingan<div class="tiny muted">12 Agu 2026</div></td>
+                  <td><span class="badge badge-success">Disetujui</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="strong">Dewi Kartika, S.Pd</td>
+                  <td>Pengajuan SKMT Periode Oktober 2026<div class="tiny muted">6 Okt 2026</div></td>
+                  <td><span class="badge badge-warning">Menunggu</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="strong">Rahmat Hidayat, S.Pd.I</td>
+                  <td>Alih Fungsi dari GTY ke Guru Tetap<div class="tiny muted">20 Jul 2026</div></td>
+                  <td><span class="badge badge-warning">Menunggu</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      
+    </div>
+    
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:14px">Aksi Cepat</h3>
+      <div class="quick-actions">
+        
+          <a href="/sim-gtk/manajemen/gtk"><svg class="ic " aria-hidden="true"><use href="#i-users"></use></svg> Data GTK</a>
+          <a href="/sim-gtk/manajemen/persetujuan"><svg class="ic " aria-hidden="true"><use href="#i-check-square"></use></svg> Persetujuan</a>
+          <a href="/sim-gtk/manajemen/jadwal"><svg class="ic " aria-hidden="true"><use href="#i-calendar"></use></svg> Jadwal Pelajaran</a>
+          <a href="/sim-gtk/manajemen/supervisi"><svg class="ic " aria-hidden="true"><use href="#i-presentation"></use></svg> Supervisi GTK</a>
+          <a href="/sim-gtk/manajemen/presensi"><svg class="ic " aria-hidden="true"><use href="#i-clock"></use></svg> Presensi GTK</a>
+          <a href="/sim-gtk/pengaturan"><svg class="ic " aria-hidden="true"><use href="#i-settings"></use></svg> Pengaturan</a>
+        
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head" style="margin-bottom:12px">
+        <div><h3>Supervisi</h3><p>Riwayat observasi kelas Anda</p></div>
+      </div>
+      
+        <div class="list-empty" style="padding:18px"><svg class="ic " aria-hidden="true"><use href="#i-presentation"></use></svg><b>Belum ada supervisi</b></div>
+      
+    </div>
+
+    <div class="hero-promo" style="flex-direction:column;align-items:stretch;gap:14px">
+      <div class="flex align-center gap-2">
+        <div class="promo-logo"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-sparkles"></use></svg></div>
+        <div>
+          <div class="flex align-center gap-1"><b style="font-size:14.5px">SIM-GTK AI</b><span class="badge badge-teal">Baru</span></div>
+          <div class="tiny muted">Generator perangkat pembelajaran</div>
+        </div>
+      </div>
+      <p class="small muted">Susun modul ajar, ATP, prota, prosem, LKPD, soal, dan KKTP secara otomatis dari data mapel dan kelas Anda.</p>
+      <a class="btn btn-primary btn-sm" href="/sim-gtk/pembelajaran/ai">Buka AI Generator <svg class="ic ic-sm" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+    </div>
+  </div>
+</div>
+
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

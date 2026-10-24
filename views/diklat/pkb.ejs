@@ -1,0 +1,75 @@
+<%- include('../partials/head', { title: "Riwayat Pelatihan (PKB)", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Riwayat Pelatihan (PKB)</b>
+    </div>
+    <div class="page-head">
+      <h1>Riwayat Pelatihan (PKB)</h1>
+      <p>Pengembangan Keprofesian Berimbang — riwayat diklat dan pelatihan</p>
+    </div>
+
+<div class="grid grid-3 mb-3">
+  <div class="stat tint-1"><div><div class="lbl">Total Pelatihan</div><div class="val">0</div><div class="sub">PKB terdaftar</div></div><div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-book"></use></svg></div></div>
+  <div class="stat tint-2"><div><div class="lbl">Total JP Disetujui</div><div class="val">0</div><div class="sub">Jam pelatihan terverifikasi</div></div><div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-clock"></use></svg></div></div>
+  <div class="stat tint-3"><div><div class="lbl">Menunggu Verifikasi</div><div class="val">0</div><div class="sub">Menunggu admin madrasah</div></div><div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-clipboard"></use></svg></div></div>
+</div>
+
+<div class="grid" style="grid-template-columns:1fr 1.6fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Tambah Pelatihan</h3><p>Catat riwayat pelatihan pkb</p></div></div>
+    <form method="post" action="/sim-gtk/diklat/simpan">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <input type="hidden" name="jenis" value="PKB">
+      <div class="form-grid">
+        <div class="field span-2">
+          <label>Nama Pelatihan</label>
+          <input type="text" name="nama" placeholder="mis. Pelatihan Implementasi Kurikulum Merdeka" required>
+        </div>
+        <div class="field span-2">
+          <label>Penyelenggara</label>
+          <input type="text" name="penyelenggara" placeholder="BDK Manado / Kementerian Agama RI">
+        </div>
+        <div class="field">
+          <label>Tahun</label>
+          <input type="number" name="tahun" min="2000" max="2035" value="2026" required>
+        </div>
+        <div class="field">
+          <label>Jumlah JP</label>
+          <input type="number" name="jp" min="0" placeholder="32">
+        </div>
+        <div class="field">
+          <label>Tanggal Mulai</label>
+          <input type="date" name="tgl_mulai">
+        </div>
+        <div class="field">
+          <label>Tanggal Selesai</label>
+          <input type="date" name="tgl_selesai">
+        </div>
+        <div class="field span-2">
+          <label>Nomor Sertifikat</label>
+          <input type="text" name="no_sertifikat" placeholder="BDK-2026-0451">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block mt-2" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Simpan Pelatihan</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h3>Riwayat Pelatihan</h3><p>Data pelatihan beserta status verifikasi</p></div></div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-book"></use></svg><b>Belum ada pelatihan</b>Tambahkan riwayat pelatihan melalui formulir di samping.</div>
+    
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

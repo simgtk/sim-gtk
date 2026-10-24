@@ -1,0 +1,453 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/superadmin/dashboard">Super Admin</a>
+      <span class="sep">/</span>
+      <span>Hak Akses &amp; Peran</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1 mb-3">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-shield"></use></svg>
+          Kontrol Penuh Hak Akses &amp; Peran (RBAC)
+        </h1>
+        <p class="muted">
+          Superadmin memiliki kuasa penuh menentukan <b>Menu Utama</b>, <b>Sub Menu / Fitur</b>, serta <b>Izin Aksi (Lihat, Edit, Unduh, Hapus)</b> 
+          pada akun masing-masing peran melalui switch toggle ON / OFF secara langsung (real-time).
+        </p>
+      </div>
+      <div class="flex align-center gap-1 wrap">
+        <a href="/sim-gtk/switch-role/<%= selectedRole %>" class="btn btn-outline btn-sm flex align-center gap-1" title="Lihat langsung tampilan panel sebagai peran ini">
+          <svg class="ic ic-sm"><use href="#i-eye"></use></svg> Uji Tinjau Panel <%= roleLabels[selectedRole] || selectedRole %>
+        </a>
+        <form method="post" action="/sim-gtk/superadmin/hak-akses/reset" style="display:inline" onsubmit="return confirm('Kembalikan seluruh hak akses peran <%= roleLabels[selectedRole] %> ke konfigurasi standar?')">
+          <input type="hidden" name="role" value="<%= selectedRole %>">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit" class="btn btn-outline btn-sm text-danger flex align-center gap-1">
+            <svg class="ic ic-sm"><use href="#i-refresh"></use></svg> Reset Standar Kemenag
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- TAB PILIH PERAN (6 PERAN) -->
+    <div class="card mb-3" style="background:var(--bg-card);border:1px solid var(--line);border-radius:12px">
+      <div class="card-body p-2">
+        <div class="flex gap-2 wrap align-center">
+          <span class="tiny uppercase font-bold muted px-2" style="letter-spacing:0.5px">Pilih Peran:</span>
+          
+          <a href="/sim-gtk/superadmin/hak-akses?role=superadmin" 
+             class="rbac-role-pill <%= selectedRole === 'superadmin' ? 'active' : '' %>"
+             style="--role-accent:#c0392b">
+            <span class="role-dot" style="background:#c0392b"></span>
+            <span class="role-title">Super Admin</span>
+            <span class="role-badge">Platform</span>
+          </a>
+
+          <a href="/sim-gtk/superadmin/hak-akses?role=admin" 
+             class="rbac-role-pill <%= selectedRole === 'admin' ? 'active' : '' %>"
+             style="--role-accent:var(--blue-700)">
+            <span class="role-dot" style="background:var(--blue-700)"></span>
+            <span class="role-title">Admin Lembaga</span>
+            <span class="role-badge">Operator</span>
+          </a>
+
+          <a href="/sim-gtk/superadmin/hak-akses?role=kamad" 
+             class="rbac-role-pill <%= selectedRole === 'kamad' ? 'active' : '' %>"
+             style="--role-accent:#8e44ad">
+            <span class="role-dot" style="background:#8e44ad"></span>
+            <span class="role-title">Kepala Madrasah</span>
+            <span class="role-badge">Pimpinan</span>
+          </a>
+
+          <a href="/sim-gtk/superadmin/hak-akses?role=pengawas" 
+             class="rbac-role-pill <%= selectedRole === 'pengawas' ? 'active' : '' %>"
+             style="--role-accent:var(--green-700)">
+            <span class="role-dot" style="background:var(--green-700)"></span>
+            <span class="role-title">Pengawas Pembina</span>
+            <span class="role-badge">Binaan</span>
+          </a>
+
+          <a href="/sim-gtk/superadmin/hak-akses?role=guru" 
+             class="rbac-role-pill <%= selectedRole === 'guru' ? 'active' : '' %>"
+             style="--role-accent:var(--blue-600)">
+            <span class="role-dot" style="background:var(--blue-600)"></span>
+            <span class="role-title">Guru Pendidik</span>
+            <span class="role-badge">GTK</span>
+          </a>
+
+          <a href="/sim-gtk/superadmin/hak-akses?role=tendik" 
+             class="rbac-role-pill <%= selectedRole === 'tendik' ? 'active' : '' %>"
+             style="--role-accent:#34495e">
+            <span class="role-dot" style="background:#34495e"></span>
+            <span class="role-title">Tenaga Kependidikan</span>
+            <span class="role-badge">Tendik</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI STATISTIK IZIN PERAN TERPILIH -->
+    <div class="kpi-grid mb-3">
+      <div class="kpi-card">
+        <div class="kpi-icon bg-blue-subtle text-blue">
+          <svg class="ic"><use href="#i-shield"></use></svg>
+        </div>
+        <div class="kpi-info">
+          <div class="kpi-val"><%= roleLabels[selectedRole] || selectedRole %></div>
+          <div class="kpi-lbl">Peran yang Sedang Dikonfigurasi</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon bg-green-subtle text-green">
+          <svg class="ic"><use href="#i-grid"></use></svg>
+        </div>
+        <div class="kpi-info">
+          <div class="kpi-val"><%= stats.activeGroups %> / <%= stats.totalGroups %></div>
+          <div class="kpi-lbl">Menu Utama Aktif</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon bg-purple-subtle text-purple">
+          <svg class="ic"><use href="#i-check-square"></use></svg>
+        </div>
+        <div class="kpi-info">
+          <div class="kpi-val"><%= stats.activeSubmenu %> / <%= stats.totalSubmenu %></div>
+          <div class="kpi-lbl">Sub Menu / Fitur Aktif (<%= stats.percentActive %>%)</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon bg-orange-subtle text-orange">
+          <svg class="ic"><use href="#i-lock"></use></svg>
+        </div>
+        <div class="kpi-info">
+          <div class="kpi-val">Real-Time</div>
+          <div class="kpi-lbl">Sinkronisasi Otomatis saat Klik</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANDUAN PENGATURAN ON/OFF -->
+    <div class="card mb-3" style="background:var(--bg-subtle);border-left:4px solid var(--blue-700)">
+      <div class="card-body p-3 flex justify-between align-center wrap gap-2">
+        <div class="flex align-center gap-2">
+          <svg class="ic text-blue" style="width:24px;height:24px;flex-shrink:0"><use href="#i-info"></use></svg>
+          <div style="font-size:13px;line-height:1.5">
+            <b>Panduan Kuasa Penuh Superadmin:</b>
+            <ul style="margin:4px 0 0 18px;padding:0">
+              <li><b>Menu Utama ON/OFF:</b> Mematikan Menu Utama (Grup) akan langsung menyembunyikan seluruh folder navigasi beserta seluruh sub menunya dari akun peran tersebut.</li>
+              <li><b>Sub Menu / Fitur ON/OFF:</b> Menentukan apakah tautan halaman/fitur tertentu muncul atau hilang dari sidebar peran tersebut.</li>
+              <li><b>Aksi (Lihat, Edit, Unduh, Hapus):</b> Menentukan tombol atau hak operasional yang diberikan saat pengguna membuka halaman fitur tersebut.</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <span class="badge badge-success flex align-center gap-1">
+            <svg class="ic ic-sm"><use href="#i-check"></use></svg> Auto-Save Aktif
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATRIKS HAK AKSES PER MENU UTAMA (GRUP) -->
+    <div class="stack gap-3">
+      <% if (groups && groups.length > 0) { %>
+        <% groups.forEach(function(g, gIdx) { %>
+          <div class="card rbac-group-card <%= g.active ? '' : 'group-disabled' %>" id="group-card-<%= g.key %>">
+            
+            <!-- HEADER MENU UTAMA -->
+            <div class="card-head flex justify-between align-center wrap gap-2" style="background:var(--bg-subtle);border-bottom:1px solid var(--line)">
+              <div class="flex align-center gap-2">
+                <span class="avatar avatar-sm" style="background:var(--blue-700);color:#fff;font-weight:700">
+                  <%= gIdx + 1 %>
+                </span>
+                <div>
+                  <div class="flex align-center gap-1">
+                    <span class="tiny uppercase muted font-bold" style="letter-spacing:0.5px">Menu Utama</span>
+                    <span class="badge <%= g.active ? 'badge-success' : 'badge-secondary' %>" id="group-badge-<%= g.key %>">
+                      <%= g.active ? 'AKTIF' : 'NONAKTIF' %>
+                    </span>
+                  </div>
+                  <h3 style="font-size:16px;margin:2px 0 0;font-weight:700"><%= g.label %></h3>
+                </div>
+              </div>
+
+              <!-- SWITCH ON/OFF MENU UTAMA -->
+              <div class="flex align-center gap-2">
+                <span class="switch-label-state <%= g.active ? 'text-success' : 'text-muted' %>" id="group-state-text-<%= g.key %>">
+                  <%= g.active ? 'Menu Utama Ditampilkan' : 'Menu Utama Disembunyikan' %>
+                </span>
+                <label class="switch switch-lg" title="Klik untuk mengaktifkan / menonaktifkan Menu Utama ini untuk peran <%= roleLabels[selectedRole] %>">
+                  <input type="checkbox" 
+                         class="rbac-toggle rbac-group-toggle"
+                         data-type="group"
+                         data-role="<%= selectedRole %>"
+                         data-key="<%= g.key %>"
+                         <%= g.active ? 'checked' : '' %>>
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- BODY FITUR & AKSI -->
+            <div class="card-body p-0 group-body" id="group-body-<%= g.key %>" style="<%= g.active ? '' : 'opacity:0.45;pointer-events:none' %>">
+              <div class="table-responsive">
+                <table class="table rbac-sub-table">
+                  <thead>
+                    <tr>
+                      <th style="min-width:220px">Sub Menu / Fitur</th>
+                      <th style="width:140px;text-align:center">Tampil di Menu</th>
+                      <th style="width:100px;text-align:center" title="Hak membuka & melihat data">👁️ Lihat</th>
+                      <th style="width:100px;text-align:center" title="Hak menambah & mengubah data">✏️ Edit</th>
+                      <th style="width:100px;text-align:center" title="Hak mengekspor atau mencetak berkas">📥 Unduh</th>
+                      <th style="width:100px;text-align:center" title="Hak menghapus atau membatalkan rekaman">🗑️ Hapus</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% g.items.forEach(function(item) { %>
+                      <tr id="row-<%= item.key %>" class="<%= item.active ? '' : 'row-muted' %>">
+                        <td>
+                          <div class="flex align-center gap-2">
+                            <span class="avatar avatar-xs" style="background:var(--bg-subtle);border:1px solid var(--line)">
+                              <svg class="ic ic-sm text-blue"><use href="#<%= item.icon || 'i-grid' %>"></use></svg>
+                            </span>
+                            <div>
+                              <div style="font-weight:600;font-size:13px"><%= item.label %></div>
+                              <div class="tiny muted" style="font-family:monospace"><%= item.url %></div>
+                            </div>
+                          </div>
+                        </td>
+
+                        <!-- SWITCH ON/OFF SUB MENU AKTIF -->
+                        <td style="text-align:center">
+                          <label class="switch" title="Tampilkan / Sembunyikan Submenu '<%= item.label %>'">
+                            <input type="checkbox" 
+                                   class="rbac-toggle"
+                                   data-type="submenu"
+                                   data-role="<%= selectedRole %>"
+                                   data-key="<%= item.key %>"
+                                   data-field="active"
+                                   <%= item.active ? 'checked' : '' %>>
+                            <span class="switch-slider"></span>
+                          </label>
+                        </td>
+
+                        <!-- AKSI: LIHAT -->
+                        <td style="text-align:center">
+                          <label class="switch switch-sm" title="Izin Lihat: <%= item.label %>">
+                            <input type="checkbox" 
+                                   class="rbac-toggle"
+                                   data-type="submenu"
+                                   data-role="<%= selectedRole %>"
+                                   data-key="<%= item.key %>"
+                                   data-field="can_view"
+                                   <%= item.canView ? 'checked' : '' %>>
+                            <span class="switch-slider"></span>
+                          </label>
+                        </td>
+
+                        <!-- AKSI: EDIT -->
+                        <td style="text-align:center">
+                          <label class="switch switch-sm" title="Izin Edit / Tambah: <%= item.label %>">
+                            <input type="checkbox" 
+                                   class="rbac-toggle"
+                                   data-type="submenu"
+                                   data-role="<%= selectedRole %>"
+                                   data-key="<%= item.key %>"
+                                   data-field="can_edit"
+                                   <%= item.canEdit ? 'checked' : '' %>>
+                            <span class="switch-slider"></span>
+                          </label>
+                        </td>
+
+                        <!-- AKSI: UNDUH -->
+                        <td style="text-align:center">
+                          <label class="switch switch-sm" title="Izin Unduh / Ekspor: <%= item.label %>">
+                            <input type="checkbox" 
+                                   class="rbac-toggle"
+                                   data-type="submenu"
+                                   data-role="<%= selectedRole %>"
+                                   data-key="<%= item.key %>"
+                                   data-field="can_download"
+                                   <%= item.canDownload ? 'checked' : '' %>>
+                            <span class="switch-slider"></span>
+                          </label>
+                        </td>
+
+                        <!-- AKSI: HAPUS -->
+                        <td style="text-align:center">
+                          <label class="switch switch-sm" title="Izin Hapus: <%= item.label %>">
+                            <input type="checkbox" 
+                                   class="rbac-toggle"
+                                   data-type="submenu"
+                                   data-role="<%= selectedRole %>"
+                                   data-key="<%= item.key %>"
+                                   data-field="can_delete"
+                                   <%= item.canDelete ? 'checked' : '' %>>
+                            <span class="switch-slider"></span>
+                          </label>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="card p-4 text-center">
+          <p class="muted">Tidak ada data hak akses untuk peran ini.</p>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="rbacToast" class="toast-notice" style="display:none">
+      <div class="flex align-center gap-1">
+        <svg class="ic ic-sm text-green"><use href="#i-check"></use></svg>
+        <span id="rbacToastMsg">Hak akses berhasil diperbarui.</span>
+      </div>
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>
+
+<!-- REAL-TIME RBAC TOGGLE SCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const csrfToken = '<%= csrfToken %>';
+  const toast = document.getElementById('rbacToast');
+  const toastMsg = document.getElementById('rbacToastMsg');
+  let toastTimer = null;
+
+  function showToast(message, isError = false) {
+    if (!toast) return;
+    toastMsg.textContent = message;
+    if (isError) {
+      toast.style.background = '#c0392b';
+    } else {
+      toast.style.background = '#1e293b';
+    }
+    toast.style.display = 'block';
+    toast.style.opacity = '1';
+
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => { toast.style.display = 'none'; }, 300);
+    }, 2500);
+  }
+
+  // Tangani semua toggle checkbox RBAC
+  document.querySelectorAll('.rbac-toggle').forEach(function(toggle) {
+    toggle.addEventListener('change', async function() {
+      const el = this;
+      const type = el.dataset.type;
+      const role = el.dataset.role;
+      const key = el.dataset.key;
+      const field = el.dataset.field || null;
+      const value = el.checked;
+
+      // Optimistic visual feedback untuk toggle menu utama
+      if (type === 'group') {
+        const card = document.getElementById('group-card-' + key);
+        const body = document.getElementById('group-body-' + key);
+        const badge = document.getElementById('group-badge-' + key);
+        const stateText = document.getElementById('group-state-text-' + key);
+
+        if (value) {
+          if (card) card.classList.remove('group-disabled');
+          if (body) {
+            body.style.opacity = '1';
+            body.style.pointerEvents = 'auto';
+          }
+          if (badge) {
+            badge.className = 'badge badge-success';
+            badge.textContent = 'AKTIF';
+          }
+          if (stateText) {
+            stateText.className = 'switch-label-state text-success';
+            stateText.textContent = 'Menu Utama Ditampilkan';
+          }
+        } else {
+          if (card) card.classList.add('group-disabled');
+          if (body) {
+            body.style.opacity = '0.45';
+            body.style.pointerEvents = 'none';
+          }
+          if (badge) {
+            badge.className = 'badge badge-secondary';
+            badge.textContent = 'NONAKTIF';
+          }
+          if (stateText) {
+            stateText.className = 'switch-label-state text-muted';
+            stateText.textContent = 'Menu Utama Disembunyikan';
+          }
+        }
+      } else if (type === 'submenu' && field === 'active') {
+        const row = document.getElementById('row-' + key);
+        if (row) {
+          if (value) {
+            row.classList.remove('row-muted');
+          } else {
+            row.classList.add('row-muted');
+          }
+        }
+      }
+
+      // Kirim request ke backend via fetch
+      try {
+        const resp = await fetch('/sim-gtk/superadmin/hak-akses/toggle', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken
+          },
+          body: JSON.stringify({
+            role: role,
+            type: type,
+            key: key,
+            field: field,
+            value: value,
+            _csrf: csrfToken
+          })
+        });
+
+        const data = await resp.json();
+        if (data.success) {
+          showToast(data.message || 'Perubahan berhasil disimpan');
+        } else {
+          // Rollback toggle state jika gagal
+          el.checked = !value;
+          showToast(data.message || 'Gagal menyimpan perubahan', true);
+        }
+      } catch (err) {
+        console.error('RBAC toggle error:', err);
+        el.checked = !value;
+        showToast('Koneksi terganggu. Gagal menyimpan perubahan.', true);
+      }
+    });
+  });
+});
+</script>

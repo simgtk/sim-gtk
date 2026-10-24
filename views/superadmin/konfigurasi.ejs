@@ -1,0 +1,286 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/superadmin/dashboard">Super Admin</a>
+      <span class="sep">/</span>
+      <span>Konfigurasi Global</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-settings"></use></svg>
+          Konfigurasi Global Platform
+        </h1>
+        <p class="muted">Pengaturan parameter platform terpusat, kontrol aktivasi modul aplikasi, master kategori umum, dan kebijakan keamanan sistem.</p>
+      </div>
+      <div>
+        <span class="badge badge-info"><svg class="ic ic-sm"><use href="#i-shield"></use></svg> Kebijakan Standar Kemenag</span>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- TAB NAVIGATION -->
+    <div class="tabs mb-3" style="border-bottom: 2px solid var(--line);display:flex;gap:12px">
+      <button class="btn btn-ghost tab-btn active" onclick="switchTab('tab-platform', this)" style="border-radius:6px 6px 0 0;font-weight:600">
+        <svg class="ic ic-sm"><use href="#i-grid"></use></svg> Pengaturan Platform
+      </button>
+      <button class="btn btn-ghost tab-btn" onclick="switchTab('tab-modul', this)" style="border-radius:6px 6px 0 0;font-weight:600">
+        <svg class="ic ic-sm"><use href="#i-layers"></use></svg> Manajemen Modul
+      </button>
+      <button class="btn btn-ghost tab-btn" onclick="switchTab('tab-kategori', this)" style="border-radius:6px 6px 0 0;font-weight:600">
+        <svg class="ic ic-sm"><use href="#i-book"></use></svg> Kategori Umum
+      </button>
+      <button class="btn btn-ghost tab-btn" onclick="switchTab('tab-keamanan', this)" style="border-radius:6px 6px 0 0;font-weight:600">
+        <svg class="ic ic-sm"><use href="#i-lock"></use></svg> Kebijakan Keamanan
+      </button>
+    </div>
+
+    <!-- TAB 1: PENGATURAN PLATFORM -->
+    <div class="tab-pane active" id="tab-platform">
+      <div class="card">
+        <div class="card-head">
+          <h3 style="font-size:16px;margin:0">Parameter Utama Platform SIM-GTK</h3>
+          <p class="tiny muted" style="margin:2px 0 0">Identitas dan parameter operasional sistem yang berlaku untuk seluruh satuan madrasah binaan.</p>
+        </div>
+        <div class="card-body">
+          <form method="post" action="/sim-gtk/superadmin/konfigurasi">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="kategori" value="platform">
+
+            <div class="grid grid-2 gap-2 mb-3">
+              <div>
+                <label class="form-label required">Nama Resmi Platform</label>
+                <input type="text" name="platform_nama" class="form-control" value="<%= config.platform_nama || 'SIM-GTK Digital Education Platform' %>" required>
+                <span class="tiny muted">Ditampilkan pada judul halaman dan lembar rapor resmi.</span>
+              </div>
+              <div>
+                <label class="form-label required">Nomor Versi Build Sistem</label>
+                <input type="text" name="platform_versi" class="form-control" value="<%= config.platform_versi || 'v3.5.0-LTS Enterprise' %>" required>
+                <span class="tiny muted">Label rilis resmi dari pengembang sistem.</span>
+              </div>
+            </div>
+
+            <div class="grid grid-2 gap-2 mb-3">
+              <div>
+                <label class="form-label required">Tahun Ajaran Operasional Default</label>
+                <input type="text" name="tahun_ajaran_default" class="form-control" value="<%= config.tahun_ajaran_default || '2026/2027' %>" required>
+              </div>
+              <div>
+                <label class="form-label required">Semester Akademik Berjalan</label>
+                <select name="semester_default" class="form-control" required>
+                  <option value="1 (Ganjil)" <%= config.semester_default === '1 (Ganjil)' ? 'selected' : '' %>>1 (Ganjil)</option>
+                  <option value="2 (Genap)" <%= config.semester_default === '2 (Genap)' ? 'selected' : '' %>>2 (Genap)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Saluran Layanan Dukungan &amp; Helpdesk</label>
+              <input type="text" name="kontak_support" class="form-control" value="<%= config.kontak_support || 'pusatbantuan@sim-gtk.id / 0811-9988-7766' %>">
+              <span class="tiny muted">Kontak narahubung teknis bagi admin madrasah saat terjadi kendala operasional.</span>
+            </div>
+
+            <div class="flex justify-end">
+              <button type="submit" class="btn btn-primary">
+                <svg class="ic ic-sm"><use href="#i-save"></use></svg> Simpan Pengaturan Platform
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: MANAJEMEN MODUL -->
+    <div class="tab-pane" id="tab-modul" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <h3 style="font-size:16px;margin:0">Kontrol Status Modul Aplikasi (Feature Flags)</h3>
+          <p class="tiny muted" style="margin:2px 0 0">Aktifkan atau nonaktifkan modul fitur secara serentak di seluruh lingkungan sistem.</p>
+        </div>
+        <div class="card-body">
+          <form method="post" action="/sim-gtk/superadmin/konfigurasi">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="kategori" value="modul">
+
+            <div class="stack gap-2 mb-3">
+              
+              <div class="flex justify-between align-center p-3" style="border:1px solid var(--line);border-radius:8px">
+                <div>
+                  <div style="font-weight:600;font-size:14px">Modul Penilaian &amp; Supervisi Lengkap</div>
+                  <div class="tiny muted">Fitur Jadwal Supervisi, Telaah Perangkat, Supervisi Akademik, Mengajar, Manajerial, Presensi &amp; Berita Acara.</div>
+                </div>
+                <label class="switch">
+                  <input type="hidden" name="modul_penilaian" value="nonaktif">
+                  <input type="checkbox" name="modul_penilaian" value="aktif" <%= config.modul_penilaian === 'aktif' ? 'checked' : '' %>>
+                  <span class="badge badge-success">Aktif</span>
+                </label>
+              </div>
+
+              <div class="flex justify-between align-center p-3" style="border:1px solid var(--line);border-radius:8px">
+                <div>
+                  <div style="font-weight:600;font-size:14px">Modul AI Perangkat Ajar</div>
+                  <div class="tiny muted">Generator modul ajar, ATP, Program Tahunan otomatis menggunakan Large Language Model (LLM).</div>
+                </div>
+                <label class="switch">
+                  <input type="hidden" name="modul_perangkat_ai" value="nonaktif">
+                  <input type="checkbox" name="modul_perangkat_ai" value="aktif" <%= config.modul_perangkat_ai === 'aktif' ? 'checked' : '' %>>
+                  <span class="badge badge-success">Aktif</span>
+                </label>
+              </div>
+
+              <div class="flex justify-between align-center p-3" style="border:1px solid var(--line);border-radius:8px">
+                <div>
+                  <div style="font-weight:600;font-size:14px">Modul Presensi Kehadiran GTK &amp; Siswa</div>
+                  <div class="tiny muted">Pencatatan daftar hadir harian guru dan absensi siswa per jam pelajaran.</div>
+                </div>
+                <label class="switch">
+                  <input type="hidden" name="modul_presensi_harian" value="nonaktif">
+                  <input type="checkbox" name="modul_presensi_harian" value="aktif" <%= config.modul_presensi_harian === 'aktif' ? 'checked' : '' %>>
+                  <span class="badge badge-success">Aktif</span>
+                </label>
+              </div>
+
+              <div class="flex justify-between align-center p-3" style="border:1px solid var(--line);border-radius:8px">
+                <div>
+                  <div style="font-weight:600;font-size:14px">Modul Portofolio &amp; Kepegawaian GTK</div>
+                  <div class="tiny muted">Data diri, riwayat golongan/MKG, dan verval perubahan data kepegawaian GTK.</div>
+                </div>
+                <label class="switch">
+                  <input type="hidden" name="modul_portofolio" value="nonaktif">
+                  <input type="checkbox" name="modul_portofolio" value="aktif" <%= config.modul_portofolio === 'aktif' ? 'checked' : '' %>>
+                  <span class="badge badge-success">Aktif</span>
+                </label>
+              </div>
+
+            </div>
+
+            <div class="flex justify-end">
+              <button type="submit" class="btn btn-primary">
+                <svg class="ic ic-sm"><use href="#i-save"></use></svg> Simpan Status Modul
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: KATEGORI UMUM -->
+    <div class="tab-pane" id="tab-kategori" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <h3 style="font-size:16px;margin:0">Master Kategori Umum &amp; Klasifikasi</h3>
+          <p class="tiny muted" style="margin:2px 0 0">Standarisasi jenjang madrasah, rumpun mata pelajaran, dan klasifikasi kepegawaian.</p>
+        </div>
+        <div class="card-body">
+          <form method="post" action="/sim-gtk/superadmin/konfigurasi">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="kategori" value="kategori">
+
+            <div class="mb-3">
+              <label class="form-label required">Daftar Jenjang Lembaga Resmi (Dipisahkan koma)</label>
+              <input type="text" name="kategori_jenjang" class="form-control" value="<%= config.kategori_jenjang || 'RA,MI,MTs,MA,MAK' %>" required>
+              <span class="tiny muted">Contoh: RA,MI,MTs,MA,MAK</span>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label required">Kelompok Rumpun Mata Pelajaran (Dipisahkan koma)</label>
+              <input type="text" name="kategori_mapel" class="form-control" value="<%= config.kategori_mapel || 'Agama,Umum,Peminatan,Muatan Lokal,BK' %>" required>
+              <span class="tiny muted">Contoh: Agama,Umum,Peminatan,Muatan Lokal,BK</span>
+            </div>
+
+            <div class="flex justify-end">
+              <button type="submit" class="btn btn-primary">
+                <svg class="ic ic-sm"><use href="#i-save"></use></svg> Simpan Kategori Umum
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: KEBIJAKAN KEAMANAN -->
+    <div class="tab-pane" id="tab-keamanan" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <h3 style="font-size:16px;margin:0">Kebijakan Keamanan Sistem &amp; Proteksi Akses</h3>
+          <p class="tiny muted" style="margin:2px 0 0">Konfigurasi kedaluwarsa sesi, perlindungan brute force login, dan enkripsi akses.</p>
+        </div>
+        <div class="card-body">
+          <form method="post" action="/sim-gtk/superadmin/konfigurasi">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="kategori" value="keamanan">
+
+            <div class="grid grid-2 gap-2 mb-3">
+              <div>
+                <label class="form-label required">Batas Waktu Kedaluwarsa Sesi (Menit)</label>
+                <input type="number" name="sesi_timeout_menit" class="form-control" value="<%= config.sesi_timeout_menit || '180' %>" min="15" max="1440" required>
+                <span class="tiny muted">Sesi pengguna akan otomatis keluar bila tidak ada aktivitas.</span>
+              </div>
+              <div>
+                <label class="form-label required">Maksimal Percobaan Gagal Login (Lockout)</label>
+                <input type="number" name="max_login_attempts" class="form-control" value="<%= config.max_login_attempts || '5' %>" min="3" max="10" required>
+                <span class="tiny muted">Akun akan dikunci sementara bila salah password berturut-turut.</span>
+              </div>
+            </div>
+
+            <div class="grid grid-2 gap-2 mb-3">
+              <div>
+                <label class="form-label required">Panjang Minimal Karakter Kata Sandi</label>
+                <input type="number" name="password_min_length" class="form-control" value="<%= config.password_min_length || '8' %>" min="6" max="32" required>
+              </div>
+              <div>
+                <label class="form-label required">Wajib Kombinasi Kata Sandi Kuat</label>
+                <select name="force_strong_password" class="form-control">
+                  <option value="aktif" <%= config.force_strong_password === 'aktif' ? 'selected' : '' %>>Ya, Wajib Huruf + Angka + Simbol</option>
+                  <option value="nonaktif" <%= config.force_strong_password === 'nonaktif' ? 'selected' : '' %>>Standar (Hanya Minimal Karakter)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3 p-3" style="background:var(--bg-subtle);border-radius:8px;border:1px solid var(--line)">
+              <div class="flex justify-between align-center">
+                <div>
+                  <div style="font-weight:600">Perlindungan Serangan CSRF (Cross-Site Request Forgery)</div>
+                  <div class="tiny muted">Setiap request mutasi data (POST) divalidasi dengan token keamanan acak kriptografis.</div>
+                </div>
+                <span class="badge badge-success"><svg class="ic ic-sm"><use href="#i-check"></use></svg> Aktif</span>
+              </div>
+            </div>
+
+            <div class="flex justify-end">
+              <button type="submit" class="btn btn-primary">
+                <svg class="ic ic-sm"><use href="#i-save"></use></svg> Simpan Kebijakan Keamanan
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).style.display = 'block';
+  btn.classList.add('active');
+}
+</script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,203 @@
+<%- include('../partials/head', { title: "Mata Pelajaran", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Mata Pelajaran</b>
+    </div>
+    <div class="page-head">
+      <h1>Mata Pelajaran</h1>
+      <p>Daftar mata pelajaran yang diajarkan di madrasah</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1.6fr 1fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Mata Pelajaran</h3><p>12 mapel terdaftar</p></div></div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Kode</th><th>Nama Mapel</th><th>Kelompok</th><th class="num">Jadwal</th><th></th></tr></thead>
+        <tbody>
+          
+            <tr>
+              <td><span class="badge badge-muted">AKH</span></td>
+              <td class="strong">Akidah Akhlak</td>
+              <td><span class="badge badge-teal">Agama</span></td>
+              <td class="num">0</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/4/hapus" data-confirm="Hapus mapel Akidah Akhlak?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">QUR</span></td>
+              <td class="strong">Al-Qur&#39;an Hadis</td>
+              <td><span class="badge badge-teal">Agama</span></td>
+              <td class="num">3</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/2/hapus" data-confirm="Hapus mapel Al-Qur&#39;an Hadis?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">FIK</span></td>
+              <td class="strong">Fikih</td>
+              <td><span class="badge badge-teal">Agama</span></td>
+              <td class="num">12</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/1/hapus" data-confirm="Hapus mapel Fikih?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">SKI</span></td>
+              <td class="strong">Sejarah Kebudayaan Islam</td>
+              <td><span class="badge badge-teal">Agama</span></td>
+              <td class="num">3</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/3/hapus" data-confirm="Hapus mapel Sejarah Kebudayaan Islam?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">BAR</span></td>
+              <td class="strong">Bahasa Arab</td>
+              <td><span class="badge badge-info">Bahasa</span></td>
+              <td class="num">2</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/5/hapus" data-confirm="Hapus mapel Bahasa Arab?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">BIN</span></td>
+              <td class="strong">Bahasa Indonesia</td>
+              <td><span class="badge badge-info">Bahasa</span></td>
+              <td class="num">0</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/7/hapus" data-confirm="Hapus mapel Bahasa Indonesia?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">BIG</span></td>
+              <td class="strong">Bahasa Inggris</td>
+              <td><span class="badge badge-info">Bahasa</span></td>
+              <td class="num">4</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/8/hapus" data-confirm="Hapus mapel Bahasa Inggris?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">IPA</span></td>
+              <td class="strong">IPA Terpadu</td>
+              <td><span class="badge badge-muted">Umum</span></td>
+              <td class="num">0</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/9/hapus" data-confirm="Hapus mapel IPA Terpadu?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">INF</span></td>
+              <td class="strong">Informatika</td>
+              <td><span class="badge badge-muted">Umum</span></td>
+              <td class="num">0</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/11/hapus" data-confirm="Hapus mapel Informatika?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">MAT</span></td>
+              <td class="strong">Matematika</td>
+              <td><span class="badge badge-muted">Umum</span></td>
+              <td class="num">4</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/6/hapus" data-confirm="Hapus mapel Matematika?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">PJOK</span></td>
+              <td class="strong">PJOK</td>
+              <td><span class="badge badge-muted">Umum</span></td>
+              <td class="num">0</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/10/hapus" data-confirm="Hapus mapel PJOK?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="badge badge-muted">PKN</span></td>
+              <td class="strong">Pendidikan Pancasila</td>
+              <td><span class="badge badge-muted">Umum</span></td>
+              <td class="num">0</td>
+              <td class="right">
+                <form method="post" action="/sim-gtk/manajemen/mapel/12/hapus" data-confirm="Hapus mapel Pendidikan Pancasila?">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button class="btn btn-danger btn-sm" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"></use></svg></button>
+                </form>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h3>Tambah Mata Pelajaran</h3><p>Mapel digunakan pada jadwal dan perangkat ajar</p></div></div>
+    <form method="post" action="/sim-gtk/manajemen/mapel">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field mb-2"><label>Kode</label><input name="kode" type="text" placeholder="FIK" maxlength="6"></div>
+      <div class="field mb-2"><label>Nama Mata Pelajaran</label><input name="nama" type="text" placeholder="Fikih" required></div>
+      <div class="field mb-2"><label>Kelompok</label><select name="kelompok"><option>Agama</option><option>Umum</option><option>Bahasa</option><option>Kejuruan</option><option>Muatan Lokal</option></select></div>
+      <button class="btn btn-primary btn-block" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"></use></svg> Tambah Mapel</button>
+    </form>
+    <div class="alert alert-info mt-2"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Mapel yang sudah dipakai pada jadwal tidak dapat dihapus.</div></div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

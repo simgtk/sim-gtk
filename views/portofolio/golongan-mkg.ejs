@@ -1,0 +1,83 @@
+<%- include('../partials/head', { title: "Update Golongan &amp; MKG", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Update Golongan &amp; MKG</b>
+    </div>
+    <div class="page-head">
+      <h1>Update Golongan &amp; MKG</h1>
+      <p>Riwayat dan pengajuan kenaikan golongan / masa kerja guru</p>
+    </div>
+
+
+<div class="grid" style="grid-template-columns:1fr 1.4fr">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>Golongan Saat Ini</h3><p>Data kepegawaian yang tersimpan pada sistem</p></div></div>
+      <div class="info-row"><span class="k">Golongan</span><span class="v">III/a</span></div>
+      <div class="info-row"><span class="k">Masa Kerja Golongan</span><span class="v">8 tahun 4 bulan</span></div>
+      <div class="info-row"><span class="k">TMT Golongan</span><span class="v">1 Apr 2021</span></div>
+      <div class="info-row"><span class="k">Status Kepegawaian</span><span class="v">PNS</span></div>
+      <div class="info-row"><span class="k">TMT PNS/PPPK</span><span class="v">1 Jan 2010</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>Ajukan Update Golongan &amp; MKG</h3><p>Lampirkan SK kenaikan golongan kepada admin madrasah</p></div></div>
+      <form method="post" action="/sim-gtk/portofolio/golongan-mkg">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-grid">
+          <div class="field">
+            <label>Golongan Baru</label>
+            <select name="golongan" required>
+              <option value="">— pilih —</option>
+              <option value="I/a" >I/a</option><option value="I/b" >I/b</option><option value="I/c" >I/c</option><option value="I/d" >I/d</option><option value="II/a" >II/a</option><option value="II/b" >II/b</option><option value="II/c" >II/c</option><option value="II/d" >II/d</option><option value="III/a" selected>III/a</option><option value="III/b" >III/b</option><option value="III/c" >III/c</option><option value="III/d" >III/d</option><option value="IV/a" >IV/a</option><option value="IV/b" >IV/b</option><option value="IV/c" >IV/c</option><option value="IV/d" >IV/d</option><option value="IV/e" >IV/e</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>TMT Golongan</label>
+            <input type="date" name="tmt" required>
+          </div>
+          <div class="field">
+            <label>MKG — Tahun</label>
+            <input type="number" name="mkg_tahun" min="0" max="40" value="8">
+          </div>
+          <div class="field">
+            <label>MKG — Bulan</label>
+            <input type="number" name="mkg_bulan" min="0" max="11" value="4">
+          </div>
+          <div class="field">
+            <label>Nomor SK</label>
+            <input type="text" name="no_sk" placeholder="mis. SK-GOL-2026-0098">
+          </div>
+          <div class="field">
+            <label>Tanggal SK</label>
+            <input type="date" name="tgl_sk">
+          </div>
+          <div class="field span-2">
+            <label>Keterangan</label>
+            <textarea name="keterangan" placeholder="mis. kenaikan golongan reguler periode Oktober 2026"></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block mt-2" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Kirim Pengajuan</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h3>Riwayat Golongan &amp; MKG</h3><p>Riwayat kenaikan dan pengajuan yang tercatat</p></div></div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-trending"></use></svg><b>Belum ada riwayat</b>Pengajuan kenaikan golongan akan tampil di sini.</div>
+    
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

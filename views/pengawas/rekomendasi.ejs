@@ -1,0 +1,266 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/pengawas/dashboard">Panel Pengawas</a>
+      <span class="sep">/</span>
+      <span>Rekomendasi &amp; Tindak Lanjut</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-green" style="width:28px;height:28px"><use href="#i-clipboard"></use></svg>
+          Rekomendasi &amp; Tindak Lanjut Pembinaan
+        </h1>
+        <p class="muted">Pemantauan progres perbaikan madrasah binaan pasca-supervisi melalui 5 siklus status tindak lanjut terukur.</p>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="openModal('modalTambahRekomendasi')">
+          <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Beri Rekomendasi Baru
+        </button>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- 5 STATUS ALUR TINDAK LANJUT CARDS -->
+    <div class="grid grid-5 mb-3" style="display:grid;grid-template-columns:repeat(5, 1fr);gap:10px">
+      <div class="card p-2 text-center">
+        <div class="tiny muted uppercase">1. Belum Dimulai</div>
+        <div class="h3" style="font-size:20px;font-weight:700"><%= rekomendasiList.filter(r => r.status === 'Belum dimulai').length %></div>
+        <span class="badge badge-secondary badge-xs">Menunggu Mulai</span>
+      </div>
+      <div class="card p-2 text-center">
+        <div class="tiny muted uppercase">2. Dalam Proses</div>
+        <div class="h3 text-orange" style="font-size:20px;font-weight:700"><%= rekomendasiList.filter(r => r.status === 'Dalam proses').length %></div>
+        <span class="badge badge-warning badge-xs">Pengerjaan</span>
+      </div>
+      <div class="card p-2 text-center">
+        <div class="tiny muted uppercase">3. Verifikasi</div>
+        <div class="h3 text-blue" style="font-size:20px;font-weight:700"><%= rekomendasiList.filter(r => r.status === 'Menunggu verifikasi').length %></div>
+        <span class="badge badge-teal badge-xs">Bukti Terunggah</span>
+      </div>
+      <div class="card p-2 text-center">
+        <div class="tiny muted uppercase">4. Selesai</div>
+        <div class="h3 text-green" style="font-size:20px;font-weight:700"><%= rekomendasiList.filter(r => r.status === 'Selesai').length %></div>
+        <span class="badge badge-success badge-xs">Tervalidasi Tuntas</span>
+      </div>
+      <div class="card p-2 text-center">
+        <div class="tiny muted uppercase">5. Perlu Perbaikan</div>
+        <div class="h3 text-danger" style="font-size:20px;font-weight:700"><%= rekomendasiList.filter(r => r.status === 'Perlu perbaikan').length %></div>
+        <span class="badge badge-danger badge-xs">Revisi Ulang</span>
+      </div>
+    </div>
+
+    <!-- TABEL REKOMENDASI & TINDAK LANJUT -->
+    <div class="card mb-3">
+      <div class="card-head flex justify-between align-center wrap gap-1">
+        <input type="text" id="searchRekom" class="form-control" style="width:280px" placeholder="Cari rekomendasi, madrasah, penanggung jawab..." onkeyup="filterRekom()">
+        <span class="tiny muted">Menampilkan <%= rekomendasiList.length %> catatan rekomendasi</span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table" id="tableRekom">
+            <thead>
+              <tr>
+                <th>Madrasah Sasaran</th>
+                <th>Uraian Rekomendasi &amp; Aspek</th>
+                <th>Target Perbaikan</th>
+                <th>Penanggung Jawab</th>
+                <th>Tenggat</th>
+                <th>Bukti Tindak Lanjut</th>
+                <th>Status</th>
+                <th style="width:160px;text-align:center">Verifikasi Pengawas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% rekomendasiList.forEach(function(r) { %>
+                <tr data-search="<%= (r.madrasah_nama + ' ' + r.judul_rekomendasi + ' ' + (r.penanggung_jawab || '') + ' ' + r.status).toLowerCase() %>">
+                  <td>
+                    <b><%= r.madrasah_nama %></b>
+                  </td>
+                  <td>
+                    <div style="font-weight:600"><%= r.judul_rekomendasi %></div>
+                    <div class="tiny muted"><%= r.aspek %> &middot; <%= r.deskripsi %></div>
+                  </td>
+                  <td class="small"><%= r.target_perbaikan || '-' %></td>
+                  <td><b><%= r.penanggung_jawab || '-' %></b></td>
+                  <td class="tiny muted"><%= r.tenggat_waktu || '-' %></td>
+                  <td>
+                    <% if (r.bukti_tindak_lanjut) { %>
+                      <a href="#" class="badge badge-teal badge-sm flex align-center gap-1" style="text-decoration:none" title="Lihat Bukti Berkas">
+                        <svg class="ic ic-sm"><use href="#i-file"></use></svg> <%= r.bukti_tindak_lanjut %>
+                      </a>
+                    <% } else { %>
+                      <span class="tiny muted">Belum Ada</span>
+                    <% } %>
+                  </td>
+                  <td>
+                    <% if (r.status === 'Selesai') { %>
+                      <span class="badge badge-success">Selesai</span>
+                    <% } else if (r.status === 'Menunggu verifikasi') { %>
+                      <span class="badge badge-teal">Menunggu Verifikasi</span>
+                    <% } else if (r.status === 'Dalam proses') { %>
+                      <span class="badge badge-warning">Dalam Proses</span>
+                    <% } else if (r.status === 'Perlu perbaikan') { %>
+                      <span class="badge badge-danger">Perlu Perbaikan</span>
+                    <% } else { %>
+                      <span class="badge badge-secondary">Belum Dimulai</span>
+                    <% } %>
+                  </td>
+                  <td style="text-align:center">
+                    <button class="btn btn-outline btn-xs" onclick='openModalUbahStatus(<%= JSON.stringify(r) %>)'>
+                      <svg class="ic ic-sm"><use href="#i-check-square"></use></svg> Verifikasi
+                    </button>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL TAMBAH REKOMENDASI -->
+    <div class="modal" id="modalTambahRekomendasi">
+      <div class="modal-dialog">
+        <form method="post" action="/sim-gtk/pengawas/rekomendasi">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="modal-head">
+            <h3 style="font-size:16px;margin:0">Tambah Rekomendasi Supervisi Pembinaan</h3>
+            <button type="button" class="btn-close" onclick="closeModal('modalTambahRekomendasi')">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-2">
+              <label class="form-label required">Madrasah Binaan Sasaran</label>
+              <select name="madrasah_id" class="form-control" required>
+                <% binaans.forEach(function(b) { %>
+                  <option value="<%= b.id %>"><%= b.nama %> (Jenjang: <%= b.jenjang %>)</option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="grid grid-2 gap-1 mb-2">
+              <div>
+                <label class="form-label required">Aspek Pembinaan</label>
+                <select name="aspek" class="form-control" required>
+                  <option value="Akademik">Akademik &amp; Pembelajaran</option>
+                  <option value="Manajerial">Manajerial Unit / Sarpras</option>
+                  <option value="Tata Kelola">Tata Kelola &amp; Kurikulum</option>
+                  <option value="Kompetensi">Pengembangan Kompetensi Guru</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label required">Tenggat Waktu Penyelesaian</label>
+                <input type="date" name="tenggat_waktu" class="form-control" required value="2026-11-20">
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label required">Judul Rekomendasi Perbaikan</label>
+              <input type="text" name="judul_rekomendasi" class="form-control" required placeholder="Contoh: Penerapan Asesmen Diagnostik Awal Pembelajaran">
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label required">Uraian Detail Rekomendasi &amp; Catatan Pengawas</label>
+              <textarea name="deskripsi" class="form-control" rows="3" required placeholder="Jelaskan temuan observasi dan langkah perbaikan yang diharapkan..."></textarea>
+            </div>
+
+            <div class="grid grid-2 gap-1 mb-2">
+              <div>
+                <label class="form-label required">Penanggung Jawab Madrasah</label>
+                <input type="text" name="penanggung_jawab" class="form-control" required placeholder="Nama guru / wakamad / kepala lab">
+              </div>
+              <div>
+                <label class="form-label">Target Capaian Perbaikan</label>
+                <input type="text" name="target_perbaikan" class="form-control" placeholder="Contoh: Modul ajar dilengkapi instrumen rubrik">
+              </div>
+            </div>
+          </div>
+          <div class="modal-foot flex justify-end gap-1">
+            <button type="button" class="btn btn-outline" onclick="closeModal('modalTambahRekomendasi')">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan Rekomendasi</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL VERIFIKASI STATUS OLEH PENGAWAS -->
+    <div class="modal" id="modalVerifikasiStatus">
+      <div class="modal-dialog">
+        <form method="post" action="/sim-gtk/pengawas/rekomendasi/verifikasi">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <input type="hidden" name="id" id="verif_id">
+          <div class="modal-head">
+            <h3 style="font-size:16px;margin:0">Verifikasi Progres Tindak Lanjut</h3>
+            <button type="button" class="btn-close" onclick="closeModal('modalVerifikasiStatus')">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="p-2 mb-2" style="background:var(--bg-subtle);border-radius:6px;border:1px solid var(--line);font-size:13px">
+              <div style="font-weight:600" id="verif_judul"></div>
+              <div class="tiny muted" id="verif_madrasah"></div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label required">Keputusan Status Tindak Lanjut</label>
+              <select name="status" id="verif_status" class="form-control" required>
+                <option value="Belum dimulai">1. Belum dimulai</option>
+                <option value="Dalam proses">2. Dalam proses pengerjaan</option>
+                <option value="Menunggu verifikasi">3. Menunggu verifikasi berkas</option>
+                <option value="Selesai">4. Selesai (Tervalidasi Tuntas)</option>
+                <option value="Perlu perbaikan">5. Perlu perbaikan (Revisi Ulang)</option>
+              </select>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Catatan Umpan Balik Pengawas</label>
+              <textarea name="catatan_pengawas" id="verif_catatan" class="form-control" rows="3" placeholder="Tuliskan catatan verifikasi atau evaluasi atas bukti yang diajukan..."></textarea>
+            </div>
+          </div>
+          <div class="modal-foot flex justify-end gap-1">
+            <button type="button" class="btn btn-outline" onclick="closeModal('modalVerifikasiStatus')">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan Hasil Verifikasi</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function openModalUbahStatus(r) {
+  document.getElementById('verif_id').value = r.id;
+  document.getElementById('verif_judul').innerText = r.judul_rekomendasi;
+  document.getElementById('verif_madrasah').innerText = r.madrasah_nama + ' | PJ: ' + (r.penanggung_jawab || '-');
+  document.getElementById('verif_status').value = r.status;
+  document.getElementById('verif_catatan').value = r.catatan_pengawas || '';
+  openModal('modalVerifikasiStatus');
+}
+
+function filterRekom() {
+  const q = document.getElementById('searchRekom').value.toLowerCase();
+  const rows = document.querySelectorAll('#tableRekom tbody tr');
+  rows.forEach(r => {
+    const s = r.getAttribute('data-search') || '';
+    r.style.display = (!q || s.includes(q)) ? '' : 'none';
+  });
+}
+</script>
+
+<%- include('../partials/footer') %>

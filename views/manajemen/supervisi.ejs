@@ -1,0 +1,172 @@
+<%- include('../partials/head', { title: "Supervisi GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Supervisi GTK</b>
+    </div>
+    <div class="page-head">
+      <h1>Supervisi GTK</h1>
+      <p>Jadwal, instrumen, dan hasil supervisi guru madrasah</p>
+    </div>
+
+<div class="grid grid-4 mb-3">
+  <div class="stat tint-1"><div><div class="lbl">Total Supervisi</div><div class="val">4</div><div class="sub">Pada lingkup kewenangan Anda</div></div><div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-presentation"></use></svg></div></div>
+  <div class="stat tint-2"><div><div class="lbl">Selesai Dinilai</div><div class="val">3</div><div class="sub">Instrumen terisi</div></div><div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-check-circle"></use></svg></div></div>
+  <div class="stat tint-3"><div><div class="lbl">Rata-rata Nilai</div><div class="val">80</div><div class="sub">Skala 0–100</div></div><div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-bar-chart"></use></svg></div></div>
+  <div class="stat tint-4"><div><div class="lbl">Terjadwal</div><div class="val">1</div><div class="sub">Belum dilaksanakan</div></div><div class="ico ico-blue"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-calendar"></use></svg></div></div>
+</div>
+
+<div class="card mb-3">
+  <div class="flex between align-center wrap gap-2">
+    <div>
+      <h3 style="font-size:15px">Daftar Supervisi</h3>
+      <p class="tiny muted">Observasi kelas, penilaian instrumen, dan tindak lanjut</p>
+    </div>
+    <a class="btn btn-primary btn-sm" href="/sim-gtk/manajemen/supervisi/baru"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"></use></svg> Buat Supervisi</a>
+  </div>
+</div>
+
+<div class="card" style="padding:0">
+  <div class="table-wrap plain">
+    <table class="tbl">
+      <thead><tr><th>Guru</th><th>Madrasah</th><th>Jenis</th><th>Tanggal</th><th>Supervisor</th><th class="num">Nilai</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        
+          <tr>
+            <td class="strong">Herman Susanto Buhungo</td>
+            <td class="small muted">MAN 2 KABUPATEN GORONTALO</td>
+            <td class="small">Supervisi Manajerial (Pengawas)</td>
+            <td class="nowrap small">23 Okt 2026</td>
+            <td class="small">Dr. Hj. Nurul Aini, M.Pd</td>
+            <td class="num">-</td>
+            <td><span class="badge badge-warning">Terjadwal</span></td>
+            <td class="right"><a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/supervisi/3">Detail</a></td>
+          </tr>
+        
+          <tr>
+            <td class="strong">Dewi Kartika, S.Pd</td>
+            <td class="small muted">MAN 2 KABUPATEN GORONTALO</td>
+            <td class="small">Supervisi Akademik</td>
+            <td class="nowrap small">3 Okt 2026</td>
+            <td class="small">Dr. Hj. Nurul Aini, M.Pd</td>
+            <td class="num">69</td>
+            <td><span class="badge badge-success">Selesai</span></td>
+            <td class="right"><a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/supervisi/4">Detail</a></td>
+          </tr>
+        
+          <tr>
+            <td class="strong">Nurhayati, S.Pd</td>
+            <td class="small muted">MAN 2 KABUPATEN GORONTALO</td>
+            <td class="small">Supervisi Akademik</td>
+            <td class="nowrap small">23 Sep 2026</td>
+            <td class="small">Ahmad Fauzi, S.Ag</td>
+            <td class="num">91</td>
+            <td><span class="badge badge-success">Selesai</span></td>
+            <td class="right"><a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/supervisi/2">Detail</a></td>
+          </tr>
+        
+          <tr>
+            <td class="strong">Herman Susanto Buhungo</td>
+            <td class="small muted">MAN 2 KABUPATEN GORONTALO</td>
+            <td class="small">Supervisi Akademik</td>
+            <td class="nowrap small">8 Sep 2026</td>
+            <td class="small">Ahmad Fauzi, S.Ag</td>
+            <td class="num">81</td>
+            <td><span class="badge badge-success">Selesai</span></td>
+            <td class="right"><a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/supervisi/1">Detail</a></td>
+          </tr>
+        
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="grid grid-2 mt-3">
+  <div class="card">
+    <div class="card-head"><div><h3>Guru pada Lingkup Anda</h3><p>Belum pernah disupervisi ditandai</p></div></div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Nama Guru</th><th>Total Supervisi</th><th></th></tr></thead>
+        <tbody>
+          
+            <tr>
+              <td class="strong">Ahmad Fauzi, S.Ag<div class="tiny muted">MAN 2 KABUPATEN GORONTALO</div></td>
+              <td><span class="badge badge-warning">0 kali</span></td>
+              <td class="right"><a class="btn btn-ghost btn-sm" href="/sim-gtk/manajemen/supervisi/baru">Supervisi</a></td>
+            </tr>
+          
+            <tr>
+              <td class="strong">Dewi Kartika, S.Pd<div class="tiny muted">MAN 2 KABUPATEN GORONTALO</div></td>
+              <td><span class="badge badge-teal">1 kali</span></td>
+              <td class="right"><a class="btn btn-ghost btn-sm" href="/sim-gtk/manajemen/supervisi/baru">Supervisi</a></td>
+            </tr>
+          
+            <tr>
+              <td class="strong">Fatimah Zahra, S.Pd<div class="tiny muted">MAN 2 KABUPATEN GORONTALO</div></td>
+              <td><span class="badge badge-warning">0 kali</span></td>
+              <td class="right"><a class="btn btn-ghost btn-sm" href="/sim-gtk/manajemen/supervisi/baru">Supervisi</a></td>
+            </tr>
+          
+            <tr>
+              <td class="strong">Herman Susanto Buhungo<div class="tiny muted">MAN 2 KABUPATEN GORONTALO</div></td>
+              <td><span class="badge badge-teal">2 kali</span></td>
+              <td class="right"><a class="btn btn-ghost btn-sm" href="/sim-gtk/manajemen/supervisi/baru">Supervisi</a></td>
+            </tr>
+          
+            <tr>
+              <td class="strong">Herman Susanto Buhungo, S.Pd<div class="tiny muted">MAN 2 KABUPATEN GORONTALO</div></td>
+              <td><span class="badge badge-warning">0 kali</span></td>
+              <td class="right"><a class="btn btn-ghost btn-sm" href="/sim-gtk/manajemen/supervisi/baru">Supervisi</a></td>
+            </tr>
+          
+            <tr>
+              <td class="strong">Nurhayati, S.Pd<div class="tiny muted">MAN 2 KABUPATEN GORONTALO</div></td>
+              <td><span class="badge badge-teal">1 kali</span></td>
+              <td class="right"><a class="btn btn-ghost btn-sm" href="/sim-gtk/manajemen/supervisi/baru">Supervisi</a></td>
+            </tr>
+          
+            <tr>
+              <td class="strong">Rahmat Hidayat, S.Pd.I<div class="tiny muted">MAN 2 KABUPATEN GORONTALO</div></td>
+              <td><span class="badge badge-warning">0 kali</span></td>
+              <td class="right"><a class="btn btn-ghost btn-sm" href="/sim-gtk/manajemen/supervisi/baru">Supervisi</a></td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div><h3>Aspek Instrumen</h3><p>Delapan aspek penilaian supervisi akademik</p></div></div>
+    <div class="stack-sm">
+      
+        <div class="flex align-center gap-1"><span class="badge badge-muted">1</span><span class="small">Perencanaan pembelajaran (modul ajar/RPP)</span></div>
+      
+        <div class="flex align-center gap-1"><span class="badge badge-muted">2</span><span class="small">Penguasaan materi dan struktur keilmuan</span></div>
+      
+        <div class="flex align-center gap-1"><span class="badge badge-muted">3</span><span class="small">Pengelolaan kelas dan iklim belajar</span></div>
+      
+        <div class="flex align-center gap-1"><span class="badge badge-muted">4</span><span class="small">Penerapan strategi/metode pembelajaran</span></div>
+      
+        <div class="flex align-center gap-1"><span class="badge badge-muted">5</span><span class="small">Pemanfaatan media dan teknologi pembelajaran</span></div>
+      
+        <div class="flex align-center gap-1"><span class="badge badge-muted">6</span><span class="small">Pelaksanaan asesmen dan umpan balik</span></div>
+      
+        <div class="flex align-center gap-1"><span class="badge badge-muted">7</span><span class="small">Penilaian sikap, pengetahuan, dan keterampilan</span></div>
+      
+        <div class="flex align-center gap-1"><span class="badge badge-muted">8</span><span class="small">Refleksi dan tindak lanjut perbaikan</span></div>
+      
+    </div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

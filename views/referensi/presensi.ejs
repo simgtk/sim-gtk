@@ -1,0 +1,100 @@
+<%- include('../partials/head', { title: "Presensi", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Presensi</b>
+    </div>
+    <div class="page-head">
+      <h1>Presensi</h1>
+      <p>Presensi harian GTK — masuk, pulang, dan rekap kehadiran</p>
+    </div>
+
+
+<div class="grid grid-4 mb-3">
+  <div class="stat tint-1"><div><div class="lbl">Presensi Hari Ini</div><div class="val" style="font-size:19px">Belum Presensi</div><div class="sub">Silakan lakukan presensi</div></div><div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-check-circle"></use></svg></div></div>
+  <div class="stat tint-2"><div><div class="lbl">Hadir Bulan Ini</div><div class="val">0</div><div class="sub">dari 0 hari tercatat</div></div><div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-calendar"></use></svg></div></div>
+  <div class="stat tint-3"><div><div class="lbl">Persentase Kehadiran</div><div class="val">0%</div><div class="sub">Terlambat: 0 hari</div></div><div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-bar-chart"></use></svg></div></div>
+  <div class="stat tint-4"><div><div class="lbl">Izin / Sakit</div><div class="val">0</div><div class="sub">Dinas luar: 0 hari</div></div><div class="ico ico-blue"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-file-text"></use></svg></div></div>
+</div>
+
+
+
+<div class="grid" style="grid-template-columns:1.4fr 1fr">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Presensi Hari Ini</h3><p>Jumat, 23 Okt 2026</p></div>
+        <a class="btn btn-outline btn-sm" href="/sim-gtk/manajemen/presensi">Rekap Semua GTK</a>
+      </div>
+      <div class="flex gap-2 wrap align-center">
+        <div style="flex:1;min-width:200px" class="card tight" >
+          <div class="tiny muted">Jam Masuk</div>
+          <div style="font-size:23px;font-weight:800">--:--</div>
+          <form method="post" action="/sim-gtk/referensi/presensi/masuk" class="mt-2">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn btn-primary btn-sm btn-block" type="submit" ><svg class="ic ic-sm" aria-hidden="true"><use href="#i-check"></use></svg> Presensi Masuk</button>
+          </form>
+        </div>
+        <div style="flex:1;min-width:200px" class="card tight">
+          <div class="tiny muted">Jam Keluar</div>
+          <div style="font-size:23px;font-weight:800">--:--</div>
+          <form method="post" action="/sim-gtk/referensi/presensi/pulang" class="mt-2">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn btn-outline btn-sm btn-block" type="submit" disabled><svg class="ic ic-sm" aria-hidden="true"><use href="#i-logout"></use></svg> Presensi Pulang</button>
+          </form>
+        </div>
+      </div>
+      <div class="alert alert-info mt-2"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Presensi masuk setelah pukul 07:00 tercatat sebagai <b>Terlambat</b>. Presensi hanya dapat dilakukan satu kali per hari.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div><h3>Rekap Presensi</h3><p>Riwayat kehadiran pada bulan terpilih</p></div>
+        <form method="get" action="/sim-gtk/referensi/presensi" class="flex gap-1 align-center">
+          <input type="month" name="bulan" value="2026-10" data-autosubmit>
+        </form>
+      </div>
+      
+        <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-calendar"></use></svg><b>Belum ada data presensi</b>Presensi bulan ini belum tercatat.</div>
+      
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>Ajukan Izin</h3><p>Catat ketidakhadiran dengan keterangan</p></div></div>
+      <form method="post" action="/sim-gtk/referensi/presensi/izin">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-grid">
+          <div class="field span-2"><label>Jenis</label>
+            <select name="status"><option>Izin</option><option>Sakit</option><option>Dinas Luar</option><option>Cuti</option></select>
+          </div>
+          <div class="field span-2"><label>Tanggal</label><input type="date" name="tanggal" value="2026-10-23"></div>
+          <div class="field span-2"><label>Keterangan</label><textarea name="keterangan" placeholder="mis. menghadiri kegiatan MGMP di kota"></textarea></div>
+        </div>
+        <button class="btn btn-primary btn-block mt-2" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Simpan Pengajuan</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>Ringkasan Status</h3><p>Bulan 2026-10</p></div></div>
+      <div class="info-row"><span class="k">Hadir</span><span class="v">0</span></div>
+      <div class="info-row"><span class="k">Terlambat</span><span class="v">0</span></div>
+      <div class="info-row"><span class="k">Izin</span><span class="v">0</span></div>
+      <div class="info-row"><span class="k">Sakit</span><span class="v">0</span></div>
+      <div class="info-row"><span class="k">Dinas Luar</span><span class="v">0</span></div>
+      <div class="info-row"><span class="k">Cuti</span><span class="v">0</span></div>
+    </div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

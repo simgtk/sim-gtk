@@ -1,0 +1,125 @@
+<%- include('../partials/head', { title: "Pengaturan", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Pengaturan</b>
+    </div>
+    <div class="page-head">
+      <h1>Pengaturan</h1>
+      <p>Profil akun, keamanan, dan pengaturan madrasah</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1fr 1fr">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>Profil Akun</h3><p>Nama, email, dan kontak yang tampil pada aplikasi</p></div></div>
+      <form method="post" action="/sim-gtk/pengaturan/profil">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-grid">
+          <div class="field span-2">
+            <label>Nama Lengkap</label>
+            <input name="nama" type="text" value="Siti Rahmawati, S.Kom" required>
+          </div>
+          <div class="field span-2">
+            <label>Email</label>
+            <input name="email" type="email" value="admin@man2gorontalo.sch.id" required>
+          </div>
+          <div class="field">
+            <label>Nomor HP</label>
+            <input name="telepon" type="text" value="081242843901">
+          </div>
+          <div class="field">
+            <label>Alamat</label>
+            <input name="alamat" type="text" value="Kec. Limboto, Kabupaten Gorontalo">
+          </div>
+        </div>
+        <div class="form-actions"><button class="btn btn-primary" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Simpan Profil</button></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>Keamanan Akun</h3><p>Ubah kata sandi secara berkala</p></div></div>
+      <form method="post" action="/sim-gtk/pengaturan/password">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-grid">
+          <div class="field span-2">
+            <label>Kata Sandi Lama</label>
+            <input name="password_lama" type="password" required>
+          </div>
+          <div class="field">
+            <label>Kata Sandi Baru</label>
+            <input name="password_baru" type="password" minlength="6" required>
+          </div>
+          <div class="field">
+            <label>Ulangi Kata Sandi Baru</label>
+            <input name="password_ulang" type="password" minlength="6" required>
+          </div>
+        </div>
+        <div class="form-actions"><button class="btn btn-primary" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-lock"></use></svg> Ubah Kata Sandi</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>Informasi Akun</h3><p>Hak akses dan madrasah Anda</p></div></div>
+      <div class="info-row"><span class="k">Username</span><span class="v">admin_man2</span></div>
+      <div class="info-row"><span class="k">Peran</span><span class="v">Admin Madrasah</span></div>
+      <div class="info-row"><span class="k">Madrasah</span><span class="v">MAN 2 KABUPATEN GORONTALO</span></div>
+      <div class="info-row"><span class="k">Status akun</span><span class="v"><span class="badge badge-success">Aktif</span></span></div>
+      <div class="info-row"><span class="k">Tahun ajaran</span><span class="v">2026/2027</span></div>
+      <div class="info-row"><span class="k">Semester</span><span class="v">1 (Ganjil)</span></div>
+    </div>
+
+    
+      <div class="card">
+        <div class="card-head"><div><h3>Pengaturan Madrasah</h3><p>Identitas madrasah, tahun ajaran, dan integrasi AI</p></div></div>
+        <form method="post" action="/sim-gtk/pengaturan/madrasah">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="form-grid">
+            <div class="field span-2"><label>Nama Madrasah</label><input name="nama" type="text" value="MAN 2 KABUPATEN GORONTALO" required></div>
+            <div class="field"><label>NPSN</label><input name="npsn" type="text" value="40401234"></div>
+            <div class="field"><label>Jenjang</label>
+              <select name="jenjang">
+                <option >RA</option><option >MI</option><option >MTs</option><option selected>MA</option><option >MAK</option>
+              </select>
+            </div>
+            <div class="field span-2"><label>Alamat</label><input name="alamat" type="text" value="Jl. Taman Pendidikan No. 12, Limboto"></div>
+            <div class="field"><label>Kabupaten / Kota</label><input name="kabupaten" type="text" value="Kabupaten Gorontalo"></div>
+            <div class="field"><label>Provinsi</label><input name="provinsi" type="text" value="Gorontalo"></div>
+            <div class="field"><label>Telepon</label><input name="telepon" type="text" value="0435-881234"></div>
+            <div class="field"><label>Email</label><input name="email" type="email" value="man2gorontalo@kemenag.go.id"></div>
+            <div class="field span-2"><label>Kepala Madrasah</label><input name="nama_kamad" type="text" value="Drs. H. Abdul Wahab, M.Pd"></div>
+            <div class="field"><label>Tahun Ajaran</label><input name="tahun_ajaran" type="text" value="2026/2027" placeholder="2026/2027"></div>
+            <div class="field"><label>Semester</label>
+              <select name="semester">
+                <option selected>1 (Ganjil)</option>
+                <option >2 (Genap)</option>
+              </select>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="card-head" style="margin-bottom:12px"><div><h3 style="font-size:14px">Integrasi AI (opsional)</h3><p>Kosongkan untuk memakai generator offline SIM-GTK</p></div></div>
+          <div class="form-grid">
+            <div class="field span-2"><label>Base URL API (OpenAI compatible)</label><input name="ai_base_url" type="text" value="https://api.openai.com/v1"></div>
+            <div class="field"><label>Model</label><input name="ai_model" type="text" value="gpt-4o-mini"></div>
+            <div class="field"><label>API Key</label><input name="ai_api_key" type="password" value="" placeholder="sk-..."></div>
+          </div>
+          <div class="alert alert-info mt-2"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Tanpa API key, dokumen perangkat ajar tetap dihasilkan secara lengkap oleh generator offline berbasis template Kurikulum Merdeka.</div></div>
+          <div class="form-actions"><button class="btn btn-primary" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Simpan Pengaturan</button></div>
+        </form>
+      </div>
+    
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

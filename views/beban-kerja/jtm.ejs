@@ -1,0 +1,76 @@
+<%- include('../partials/head', { title: "Perhitungan JTM", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Perhitungan JTM</b>
+    </div>
+    <div class="page-head">
+      <h1>Perhitungan JTM</h1>
+      <p>Perhitungan jam tatap muka, ekuivalensi, dan kelayakan tunjangan</p>
+    </div>
+
+<div class="grid grid-4 mb-3">
+  <div class="stat tint-1"><div><div class="lbl">JTM Mengajar</div><div class="val">0.00</div><div class="sub">Jam tatap muka per pekan</div></div><div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-clock"></use></svg></div></div>
+  <div class="stat tint-2"><div><div class="lbl">Ekuivalensi Tugas</div><div class="val">0</div><div class="sub">0 tugas tambahan disetujui</div></div><div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-clipboard"></use></svg></div></div>
+  <div class="stat tint-3"><div><div class="lbl">Total JTM</div><div class="val">0</div><div class="sub">Linier 0.00 · Non-linier 0.00</div></div><div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-calculator"></use></svg></div></div>
+  <div class="stat tint-4"><div><div class="lbl">Kelayakan TPG</div><div class="val" style="font-size:17px;color:var(--amber)">Belum Sertifikasi</div><div class="sub">Belum sertifikasi</div></div><div class="ico ico-blue"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-wallet"></use></svg></div></div>
+</div>
+
+<div class="grid" style="grid-template-columns:1.6fr 1fr">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>Rincian Jam Tatap Muka</h3><p>Perhitungan 1 JP = 45 menit sesuai jadwal madrasah</p></div><a class="btn btn-outline btn-sm" data-print href="#"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-print"></use></svg> Cetak</a></div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Hari</th><th>Jam</th><th>Mapel</th><th>Kelas</th><th class="num">JP</th><th>Linier</th></tr></thead>
+          <tbody>
+            
+          </tbody>
+          <tfoot>
+            <tr style="background:#f4faf8">
+              <td colspan="4" class="strong">Total jam mengajar</td>
+              <td class="num strong">0.00</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>Tugas Tambahan (Ekuivalensi)</h3><p>Tugas yang diakui menambah beban kerja</p></div><a class="btn btn-outline btn-sm" href="/sim-gtk/beban-kerja/tugas-tambahan">Kelola</a></div>
+      
+        <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-clipboard"></use></svg><b>Belum ada tugas tambahan disetujui</b>Ajukan melalui menu Tugas Tambahan.</div>
+      
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <div class="card-head"><div><h3>Rekap per Mapel</h3><p>Distribusi jam mengajar</p></div></div>
+      
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div><h3>Kelayakan Tunjangan</h3><p>Berdasarkan Permendikbud &amp; regulasi Kemenag</p></div></div>
+      <div class="info-row"><span class="k">Sertifikasi pendidik</span><span class="v">Belum ada</span></div>
+      <div class="info-row"><span class="k">Beban kerja minimal</span><span class="v">24 JTM</span></div>
+      <div class="info-row"><span class="k">Total JTM Anda</span><span class="v">0 JTM</span></div>
+      <div class="info-row"><span class="k">Selisih</span><span class="v">Kurang 24.00 JTM</span></div>
+      <div class="info-row"><span class="k">Status kelayakan</span><span class="v"><span class="badge badge-muted">Belum Sertifikasi</span></span></div>
+      <div class="alert alert-info mt-2"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Bila JTM kurang dari 24, ajukan <b>Dispensasi JTM</b> atau tambahkan tugas tambahan yang diakui.</div></div>
+      <a class="btn btn-outline btn-block btn-sm" href="/sim-gtk/tunjangan/skmt">Ajukan SKMT <svg class="ic ic-sm" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+    </div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

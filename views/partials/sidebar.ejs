@@ -1,0 +1,730 @@
+<aside class="sidebar" id="sidebar">
+  
+  <!-- SWITCHER PERAN AKTIF DI ATAS SIDEBAR -->
+  <div style="padding:10px 12px;background:var(--bg-subtle);border-radius:10px;margin-bottom:12px;border:1px solid var(--line)">
+    <div class="flex justify-between align-center mb-1">
+      <span class="tiny uppercase muted font-bold" style="letter-spacing:0.5px">Peran Aktif</span>
+      <% if (user.role === 'superadmin' || (typeof currentMenu !== 'undefined' && currentMenu === 'superadmin')) { %>
+        <span class="badge badge-xs badge-danger">SUPERADMIN</span>
+      <% } else if (user.role === 'kamad') { %>
+        <span class="badge badge-xs badge-purple">KAMAD</span>
+      <% } else if (user.role === 'pengawas') { %>
+        <span class="badge badge-xs badge-success">PENGAWAS</span>
+      <% } else if (user.role === 'tendik') { %>
+        <span class="badge badge-xs badge-secondary">TENDIK</span>
+      <% } else if (user.role === 'guru') { %>
+        <span class="badge badge-xs badge-info">GURU</span>
+      <% } else { %>
+        <span class="badge badge-xs badge-primary">ADMIN</span>
+      <% } %>
+    </div>
+    <div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+      <%= (user.role === 'superadmin' || (typeof currentMenu !== 'undefined' && currentMenu === 'superadmin')) ? 'Super Admin Platform' : (user.roleLabel || 'Admin Madrasah') %>
+    </div>
+    <div class="tiny muted" style="margin-top:2px;font-size:11px">
+      <%= user.nama %>
+    </div>
+    
+    <!-- QUICK ROLE SELECTOR (TANPA NOMOR) -->
+    <div class="mt-2" style="border-top:1px dashed var(--line);padding-top:6px">
+      <select class="form-control" style="font-size:11px;padding:3px 6px;height:auto" onchange="if(this.value) window.location.href='/sim-gtk/switch-role/' + this.value">
+        <option value="">-- Ganti Panel Peran --</option>
+        <option value="superadmin" <%= (user.role === 'superadmin' || (typeof currentMenu !== 'undefined' && currentMenu === 'superadmin')) ? 'selected' : '' %>>Superadmin (Platform Terpusat)</option>
+        <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin / Operator Madrasah</option>
+        <option value="kamad" <%= user.role === 'kamad' ? 'selected' : '' %>>Kepala Madrasah</option>
+        <option value="pengawas" <%= user.role === 'pengawas' ? 'selected' : '' %>>Pengawas Pembina</option>
+        <option value="guru" <%= user.role === 'guru' ? 'selected' : '' %>>Guru (Herman Buhungo)</option>
+        <option value="guru_penilai" <%= user.role === 'guru_penilai' ? 'selected' : '' %>>Guru Penilai (Supervisi Mengajar)</option>
+        <option value="tendik" <%= user.role === 'tendik' ? 'selected' : '' %>>Tenaga Kependidikan</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="tahun-card">
+    <div class="lbl">Tahun Ajaran</div>
+    <div class="val">2026/2027</div>
+  </div>
+  <div class="tahun-card">
+    <div class="lbl">Semester</div>
+    <div class="val">1 (Ganjil)</div>
+  </div>
+
+  <nav>
+    
+    <!-- ==================== 1. PANEL SUPERADMIN ==================== -->
+    <% if (user.role === 'superadmin' || (typeof currentMenu !== 'undefined' && currentMenu === 'superadmin')) { %>
+      <div class="sidebar-section-title">PANEL SUPERADMIN PLATFORM</div>
+      
+      <!-- MENU UTAMA -->
+      <% if (typeof canShow === 'undefined' || canShow('dashboard')) { %>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'dashboard') ? 'active' : '' %>" href="/sim-gtk/superadmin/dashboard">
+          <svg class="ic"><use href="#i-home"></use></svg> <span>Dashboard Platform</span>
+        </a>
+      <% } %>
+
+      <!-- BREAKDOWN 1: TATA KELOLA LEMBAGA & BINAAN -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('TATA_KELOLA')) { %>
+        <details class="nav-group" <%= (typeof activeSub !== 'undefined' && ['lembaga', 'pengawas-binaan', 'master-supervisi', 'laporan-platform'].includes(activeSub)) ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-school"></use></svg> TATA KELOLA LEMBAGA</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('lembaga')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'lembaga') ? 'active' : '' %>" href="/sim-gtk/superadmin/lembaga">
+              <svg class="ic"><use href="#i-school"></use></svg> <span>Manajemen Sekolah/Madrasah</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('pengawas_binaan')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'pengawas-binaan') ? 'active' : '' %>" href="/sim-gtk/superadmin/pengawas-binaan">
+              <svg class="ic"><use href="#i-map-pin"></use></svg> <span>Wilayah &amp; Pengawas Binaan</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('master_supervisi')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'master-supervisi') ? 'active' : '' %>" href="/sim-gtk/superadmin/master-supervisi">
+              <svg class="ic"><use href="#i-award"></use></svg> <span>Master Template Supervisi</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('laporan')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'laporan-platform') ? 'active' : '' %>" href="/sim-gtk/superadmin/laporan">
+              <svg class="ic"><use href="#i-print"></use></svg> <span>Laporan Platform</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 2: PENGGUNA & AUDIT KEAMANAN -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('PENGGUNA_KEAMANAN')) { %>
+        <details class="nav-group" <%= (typeof activeSub !== 'undefined' && ['admin-lembaga', 'hak-akses', 'monitoring-audit'].includes(activeSub)) ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-shield"></use></svg> PENGGUNA &amp; KEAMANAN</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('admin_lembaga')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'admin-lembaga') ? 'active' : '' %>" href="/sim-gtk/superadmin/admin-lembaga">
+              <svg class="ic"><use href="#i-users"></use></svg> <span>Manajemen Pengguna</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('hak_akses')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'hak-akses') ? 'active' : '' %>" href="/sim-gtk/superadmin/hak-akses">
+              <svg class="ic"><use href="#i-lock"></use></svg> <span>Hak Akses &amp; Peran</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('monitoring_audit')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'monitoring-audit') ? 'active' : '' %>" href="/sim-gtk/superadmin/monitoring-audit">
+              <svg class="ic"><use href="#i-check-circle"></use></svg> <span>Monitoring &amp; Audit</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 3: SISTEM & PUSAT LAYANAN -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('SISTEM_LAYANAN')) { %>
+        <details class="nav-group" <%= (typeof activeSub !== 'undefined' && ['konfigurasi', 'layanan', 'backup'].includes(activeSub)) ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-settings"></use></svg> SISTEM &amp; LAYANAN</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('konfigurasi')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'konfigurasi') ? 'active' : '' %>" href="/sim-gtk/superadmin/konfigurasi">
+              <svg class="ic"><use href="#i-settings"></use></svg> <span>Konfigurasi Sistem</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('layanan')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'layanan') ? 'active' : '' %>" href="/sim-gtk/superadmin/layanan">
+              <svg class="ic"><use href="#i-bar-chart"></use></svg> <span>Pengelolaan Layanan</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('backup')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'backup') ? 'active' : '' %>" href="/sim-gtk/superadmin/backup">
+              <svg class="ic"><use href="#i-save"></use></svg> <span>Pencadangan &amp; Pemulihan</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <div class="sep my-2"></div>
+      <a class="nav-item" href="/sim-gtk/beranda">
+        <svg class="ic"><use href="#i-grid"></use></svg> <span>Akses Portal Madrasah</span>
+      </a>
+
+    <!-- ==================== 2. PANEL KEPALA MADRASAH ==================== -->
+    <% } else if (user.role === 'kamad') { %>
+      <div class="sidebar-section-title">PANEL KEPALA MADRASAH</div>
+      
+      <!-- MENU UTAMA -->
+      <% if (typeof canShow === 'undefined' || canShow('dashboard')) { %>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'dashboard') ? 'active' : '' %>" href="/sim-gtk/kamad/dashboard">
+          <svg class="ic"><use href="#i-home"></use></svg> <span>Dashboard Kepala Madrasah</span>
+        </a>
+      <% } %>
+
+      <!-- BREAKDOWN 1: DATA GTK & KEDISIPLINAN -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('DATA_GTK_DISIPLIN')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && ['gtk', 'presensi', 'jadwal'].includes(currentMenu)) ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-users"></use></svg> DATA GTK &amp; DISIPLIN</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('gtk_profil')) { %>
+            <a class="nav-item" href="/sim-gtk/manajemen/gtk">
+              <svg class="ic"><use href="#i-school"></use></svg> <span>Data GTK &amp; Profil Madrasah</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('kehadiran_disiplin')) { %>
+            <a class="nav-item" href="/sim-gtk/referensi/presensi">
+              <svg class="ic"><use href="#i-check-circle"></use></svg> <span>Kehadiran &amp; Disiplin GTK</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('jadwal_beban')) { %>
+            <a class="nav-item" href="/sim-gtk/pembelajaran/jadwal">
+              <svg class="ic"><use href="#i-calendar"></use></svg> <span>Jadwal &amp; Beban Kerja</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('pengembangan_kompetensi')) { %>
+            <a class="nav-item" href="/sim-gtk/portofolio/golongan-mkg">
+              <svg class="ic"><use href="#i-trending"></use></svg> <span>Pengembangan Kompetensi</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 2: SUPERVISI & PENJAMINAN MUTU -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('SUPERVISI_MUTU')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && currentMenu === 'penilaian') ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-award"></use></svg> SUPERVISI &amp; MUTU</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('supervisi_guru')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/jadwal">
+              <svg class="ic"><use href="#i-award"></use></svg> <span>Supervisi Guru</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('evaluasi_tendik')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/manajerial">
+              <svg class="ic"><use href="#i-clipboard"></use></svg> <span>Evaluasi Tenaga Kependidikan</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('pembinaan_tindak_lanjut')) { %>
+            <a class="nav-item" href="/sim-gtk/kamad/dashboard">
+              <svg class="ic"><use href="#i-refresh"></use></svg> <span>Pembinaan &amp; Tindak Lanjut</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('laporan_analitik')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/laporan">
+              <svg class="ic"><use href="#i-print"></use></svg> <span>Laporan &amp; Analitik Mutu</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 3: KEBIJAKAN & LAYANAN -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('KEBIJAKAN_LAYANAN')) { %>
+        <details class="nav-group">
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-file-text"></use></svg> KEBIJAKAN &amp; LAYANAN</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('persetujuan_izin')) { %>
+            <a class="nav-item" href="/sim-gtk/kamad/dashboard">
+              <svg class="ic"><use href="#i-check-square"></use></svg> <span>Persetujuan &amp; Perizinan</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('pengumuman_agenda')) { %>
+            <a class="nav-item" href="/sim-gtk/kamad/dashboard">
+              <svg class="ic"><use href="#i-bell"></use></svg> <span>Pengumuman &amp; Agenda Lembaga</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+    <!-- ==================== 3. PANEL PENGAWAS MADRASAH ==================== -->
+    <% } else if (user.role === 'pengawas') { %>
+      <div class="sidebar-section-title">PANEL PENGAWAS BINAAN</div>
+
+      <!-- MENU UTAMA -->
+      <% if (typeof canShow === 'undefined' || canShow('dashboard')) { %>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'dashboard') ? 'active' : '' %>" href="/sim-gtk/pengawas/dashboard">
+          <svg class="ic"><use href="#i-home"></use></svg> <span>Dashboard Pengawas</span>
+        </a>
+      <% } %>
+
+      <!-- BREAKDOWN 1: LEMBAGA BINAAN & PERENCANAAN -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('BINAAN_PROGRAM')) { %>
+        <details class="nav-group" <%= (typeof activeSub !== 'undefined' && activeSub === 'binaan') ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-school"></use></svg> BINAAN &amp; PROGRAM</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('sekolah_binaan')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'binaan') ? 'active' : '' %>" href="/sim-gtk/pengawas/binaan">
+              <svg class="ic"><use href="#i-school"></use></svg> <span>Sekolah / Madrasah Binaan</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('peta_penugasan')) { %>
+            <a class="nav-item" href="/sim-gtk/pengawas/binaan">
+              <svg class="ic"><use href="#i-map-pin"></use></svg> <span>Peta &amp; Penugasan Binaan</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('program_pengawasan')) { %>
+            <a class="nav-item" href="/sim-gtk/pengawas/dashboard">
+              <svg class="ic"><use href="#i-book"></use></svg> <span>Program Pengawasan Tahunan</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('agenda_notifikasi')) { %>
+            <a class="nav-item" href="/sim-gtk/pengawas/dashboard">
+              <svg class="ic"><use href="#i-bell"></use></svg> <span>Agenda &amp; Notifikasi</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 2: PELAKSANAAN SUPERVISI & PEMBINAAN -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('SUPERVISI_PEMBINAAN')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && currentMenu === 'penilaian') ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-award"></use></svg> SUPERVISI &amp; PEMBINAAN</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('jadwal_supervisi')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/jadwal">
+              <svg class="ic"><use href="#i-calendar"></use></svg> <span>Jadwal Supervisi Binaan</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('supervisi_manajerial')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/manajerial">
+              <svg class="ic"><use href="#i-clipboard"></use></svg> <span>Supervisi Manajerial Lembaga</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('supervisi_akademik')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/akademik">
+              <svg class="ic"><use href="#i-presentation"></use></svg> <span>Supervisi Akademik Guru</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('supervisi_mengajar')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/mengajar">
+              <svg class="ic"><use href="#i-eye"></use></svg> <span>Supervisi Observasi Mengajar</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('instrumen_hasil')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/perangkat">
+              <svg class="ic"><use href="#i-folder"></use></svg> <span>Instrumen &amp; Hasil Supervisi</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 3: EVALUASI & TINDAK LANJUT -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('EVALUASI_TINDAK_LANJUT')) { %>
+        <details class="nav-group" <%= (typeof activeSub !== 'undefined' && activeSub === 'rekomendasi') ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-trending"></use></svg> EVALUASI &amp; TINDAK LANJUT</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('rekomendasi_tindak_lanjut')) { %>
+            <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'rekomendasi') ? 'active' : '' %>" href="/sim-gtk/pengawas/rekomendasi">
+              <svg class="ic"><use href="#i-check-square"></use></svg> <span>Rekomendasi &amp; Tindak Lanjut</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('laporan_pengawasan')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/laporan">
+              <svg class="ic"><use href="#i-print"></use></svg> <span>Laporan Pengawasan Binaan</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('portofolio_pembinaan')) { %>
+            <a class="nav-item" href="/sim-gtk/pengawas/dashboard">
+              <svg class="ic"><use href="#i-bookmark"></use></svg> <span>Portofolio &amp; Riwayat Pembinaan</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+    <!-- ==================== 4. PANEL GURU ==================== -->
+    <% } else if (user.role === 'guru') { %>
+      <div class="sidebar-section-title">PANEL GURU</div>
+
+      <!-- MENU UTAMA -->
+      <% if (typeof canShow === 'undefined' || canShow('dashboard')) { %>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'beranda') ? 'active' : '' %>" href="/sim-gtk/beranda">
+          <svg class="ic"><use href="#i-home"></use></svg> <span>Dashboard Guru</span>
+        </a>
+      <% } %>
+
+      <!-- BREAKDOWN 1: DATA DIRI & PORTOFOLIO -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('PROFIL_PORTOFOLIO')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && currentMenu === 'portofolio') ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-id-card"></use></svg> PROFIL &amp; PORTOFOLIO</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('profil_saya')) { %>
+            <a class="nav-item" href="/sim-gtk/portofolio/data-diri">
+              <svg class="ic"><use href="#i-id-card"></use></svg> <span>Profil Saya</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('riwayat_golongan')) { %>
+            <a class="nav-item" href="/sim-gtk/portofolio/golongan-mkg">
+              <svg class="ic"><use href="#i-trending"></use></svg> <span>Riwayat Golongan &amp; Diklat</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('layanan_admin')) { %>
+            <a class="nav-item" href="/sim-gtk/portofolio/perubahan-data">
+              <svg class="ic"><use href="#i-edit"></use></svg> <span>Layanan Administrasi &amp; Usulan</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 2: PEMBELAJARAN & KELAS -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('PEMBELAJARAN_KELAS')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && currentMenu === 'pembelajaran') ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-book-open"></use></svg> PEMBELAJARAN &amp; KELAS</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('jadwal_mengajar')) { %>
+            <a class="nav-item" href="/sim-gtk/pembelajaran/jadwal">
+              <svg class="ic"><use href="#i-calendar"></use></svg> <span>Jadwal &amp; Tugas Mengajar</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('kehadiran_siswa')) { %>
+            <a class="nav-item" href="/sim-gtk/pembelajaran/absensi">
+              <svg class="ic"><use href="#i-user-check"></use></svg> <span>Kehadiran &amp; Absensi Siswa</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('jurnal_mengajar')) { %>
+            <a class="nav-item" href="/sim-gtk/pembelajaran/jurnal">
+              <svg class="ic"><use href="#i-notebook"></use></svg> <span>Jurnal Mengajar &amp; Refleksi</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('ai_perangkat')) { %>
+            <a class="nav-item" href="/sim-gtk/pembelajaran/ai">
+              <svg class="ic"><use href="#i-sparkles"></use></svg> <span>AI Generator Perangkat Ajar</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 3: SUPERVISI & PENILAIAN SAYA -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('SUPERVISI_RAPOR')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && currentMenu === 'penilaian') ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-award"></use></svg> SUPERVISI &amp; RAPOR</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('perangkat_pembelajaran')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/perangkat">
+              <svg class="ic"><use href="#i-folder"></use></svg> <span>Perangkat Pembelajaran</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('hasil_supervisi')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/akademik">
+              <svg class="ic"><use href="#i-check-square"></use></svg> <span>Hasil Supervisi Guru</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('supervisi_tugas_tambahan')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/manajerial">
+              <svg class="ic"><use href="#i-clipboard"></use></svg> <span>Supervisi Tugas Tambahan</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('laporan_rapor')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/laporan">
+              <svg class="ic"><use href="#i-print"></use></svg> <span>Laporan &amp; Rapor Supervisi</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+    <!-- ==================== 5. PANEL TENAGA KEPENDIDIKAN ==================== -->
+    <% } else if (user.role === 'tendik') { %>
+      <div class="sidebar-section-title">PANEL TENAGA KEPENDIDIKAN</div>
+
+      <!-- MENU UTAMA -->
+      <% if (typeof canShow === 'undefined' || canShow('dashboard')) { %>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'dashboard') ? 'active' : '' %>" href="/sim-gtk/tendik/dashboard">
+          <svg class="ic"><use href="#i-home"></use></svg> <span>Dashboard Saya</span>
+        </a>
+      <% } %>
+
+      <!-- BREAKDOWN 1: DATA DIRI & KEPEGAWAIAN -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('DATA_DIRI_BERKAS')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && currentMenu === 'portofolio') ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-id-card"></use></svg> DATA DIRI &amp; BERKAS</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('profil_saya')) { %>
+            <a class="nav-item" href="/sim-gtk/portofolio/data-diri">
+              <svg class="ic"><use href="#i-id-card"></use></svg> <span>Profil Saya</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('dokumen_kepegawaian')) { %>
+            <a class="nav-item" href="/sim-gtk/portofolio/perubahan-data">
+              <svg class="ic"><use href="#i-folder"></use></svg> <span>Dokumen Kepegawaian</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('pengembangan_kompetensi')) { %>
+            <a class="nav-item" href="/sim-gtk/portofolio/golongan-mkg">
+              <svg class="ic"><use href="#i-trending"></use></svg> <span>Pengembangan Kompetensi</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('layanan_admin')) { %>
+            <a class="nav-item" href="/sim-gtk/portofolio/perubahan-data">
+              <svg class="ic"><use href="#i-file-text"></use></svg> <span>Layanan Administrasi Tendik</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 2: TUGAS UNIT & KINERJA -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('TUGAS_UNIT_KINERJA')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && (currentMenu === 'penilaian' || currentMenu === 'presensi')) ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-clipboard"></use></svg> TUGAS UNIT &amp; KINERJA</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('kehadiran_izin')) { %>
+            <a class="nav-item" href="/sim-gtk/referensi/presensi">
+              <svg class="ic"><use href="#i-check-circle"></use></svg> <span>Kehadiran &amp; Izin</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('jadwal_tugas')) { %>
+            <a class="nav-item" href="/sim-gtk/tendik/dashboard">
+              <svg class="ic"><use href="#i-calendar"></use></svg> <span>Jadwal &amp; Tugas Unit</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('kinerja_evaluasi')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/manajerial">
+              <svg class="ic"><use href="#i-award"></use></svg> <span>Kinerja &amp; Evaluasi Tendik</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('pengumuman_resmi')) { %>
+            <a class="nav-item" href="/sim-gtk/tendik/dashboard">
+              <svg class="ic"><use href="#i-bell"></use></svg> <span>Pengumuman Resmi Satker</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('riwayat_laporan')) { %>
+            <a class="nav-item" href="/sim-gtk/tendik/dashboard">
+              <svg class="ic"><use href="#i-print"></use></svg> <span>Riwayat &amp; Laporan Tugas</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+    <!-- ==================== 5.5 PANEL GURU PENILAI ==================== -->
+    <% } else if (user.role === 'guru_penilai') { %>
+      <div class="sidebar-section-title">PANEL GURU PENILAI SUPERVISI</div>
+
+      <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'penilai_dashboard') ? 'active' : '' %>" href="/sim-gtk/guru-penilai/dashboard">
+        <svg class="ic"><use href="#i-home"></use></svg> <span>Dashboard Guru Penilai</span>
+      </a>
+
+      <!-- BREAKDOWN 1: SUPERVISI MANDAT KEPALA MADRASAH -->
+      <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && currentMenu === 'penilaian') ? 'open' : 'open' %>>
+        <summary>
+          <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-award"></use></svg> SUPERVISI PEMBELAJARAN</span>
+          <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+        </summary>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'jadwal') ? 'active' : '' %>" href="/sim-gtk/penilaian/jadwal">
+          <svg class="ic"><use href="#i-calendar"></use></svg> <span>Jadwal Observasi Guru</span>
+        </a>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'mengajar') ? 'active' : '' %>" href="/sim-gtk/penilaian/mengajar">
+          <svg class="ic"><use href="#i-presentation"></use></svg> <span>Observasi Praktik Mengajar</span>
+        </a>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'perangkat') ? 'active' : '' %>" href="/sim-gtk/penilaian/perangkat">
+          <svg class="ic"><use href="#i-folder"></use></svg> <span>Telaah Modul Ajar / RPP</span>
+        </a>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'akademik') ? 'active' : '' %>" href="/sim-gtk/penilaian/akademik">
+          <svg class="ic"><use href="#i-check-square"></use></svg> <span>Input Lembar 4 Menu</span>
+        </a>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'daftar_hadir') ? 'active' : '' %>" href="/sim-gtk/penilaian/daftar-hadir">
+          <svg class="ic"><use href="#i-user-check"></use></svg> <span>Daftar Hadir Supervisi</span>
+        </a>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'laporan') ? 'active' : '' %>" href="/sim-gtk/penilaian/laporan">
+          <svg class="ic"><use href="#i-print"></use></svg> <span>Laporan &amp; Berita Acara</span>
+        </a>
+      </details>
+
+      <!-- BREAKDOWN 2: TUGAS MENGAJAR PRIBADI -->
+      <details class="nav-group">
+        <summary>
+          <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-notebook"></use></svg> TUGAS MENGAJAR SAYA</span>
+          <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+        </summary>
+        <a class="nav-item" href="/sim-gtk/pembelajaran/jurnal">
+          <svg class="ic"><use href="#i-notebook"></use></svg> <span>Jurnal Mengajar Saya</span>
+        </a>
+        <a class="nav-item" href="/sim-gtk/portofolio/data-diri">
+          <svg class="ic"><use href="#i-user"></use></svg> <span>Profil &amp; SK Tugas Tambahan</span>
+        </a>
+      </details>
+
+    <!-- ==================== 6. PANEL ADMIN / OPERATOR LEMBAGA ==================== -->
+    <% } else { %>
+      <div class="sidebar-section-title">PANEL ADMIN LEMBAGA</div>
+
+      <!-- MENU UTAMA -->
+      <% if (typeof canShow === 'undefined' || canShow('dashboard')) { %>
+        <a class="nav-item <%= (typeof activeSub !== 'undefined' && activeSub === 'beranda') ? 'active' : '' %>" href="/sim-gtk/beranda">
+          <svg class="ic"><use href="#i-home"></use></svg> <span>Dashboard Lembaga</span>
+        </a>
+      <% } %>
+      <% if (typeof canShow === 'undefined' || canShow('madrasah_saya')) { %>
+        <a class="nav-item" href="/sim-gtk/madrasah-saya">
+          <svg class="ic"><use href="#i-school"></use></svg> <span>Profil Lembaga</span>
+        </a>
+      <% } %>
+
+      <!-- BREAKDOWN 1: DATA KEPEGAWAIAN GTK -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('DATA_GTK')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && ['gtk', 'portofolio', 'pengguna'].includes(currentMenu)) ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-users"></use></svg> DATA KEPEGAWAIAN GTK</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('manajemen_gtk')) { %>
+            <a class="nav-item" href="/sim-gtk/manajemen/gtk">
+              <svg class="ic"><use href="#i-users"></use></svg> <span>Data Pokok GTK</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('dokumen_kepegawaian')) { %>
+            <a class="nav-item" href="/sim-gtk/portofolio/perubahan-data">
+              <svg class="ic"><use href="#i-folder"></use></svg> <span>Dokumen Kepegawaian</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('akun_pengguna')) { %>
+            <a class="nav-item" href="/sim-gtk/manajemen/pengguna">
+              <svg class="ic"><use href="#i-user"></use></svg> <span>Akun &amp; Keanggotaan GTK</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('kompetensi_gtk')) { %>
+            <a class="nav-item" href="/sim-gtk/portofolio/golongan-mkg">
+              <svg class="ic"><use href="#i-trending"></use></svg> <span>Kompetensi &amp; Pelatihan PKB</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 2: OPERASIONAL MADRASAH -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('OPERASIONAL')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && ['presensi', 'jadwal', 'pembelajaran'].includes(currentMenu)) ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-calendar"></use></svg> OPERASIONAL MADRASAH</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('presensi_gtk')) { %>
+            <a class="nav-item" href="/sim-gtk/manajemen/presensi">
+              <svg class="ic"><use href="#i-check-circle"></use></svg> <span>Kehadiran &amp; Izin</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('jadwal_tugas')) { %>
+            <a class="nav-item" href="/sim-gtk/manajemen/jadwal">
+              <svg class="ic"><use href="#i-calendar"></use></svg> <span>Jadwal &amp; Pembagian Tugas</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('absensi_siswa')) { %>
+            <a class="nav-item" href="/sim-gtk/pembelajaran/absensi">
+              <svg class="ic"><use href="#i-user-check"></use></svg> <span>Absensi Siswa Harian</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('jurnal_mengajar')) { %>
+            <a class="nav-item" href="/sim-gtk/pembelajaran/jurnal">
+              <svg class="ic"><use href="#i-notebook"></use></svg> <span>Jurnal Mengajar Kelas</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('ai_perangkat')) { %>
+            <a class="nav-item" href="/sim-gtk/pembelajaran/ai">
+              <svg class="ic"><use href="#i-sparkles"></use></svg> <span>Generator AI Perangkat Ajar</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 3: PENILAIAN & SUPERVISI GTK -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('PENILAIAN')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && currentMenu === 'penilaian') ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-award"></use></svg> PENILAIAN &amp; SUPERVISI</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('jadwal_supervisi')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/jadwal">
+              <svg class="ic"><use href="#i-calendar"></use></svg> <span>Jadwal Supervisi</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('perangkat_supervisi')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/perangkat">
+              <svg class="ic"><use href="#i-folder"></use></svg> <span>Perangkat Pembelajaran</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('supervisi_akademik')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/akademik">
+              <svg class="ic"><use href="#i-check-square"></use></svg> <span>Supervisi Akademik</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('supervisi_mengajar')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/mengajar">
+              <svg class="ic"><use href="#i-presentation"></use></svg> <span>Supervisi Mengajar</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('supervisi_manajerial')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/manajerial">
+              <svg class="ic"><use href="#i-clipboard"></use></svg> <span>Supervisi Manajerial</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('daftar_hadir_supervisi')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/daftar-hadir">
+              <svg class="ic"><use href="#i-user-check"></use></svg> <span>Daftar Hadir Supervisi</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('laporan_supervisi')) { %>
+            <a class="nav-item" href="/sim-gtk/penilaian/laporan">
+              <svg class="ic"><use href="#i-print"></use></svg> <span>Laporan &amp; Cetak Hasil</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+      <!-- BREAKDOWN 4: LAYANAN & PENGATURAN -->
+      <% if (typeof canGroupShow === 'undefined' || canGroupShow('LAYANAN')) { %>
+        <details class="nav-group" <%= (typeof currentMenu !== 'undefined' && ['persetujuan', 'pengaturan'].includes(currentMenu)) ? 'open' : '' %>>
+          <summary>
+            <span class="flex align-center gap-1"><svg class="ic ic-sm"><use href="#i-settings"></use></svg> LAYANAN &amp; PENGATURAN</span>
+            <svg class="ic ic-sm chev"><use href="#i-chevron-down"></use></svg>
+          </summary>
+          <% if (typeof canShow === 'undefined' || canShow('persetujuan')) { %>
+            <a class="nav-item" href="/sim-gtk/manajemen/persetujuan">
+              <svg class="ic"><use href="#i-check-square"></use></svg> <span>Layanan Administrasi</span>
+              <span class="nav-badge">6</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('pengumuman')) { %>
+            <a class="nav-item" href="/sim-gtk/beranda">
+              <svg class="ic"><use href="#i-bell"></use></svg> <span>Pengumuman Lembaga</span>
+            </a>
+          <% } %>
+          <% if (typeof canShow === 'undefined' || canShow('pengaturan')) { %>
+            <a class="nav-item" href="/sim-gtk/pengaturan">
+              <svg class="ic"><use href="#i-settings"></use></svg> <span>Pengaturan Lembaga</span>
+            </a>
+          <% } %>
+        </details>
+      <% } %>
+
+    <% } %>
+
+    <!-- TAUTAN GLOBAL UMUM (TANPA NOMOR) -->
+    <div class="sep my-2"></div>
+    <a class="nav-item" href="/sim-gtk/peta-situs">
+      <svg class="ic"><use href="#i-grid"></use></svg> <span>Peta Situs 6 Peran</span>
+    </a>
+    <a class="nav-item" href="/sim-gtk/panduan">
+      <svg class="ic"><use href="#i-book"></use></svg> <span>Panduan Hak Akses</span>
+    </a>
+
+  </nav>
+  <div class="sidebar-foot">
+    SIM-GTK &middot; Sistem Informasi Manajemen GTK<br>
+    Madrasah &copy; 2026
+  </div>
+</aside>

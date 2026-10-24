@@ -1,0 +1,318 @@
+<%- include('../partials/head', { title: "Master Template Supervisi Nasional — Super Admin SIM-GTK", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar', { currentMenu: 'superadmin', activeSub: 'master-supervisi' }) %>
+  <main class="main">
+    
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb no-print">
+      <a href="/sim-gtk/superadmin/dashboard">Superadmin</a>
+      <span class="sep">/</span>
+      <span>Tata Kelola Lembaga</span>
+      <span class="sep">/</span>
+      <span>Master Template Supervisi Nasional</span>
+    </div>
+
+    <!-- HERO HEADER ANIMATED GRADIENT -->
+    <div class="card p-4 mb-4 animated-gradient-hero text-white" style="border-radius:18px;border:none;box-shadow:0 10px 30px rgba(15,23,42,0.15)">
+      <div class="flex justify-between align-center wrap gap-3">
+        <div style="max-width:720px">
+          <div class="inline-flex align-center gap-1 mb-2 px-2 py-1" style="background:rgba(255,255,255,0.18);backdrop-filter:blur(6px);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.5px">
+            <svg class="ic ic-sm"><use href="#i-award"></use></svg> OTORITAS SUPERADMIN PLATFORM &middot; STANDAR NASIONAL
+          </div>
+          <h1 style="color:#fff;font-size:24px;font-weight:800;margin-bottom:6px">
+            Master Template Butir Penilaian Supervisi Nasional
+          </h1>
+          <p style="color:rgba(255,255,255,0.9);font-size:13px;line-height:1.6;margin:0">
+            Pusat penentuan instrumen supervisi baku Kementerian Agama RI. Butir yang ditetapkan di halaman ini menjadi standar acuan default bagi seluruh Pengawas Madrasah dan Kepala Madrasah di seluruh satuan pendidikan.
+          </p>
+        </div>
+        <div class="flex gap-2 wrap align-center">
+          <form method="POST" action="/sim-gtk/superadmin/master-supervisi/distribusi" onsubmit="return confirm('Apakah Anda yakin ingin menyelaraskan dan mendistribusikan Master Template Nasional ini ke seluruh madrasah?')">
+            <button type="submit" class="btn btn-sm btn-glow" style="background:#fff;color:var(--navy-800);font-weight:700">
+              <svg class="ic ic-sm text-teal"><use href="#i-refresh"></use></svg> Distribusi ke <%= totalMadrasah %> Madrasah
+            </button>
+          </form>
+          <form method="POST" action="/sim-gtk/superadmin/master-supervisi/reset-standar" onsubmit="return confirm('Kembalikan butir master ke format 20 butir regulasi baku Kemenag RI?')">
+            <button type="submit" class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)">
+              <svg class="ic ic-sm"><use href="#i-rotate-ccw"></use></svg> Reset Standar Baku
+            </button>
+          </form>
+          <button type="button" class="btn btn-sm btn-glow" style="background:var(--emerald-500);color:#fff;font-weight:700" onclick="openModalTambahMaster()">
+            <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Tambah Butir Master Baru
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-4">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- KPI STATS HORIZONTAL -->
+    <div class="grid grid-4 mb-4">
+      <div class="card p-3 flex align-center gap-3">
+        <div style="width:48px;height:48px;border-radius:12px;background:#e0f2fe;color:#0284c7;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-check-square"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted">Total Butir Master</div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy-800)"><%= countMaster %> Butir</div>
+          <div class="tiny text-teal font-bold">Terdaftar di Basis Data</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#d97706;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-grid"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted">Domain Supervisi</div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy-800)">4 Domain</div>
+          <div class="tiny text-amber font-bold">Admin, Modul, Observasi, Asesmen</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div style="width:48px;height:48px;border-radius:12px;background:#dcfce7;color:#16a34a;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-school"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted">Madrasah Terkoneksi</div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy-800)"><%= totalMadrasah %> Lembaga</div>
+          <div class="tiny text-green font-bold">Menerima Sinkronisasi Template</div>
+        </div>
+      </div>
+
+      <div class="card p-3 flex align-center gap-3">
+        <div style="width:48px;height:48px;border-radius:12px;background:#ede9fe;color:#7c3aed;display:grid;place-items:center">
+          <svg class="ic" style="width:24px;height:24px"><use href="#i-shield"></use></svg>
+        </div>
+        <div>
+          <div class="tiny uppercase font-bold muted">Otoritas Regulasi</div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy-800)">Kemenag RI</div>
+          <div class="tiny text-purple font-bold">Kepdirjen Pendis &amp; IKM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOMAIN TABS -->
+    <div class="tabs mb-4">
+      <a href="#tab-administrasi" class="active" onclick="switchMasterTab('administrasi', this)">
+        1. Administrasi Pembelajaran (<%= (instrumen.administrasi && instrumen.administrasi.items) ? instrumen.administrasi.items.length : 0 %> Butir)
+      </a>
+      <a href="#tab-modul" onclick="switchMasterTab('modul_ajar', this)">
+        2. Perencanaan Modul Ajar (<%= (instrumen.modul_ajar && instrumen.modul_ajar.items) ? instrumen.modul_ajar.items.length : 0 %> Butir)
+      </a>
+      <a href="#tab-pengamatan" onclick="switchMasterTab('pengamatan', this)">
+        3. Observasi Kelas (<%= (instrumen.pengamatan && instrumen.pengamatan.items) ? instrumen.pengamatan.items.length : 0 %> Butir)
+      </a>
+      <a href="#tab-penilaian" onclick="switchMasterTab('penilaian', this)">
+        4. Penilaian &amp; Asesmen (<%= (instrumen.penilaian && instrumen.penilaian.items) ? instrumen.penilaian.items.length : 0 %> Butir)
+      </a>
+    </div>
+
+    <!-- PER DOMAIN SECTIONS -->
+    <% const domains = ['administrasi', 'modul_ajar', 'pengamatan', 'penilaian']; %>
+    <% domains.forEach(function(domKey, idx) { %>
+      <% const curDom = instrumen[domKey]; %>
+      <div class="master-domain-section <%= idx === 0 ? '' : 'hidden' %>" id="master-section-<%= domKey %>">
+        <div class="card mb-4" style="padding:0;overflow:hidden;border-radius:16px">
+          <div class="p-3 flex justify-between align-center wrap gap-2" style="background:#f8fafc;border-bottom:1px solid var(--line)">
+            <div>
+              <h3 style="font-size:16px;color:var(--navy-900);font-weight:700">
+                <%= curDom ? curDom.title : domKey %>
+              </h3>
+              <p class="tiny muted" style="margin-top:2px">
+                <%= curDom ? curDom.desc : '' %>
+              </p>
+            </div>
+            <div>
+              <button type="button" class="btn btn-outline btn-sm flex align-center gap-1" onclick="openModalTambahMaster('<%= domKey %>')">
+                <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Tambah Butir Standar (<%= domKey %>)
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover table-mobile-card mb-0">
+              <thead>
+                <tr style="background:#f1f5f9;font-size:12px;color:var(--navy-700)">
+                  <th style="width:40px;text-align:center">#</th>
+                  <th style="width:80px">Kode</th>
+                  <th>Butir Penilaian &amp; Indikator Kinerja</th>
+                  <th style="width:100px;text-align:center">Bobot</th>
+                  <th style="width:130px;text-align:center">Tingkat Akses</th>
+                  <th style="width:130px;text-align:center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (curDom && curDom.items && curDom.items.length > 0) { %>
+                  <% curDom.items.forEach(function(it, itIdx) { %>
+                    <tr>
+                      <td data-label="No" style="text-align:center;font-weight:700;color:var(--muted)">
+                        <%= itIdx + 1 %>
+                      </td>
+                      <td data-label="Kode">
+                        <span class="badge badge-primary font-bold"><%= it.id %></span>
+                      </td>
+                      <td data-label="Butir & Rubrik">
+                        <div class="font-bold text-navy" style="font-size:13px;margin-bottom:4px">
+                          <%= it.label %>
+                        </div>
+                        <div class="tiny muted" style="line-height:1.4">
+                          <span class="text-danger font-bold">1:</span> <%= it.indikator_1 || 'Tidak memenuhi' %> &middot; 
+                          <span class="text-amber font-bold">2:</span> <%= it.indikator_2 || 'Kurang lengkap' %> &middot; 
+                          <span class="text-teal font-bold">3:</span> <%= it.indikator_3 || 'Lengkap standar' %> &middot; 
+                          <span class="text-green font-bold">4:</span> <%= it.indikator_4 || 'Sangat komprehensif' %>
+                        </div>
+                      </td>
+                      <td data-label="Bobot" style="text-align:center">
+                        <span class="badge badge-light font-bold"><%= it.weight || 1 %>x</span>
+                      </td>
+                      <td data-label="Tingkat Akses" style="text-align:center">
+                        <span class="badge-status-aktif">Master Nasional</span>
+                      </td>
+                      <td data-label="Aksi" style="text-align:center">
+                        <div class="flex gap-1 justify-center">
+                          <button type="button" class="btn btn-outline btn-xs" title="Edit Butir" onclick='editMasterButir(<%= JSON.stringify(it) %>, "<%= domKey %>")'>
+                            <svg class="ic ic-sm"><use href="#i-edit"></use></svg>
+                          </button>
+                          <form method="POST" action="/sim-gtk/superadmin/master-supervisi/hapus" style="display:inline" onsubmit="return confirm('Hapus butir master <%= it.id %>?')">
+                            <input type="hidden" name="id" value="<%= it.db_id %>">
+                            <input type="hidden" name="kode" value="<%= it.id %>">
+                            <button type="submit" class="btn btn-outline btn-xs text-danger" title="Hapus Butir">
+                              <svg class="ic ic-sm"><use href="#i-trash"></use></svg>
+                            </button>
+                          </form>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="6" class="text-center p-4 muted">
+                      Belum ada butir instrumen master pada domain ini. Silakan klik tombol "Tambah Butir Master Baru".
+                    </td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+
+    <!-- MODAL FORM TAMBAH / EDIT BUTIR MASTER -->
+    <div id="modalMasterButir" class="modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.6);z-index:9999;place-items:center;padding:16px">
+      <div class="card p-4" style="max-width:680px;width:100%;max-height:90vh;overflow-y:auto;border-radius:18px;background:#fff">
+        <div class="flex justify-between align-center mb-3">
+          <h3 id="modalTitle" style="font-size:16px;font-weight:800;color:var(--navy-900)">
+            Tambah Butir Master Standar Nasional
+          </h3>
+          <button type="button" class="btn btn-outline btn-xs" onclick="closeModalMaster()">✕</button>
+        </div>
+
+        <form method="POST" action="/sim-gtk/superadmin/master-supervisi/simpan" id="formMasterButir">
+          <input type="hidden" name="id" id="field_id" value="">
+          
+          <div class="grid grid-2 gap-2 mb-3">
+            <div>
+              <label class="form-label font-bold">Domain Penilaian</label>
+              <select name="domain" id="field_domain" class="form-control" required>
+                <option value="administrasi">1. Administrasi Pembelajaran</option>
+                <option value="modul_ajar">2. Perencanaan Modul Ajar</option>
+                <option value="pengamatan">3. Observasi Kelas (KBM)</option>
+                <option value="penilaian">4. Penilaian &amp; Asesmen</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label font-bold">Kode Butir</label>
+              <input type="text" name="kode" id="field_kode" class="form-control" placeholder="Misal: A6, B6, C6" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label font-bold">Nama / Aspek Penilaian</label>
+            <input type="text" name="label" id="field_label" class="form-control" placeholder="Tuliskan indikator yang dinilai secara spesifik..." required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label font-bold">Bobot Penilaian</label>
+            <input type="number" step="0.1" name="bobot" id="field_bobot" class="form-control" value="1.0" required>
+          </div>
+
+          <div style="background:#f8fafc;padding:12px;border-radius:12px;border:1px solid var(--line);margin-bottom:16px">
+            <div class="font-bold text-navy mb-2" style="font-size:13px">Deskripsi Rubrik Skor (1 s.d. 4)</div>
+            <div class="mb-2">
+              <label class="tiny font-bold text-danger">Skor 1 (Kurang)</label>
+              <input type="text" name="indikator_1" id="field_ind1" class="form-control tiny" placeholder="Indikator ketercapaian skor 1...">
+            </div>
+            <div class="mb-2">
+              <label class="tiny font-bold text-amber">Skor 2 (Cukup)</label>
+              <input type="text" name="indikator_2" id="field_ind2" class="form-control tiny" placeholder="Indikator ketercapaian skor 2...">
+            </div>
+            <div class="mb-2">
+              <label class="tiny font-bold text-teal">Skor 3 (Baik / Standar)</label>
+              <input type="text" name="indikator_3" id="field_ind3" class="form-control tiny" placeholder="Indikator ketercapaian skor 3...">
+            </div>
+            <div>
+              <label class="tiny font-bold text-green">Skor 4 (Amat Baik / Sangat Lengkap)</label>
+              <input type="text" name="indikator_4" id="field_ind4" class="form-control tiny" placeholder="Indikator ketercapaian skor 4...">
+            </div>
+          </div>
+
+          <div class="flex justify-end gap-2">
+            <button type="button" class="btn btn-outline btn-sm" onclick="closeModalMaster()">Batal</button>
+            <button type="submit" class="btn btn-primary btn-sm flex align-center gap-1">
+              <svg class="ic ic-sm"><use href="#i-check"></use></svg> Simpan ke Master Nasional
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function switchMasterTab(domKey, tabEl) {
+  document.querySelectorAll('.tabs a').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+
+  document.querySelectorAll('.master-domain-section').forEach(sec => sec.classList.add('hidden'));
+  const target = document.getElementById('master-section-' + domKey);
+  if (target) target.classList.remove('hidden');
+}
+
+function openModalTambahMaster(defaultDomain = 'administrasi') {
+  document.getElementById('modalTitle').textContent = 'Tambah Butir Master Standar Nasional';
+  document.getElementById('formMasterButir').reset();
+  document.getElementById('field_id').value = '';
+  document.getElementById('field_domain').value = defaultDomain;
+  document.getElementById('modalMasterButir').style.display = 'grid';
+}
+
+function editMasterButir(it, domain) {
+  document.getElementById('modalTitle').textContent = 'Edit Butir Master Standar Nasional';
+  document.getElementById('field_id').value = it.db_id;
+  document.getElementById('field_domain').value = domain;
+  document.getElementById('field_kode').value = it.id;
+  document.getElementById('field_label').value = it.label;
+  document.getElementById('field_bobot').value = it.weight || 1.0;
+  document.getElementById('field_ind1').value = it.indikator_1 || '';
+  document.getElementById('field_ind2').value = it.indikator_2 || '';
+  document.getElementById('field_ind3').value = it.indikator_3 || '';
+  document.getElementById('field_ind4').value = it.indikator_4 || '';
+  document.getElementById('modalMasterButir').style.display = 'grid';
+}
+
+function closeModalMaster() {
+  document.getElementById('modalMasterButir').style.display = 'none';
+}
+</script>
+
+<%- include('../partials/footer') %>

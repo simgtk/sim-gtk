@@ -1,0 +1,247 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/superadmin/dashboard">Super Admin</a>
+      <span class="sep">/</span>
+      <span>Wilayah &amp; Pengawas Binaan</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-eye"></use></svg>
+          Wilayah &amp; Penugasan Pengawas Binaan
+        </h1>
+        <p class="muted">Mengelola penugasan resmi pengawas madrasah, penetapan daftar lembaga binaan, nomor SK dinas, dan riwayat penugasan wilayah.</p>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="openModal('modalTambahPenugasan')">
+          <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Tetapkan Penugasan Binaan
+        </button>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- SUMMARY CARDS -->
+    <div class="grid grid-4 mb-3">
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Total Penugasan</div>
+          <div class="h3" style="font-size:22px;font-weight:700"><%= penugasans.length %> SK</div>
+        </div>
+        <span class="badge badge-primary">Resmi Kemenag</span>
+      </div>
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Penugasan Aktif</div>
+          <div class="h3 text-green" style="font-size:22px;font-weight:700">
+            <%= penugasans.filter(p => p.status === 'aktif').length %>
+          </div>
+        </div>
+        <span class="badge badge-success">Membina</span>
+      </div>
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Lembaga Terbina</div>
+          <div class="h3 text-blue" style="font-size:22px;font-weight:700">
+            <%= new Set(penugasans.map(p => p.madrasah_id)).size %> Lembaga
+          </div>
+        </div>
+        <span class="badge badge-info">Multi-Satker</span>
+      </div>
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Wilayah Binaan</div>
+          <div class="h3 text-purple" style="font-size:22px;font-weight:700">3 Wilayah</div>
+        </div>
+        <span class="badge badge-teal">Provinsi</span>
+      </div>
+    </div>
+
+    <!-- TABEL PENUGASAN PENGAWAS BINAAN -->
+    <div class="card">
+      <div class="card-head flex justify-between align-center wrap gap-1">
+        <div class="flex align-center gap-1">
+          <input type="text" id="searchPenugasan" class="form-control" style="width:280px" placeholder="Cari nama pengawas, lembaga, wilayah..." onkeyup="filterPenugasan()">
+          <select id="filterStatusPenugasan" class="form-control" style="width:160px" onchange="filterPenugasan()">
+            <option value="">Semua Status</option>
+            <option value="aktif">Aktif</option>
+            <option value="menunggu">Menunggu</option>
+            <option value="berakhir">Berakhir</option>
+            <option value="dicabut">Dicabut</option>
+          </select>
+        </div>
+        <span class="tiny muted">Menampilkan <%= penugasans.length %> data penugasan binaan</span>
+      </div>
+
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table" id="tablePenugasan">
+            <thead>
+              <tr>
+                <th>Pengawas Pembina</th>
+                <th>Satuan Lembaga Binaan</th>
+                <th>Wilayah Tugas</th>
+                <th>Nomor SK Penugasan</th>
+                <th>Masa Berlaku</th>
+                <th>Status Penugasan</th>
+                <th style="width:160px;text-align:center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% penugasans.forEach(function(p) { %>
+                <tr data-status="<%= p.status %>" data-search="<%= (p.pengawas_nama + ' ' + p.madrasah_nama + ' ' + (p.wilayah || '') + ' ' + (p.nomor_sk || '')).toLowerCase() %>">
+                  <td>
+                    <div style="font-weight:600"><%= p.pengawas_nama %></div>
+                    <div class="tiny muted"><%= p.pengawas_email %></div>
+                  </td>
+                  <td>
+                    <div style="font-weight:600"><%= p.madrasah_nama %></div>
+                    <div class="tiny muted">NPSN: <%= p.madrasah_npsn || '-' %> &middot; Jenjang: <span class="badge badge-xs badge-info"><%= p.madrasah_jenjang %></span></div>
+                  </td>
+                  <td>
+                    <b><%= p.wilayah || 'Kabupaten Gorontalo' %></b>
+                  </td>
+                  <td>
+                    <span class="font-mono small"><%= p.nomor_sk || '-' %></span>
+                  </td>
+                  <td class="tiny muted">
+                    <%= p.tanggal_mulai || '01-07-2026' %> s.d. <%= p.tanggal_selesai || '30-06-2027' %>
+                  </td>
+                  <td>
+                    <% if (p.status === 'aktif') { %>
+                      <span class="badge badge-success">Aktif Membina</span>
+                    <% } else if (p.status === 'menunggu') { %>
+                      <span class="badge badge-warning">Menunggu SK</span>
+                    <% } else { %>
+                      <span class="badge badge-danger"><%= p.status %></span>
+                    <% } %>
+                  </td>
+                  <td style="text-align:center">
+                    <% if (p.status === 'aktif') { %>
+                      <form method="post" action="/sim-gtk/superadmin/pengawas-binaan/<%= p.id %>/status" style="display:inline" onsubmit="return confirm('Cabut penugasan pengawas pada madrasah ini?')">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="hidden" name="status" value="dicabut">
+                        <button type="submit" class="btn btn-danger btn-xs" title="Cabut Penugasan">
+                          <svg class="ic ic-sm"><use href="#i-x"></use></svg> Cabut
+                        </button>
+                      </form>
+                    <% } else { %>
+                      <form method="post" action="/sim-gtk/superadmin/pengawas-binaan/<%= p.id %>/status" style="display:inline">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="hidden" name="status" value="aktif">
+                        <button type="submit" class="btn btn-success btn-xs" title="Aktifkan Penugasan">
+                          <svg class="ic ic-sm"><use href="#i-check"></use></svg> Aktifkan
+                        </button>
+                      </form>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL PENETAPAN PENUGASAN PENGAWAS -->
+    <div class="modal" id="modalTambahPenugasan">
+      <div class="modal-dialog">
+        <form method="post" action="/sim-gtk/superadmin/pengawas-binaan">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="modal-head">
+            <h3 style="font-size:16px;margin:0">Penetapan Penugasan Pengawas Binaan Baru</h3>
+            <button type="button" class="btn-close" onclick="closeModal('modalTambahPenugasan')">&times;</button>
+          </div>
+          <div class="modal-body">
+            
+            <div class="mb-2">
+              <label class="form-label required">Pilih Pengawas Pembina</label>
+              <select name="pengawas_id" class="form-control" required>
+                <% pengawass.forEach(function(pw) { %>
+                  <option value="<%= pw.id %>"><%= pw.nama %> (<%= pw.email %>)</option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label required">Pilih Lembaga / Madrasah Sasaran Binaan</label>
+              <select name="madrasah_id" class="form-control" required>
+                <% lembagas.forEach(function(l) { %>
+                  <option value="<%= l.id %>"><%= l.nama %> (Jenjang: <%= l.jenjang %>, NPSN: <%= l.npsn || '-' %>)</option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="grid grid-2 gap-1 mb-2">
+              <div>
+                <label class="form-label required">Wilayah Binaan</label>
+                <input type="text" name="wilayah" class="form-control" required value="Kabupaten Gorontalo Barat">
+              </div>
+              <div>
+                <label class="form-label required">Nomor SK Dinas Kemenag</label>
+                <input type="text" name="nomor_sk" class="form-control" required placeholder="B-1204/Kk.75.01/KP.02/07/2026">
+              </div>
+            </div>
+
+            <div class="grid grid-2 gap-1 mb-2">
+              <div>
+                <label class="form-label required">Tanggal Mulai Berlaku</label>
+                <input type="date" name="tanggal_mulai" class="form-control" required value="2026-07-01">
+              </div>
+              <div>
+                <label class="form-label required">Tanggal Berakhir</label>
+                <input type="date" name="tanggal_selesai" class="form-control" required value="2027-06-30">
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Catatan Ruang Lingkup Penugasan</label>
+              <textarea name="catatan" class="form-control" rows="2" placeholder="Fokus pembinaan Kurikulum Merdeka dan supervisi manajerial tata kelola."></textarea>
+            </div>
+
+          </div>
+          <div class="modal-foot flex justify-end gap-1">
+            <button type="button" class="btn btn-outline" onclick="closeModal('modalTambahPenugasan')">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan &amp; Terbitkan SK Penugasan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function filterPenugasan() {
+  const q = document.getElementById('searchPenugasan').value.toLowerCase();
+  const s = document.getElementById('filterStatusPenugasan').value;
+  const rows = document.querySelectorAll('#tablePenugasan tbody tr');
+
+  rows.forEach(r => {
+    const rSearch = r.getAttribute('data-search') || '';
+    const rStatus = r.getAttribute('data-status') || '';
+    const matchQ = !q || rSearch.includes(q);
+    const matchS = !s || rStatus === s;
+    r.style.display = (matchQ && matchS) ? '' : 'none';
+  });
+}
+</script>
+
+<%- include('../partials/footer') %>

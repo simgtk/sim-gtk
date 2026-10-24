@@ -1,0 +1,47 @@
+<%- include('../partials/head', { title: "Hasil AKG", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Hasil AKG</b>
+    </div>
+    <div class="page-head">
+      <h1>Hasil AKG</h1>
+      <p>Asesmen Kompetensi Guru — riwayat hasil dan sertifikat</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1.5fr 1fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Riwayat Hasil AKG</h3><p>Asesmen Kompetensi Guru yang pernah Anda ikuti</p></div></div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-bar-chart"></use></svg><b>Belum ada hasil AKG</b>Tambahkan hasil asesmen melalui formulir di samping.</div>
+    
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h3>Tambah Hasil AKG</h3><p>Catat hasil asesmen terbaru</p></div></div>
+    <form method="post" action="/sim-gtk/diklat/akg">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="form-grid">
+        <div class="field"><label>Tahun</label><input type="number" name="tahun" min="2015" max="2035" value="2026" required></div>
+        <div class="field"><label>Skor</label><input type="number" name="skor" step="0.1" min="0" max="100" placeholder="78.5"></div>
+        <div class="field span-2"><label>Status</label>
+          <select name="status"><option>Lulus</option><option>Belum Lulus</option><option>Belum Asesmen</option></select>
+        </div>
+        <div class="field span-2"><label>Nomor Akun AKGTK</label><input type="text" name="no_akun" placeholder="AKG-2026-..."></div>
+      </div>
+      <button class="btn btn-primary btn-block mt-2" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Simpan Hasil</button>
+    </form>
+    <div class="alert alert-info mt-2"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg><div>Ambang batas kelulusan AKG ditetapkan Kementerian Agama. Hasil resmi tetap mengacu pada surat keputusan pusat.</div></div>
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,213 @@
+<%- include("../partials/head", { title: "Rumah Digital Guru dan Tenaga Kependidikan Madrasah", bodyClass: "" }) %>
+
+
+<div class="public-wrap">
+  <header class="public-nav">
+    <div class="brand-block">
+      <a class="brand" href="/sim-gtk/">
+        <span class="brand-mark" aria-hidden="true">
+  <svg viewBox="0 0 96 96" role="img" aria-label="Logo SIM-GTK">
+    <defs>
+      <linearGradient id="blland" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#1565b8"/><stop offset="1" stop-color="#0d3f7c"/>
+      </linearGradient>
+      <linearGradient id="bgland" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#2a9d4f"/><stop offset="1" stop-color="#8dc63f"/>
+      </linearGradient>
+    </defs>
+    <rect x="9" y="20" width="78" height="58" rx="11" fill="#ffffff" stroke="url(#blland)" stroke-width="5"/>
+    <circle cx="36" cy="45" r="8" fill="#0d3f7c"/>
+    <path d="M22 66c0-8 6-13 14-13s14 5 14 13z" fill="#0d3f7c"/>
+    <rect x="58" y="56" width="7" height="11" rx="2" fill="#8dc63f"/>
+    <rect x="68" y="49" width="7" height="18" rx="2" fill="url(#bgland)"/>
+    <rect x="78" y="42" width="7" height="25" rx="2" fill="#2a9d4f"/>
+    <path d="M30 17 56 6l26 11-26 11z" fill="url(#blland)"/>
+    <path d="M74 17v9" stroke="#0d3f7c" stroke-width="2.4" stroke-linecap="round"/>
+    <circle cx="74" cy="28" r="3" fill="#2a9d4f"/>
+    <path d="M16 70c22 12 44 12 66-6" fill="none" stroke="url(#bgland)" stroke-width="5.5" stroke-linecap="round"/>
+  </svg>
+</span>
+<span class="brand-text">
+  <span class="wordmark"><span class="w-sim">SIM-</span><span class="w-gtk">GTK</span></span>
+  <span class="brand-sub">Rumah Digital Guru &amp; Tenaga Kependidikan</span>
+</span>
+
+      </a>
+      <span class="divider-v"></span>
+      <span class="tagline">Rumah Digital Guru dan<br>Tenaga Kependidikan Madrasah</span>
+    </div>
+    <div class="nav-actions">
+      <a class="nav-icon" href="/sim-gtk/panduan" title="Informasi aplikasi"><svg class="ic " aria-hidden="true"><use href="#i-info"></use></svg></a>
+      <a class="nav-icon" href="#fitur" title="Peta fitur"><svg class="ic " aria-hidden="true"><use href="#i-grid"></use></svg></a>
+      <a class="ghost-link hide-sm" href="/sim-gtk/cek-sertifikat"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-award"></use></svg> Cek Sertifikat PKB</a>
+      <a class="ghost-link" href="/sim-gtk/panduan"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-book"></use></svg> Panduan</a>
+      <a class="btn btn-primary" href="/sim-gtk/login">Login</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <svg class="hero-lines" viewBox="0 0 1400 600" fill="none" preserveAspectRatio="none">
+      <path d="M-20 420C220 430 320 120 700 120s560 300 760 180" stroke="#bfe9f5" stroke-width="2"/>
+      <path d="M-40 520c260-10 380-320 760-320s520 260 760 140" stroke="#d7eef7" stroke-width="1.5"/>
+      <circle cx="420" cy="120" r="4" fill="#9fd8e8"/><circle cx="500" cy="80" r="4" fill="#f0b48b"/>
+      <circle cx="380" cy="180" r="4" fill="#b9a6f0"/><circle cx="620" cy="70" r="4" fill="#8fc9e8"/>
+      <circle cx="300" cy="250" r="4" fill="#7fd8c6"/>
+    </svg>
+    <div class="hero-inner">
+      <div>
+        <h1><span class="accent">Rumah Digital</span>Guru dan Tenaga Kependidikan Madrasah</h1>
+        <p class="lead">Satu aplikasi untuk portofolio GTK, golongan &amp; MKG, tunjangan, beban kerja, supervisi, perangkat ajar berbasis AI, absensi siswa, dan jurnal mengajar — terhubung langsung dengan madrasah Anda.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="/sim-gtk/login"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-arrow-right"></use></svg> Masuk ke SIM-GTK</a>
+          <a class="btn btn-outline btn-lg" href="/sim-gtk/register">Daftar Akun GTK</a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="v">4</div><div class="k">Madrasah terhubung</div></div>
+          <div><div class="v">8+</div><div class="k">Guru &amp; tenaga kependidikan</div></div>
+          <div><div class="v">10</div><div class="k">Modul terintegrasi</div></div>
+          <div><div class="v">100%</div><div class="k">Data terpisah per madrasah</div></div>
+        </div>
+      </div>
+
+      <div class="device">
+        <div class="device-screen">
+          <div class="device-top"><i></i><i></i><i></i></div>
+          <div class="device-body">
+            <div class="mock-top">
+              <span class="mock-logo"><b></b> SIM-GTK</span>
+              <span class="flex gap-1 align-center"><span class="mock-pill" style="width:30px"></span><span class="mock-pill" style="width:22px"></span></span>
+            </div>
+            <div class="mock-layout">
+              <div class="mock-side">
+                <span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="mock-main">
+                <div class="mock-banner">
+                  <b>Herman Susanto Buhungo</b>
+                  <i></i>
+                </div>
+                <div class="mock-row">
+                  <div class="mock-card"><i></i><b></b></div>
+                  <div class="mock-card"><i></i><b></b></div>
+                  <div class="mock-card"><i></i><b></b></div>
+                  <div class="mock-card"><i></i><b></b></div>
+                </div>
+                <div class="mock-table">
+                  <div style="width:88%"></div><div style="width:72%"></div><div style="width:80%"></div><div style="width:63%"></div><div style="width:76%"></div>
+                </div>
+                <div class="mock-row" style="grid-template-columns:1fr 1fr;margin-top:10px;margin-bottom:0">
+                  <div class="mock-card"><i></i><b></b></div>
+                  <div class="mock-card"><i></i><b></b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="device-base"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="fitur">
+    <div class="section-head">
+      <div class="eyebrow">Fitur Unggulan</div>
+      <h2>Semua kebutuhan GTK dalam satu platform</h2>
+      <p>Dari administrasi kepegawaian sampai pembelajaran di kelas — dikelola rapi, terdokumentasi, dan siap cetak.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="ico"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-id-card"></use></svg></div>
+        <h3>Portofolio &amp; Data GTK</h3>
+        <p>Data diri, ijazah, sertifikasi, NUPTK/NRG, serta pengajuan perubahan data dengan alur verifikasi admin madrasah.</p>
+      </div>
+      <div class="feature">
+        <div class="ico"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-trending"></use></svg></div>
+        <h3>Golongan, MKG &amp; JTM</h3>
+        <p>Update golongan dan masa kerja, perhitungan jam tatap muka otomatis, ekuivalensi tugas tambahan, dan kelayakan TPG.</p>
+      </div>
+      <div class="feature">
+        <div class="ico"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-sparkles"></use></svg></div>
+        <h3>AI Perangkat Ajar</h3>
+        <p>Modul ajar, ATP, prota, prosem, LKPD, soal, dan KKTP tersusun otomatis dari mapel, kelas, serta materi yang Anda pilih.</p>
+      </div>
+      <div class="feature">
+        <div class="ico"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-user-check"></use></svg></div>
+        <h3>Absensi &amp; Jurnal</h3>
+        <p>Absensi siswa per jadwal, rekap kehadiran bulanan, dan jurnal mengajar harian yang siap menjadi bukti fisik.</p>
+      </div>
+      <div class="feature">
+        <div class="ico"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-presentation"></use></svg></div>
+        <h3>Supervisi Akademik</h3>
+        <p>Instrumen supervisi 8 aspek, penilaian otomatis, catatan supervisor, dan tindak lanjut yang tercatat rapi.</p>
+      </div>
+      <div class="feature">
+        <div class="ico"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-wallet"></use></svg></div>
+        <h3>Tunjangan &amp; Administrasi</h3>
+        <p>Pengajuan SKMT, SKBK, dispensasi JTM, alih fungsi, verval satminkal, hingga rekap presensi GTK.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="role-strip">
+    <div class="inner">
+      <div>
+        <div class="num">01</div>
+        <h3>Guru &amp; Tenaga Kependidikan</h3>
+        <p>Kelola portofolio, ajukan tunjangan, susun perangkat ajar, isi absensi dan jurnal mengajar dari satu akun.</p>
+      </div>
+      <div>
+        <div class="num">02</div>
+        <h3>Admin Madrasah</h3>
+        <p>Verifikasi data GTK, kelola kelas &amp; siswa, jadwal pelajaran, supervisi, serta presensi seluruh GTK.</p>
+      </div>
+      <div>
+        <div class="num">03</div>
+        <h3>Pengawas Madrasah</h3>
+        <p>Pantau madrasah binaan, lakukan supervisi dan penilaian, lalu unduh laporan pendampingan.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" style="padding-top:54px">
+    <div class="hero-promo">
+      <div class="flex align-center gap-2">
+        <div class="promo-logo"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-sparkles"></use></svg></div>
+        <div>
+          <h3 style="font-size:17px">Siap memindahkan administrasi GTK ke satu tempat?</h3>
+          <p class="muted small">Setiap madrasah memiliki data dan pengguna yang terpisah. Cukup masuk dengan akun yang diberikan admin madrasah.</p>
+        </div>
+      </div>
+      <div class="flex gap-1 wrap">
+        <a class="btn btn-outline" href="/sim-gtk/cek-sertifikat">Cek Sertifikat PKB</a>
+        <a class="btn btn-primary" href="/sim-gtk/login">Masuk Sekarang <svg class="ic ic-sm" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="public-footer">
+    <div class="inner">
+      <div>
+        <b style="color:#fff;font-size:13.5px">SIM-GTK</b>
+        <div style="margin-top:6px">Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah</div>
+        <div style="margin-top:6px">&copy; 2026 SIM-GTK. Seluruh hak cipta dilindungi.</div>
+      </div>
+      <div style="display:flex;gap:28px;flex-wrap:wrap">
+        <div>
+          <div style="color:#fff;font-weight:600;margin-bottom:6px">Aplikasi</div>
+          <div><a href="/sim-gtk/login">Masuk</a></div>
+          <div><a href="/sim-gtk/register">Daftar Akun</a></div>
+          <div><a href="/sim-gtk/panduan">Panduan</a></div>
+        </div>
+        <div>
+          <div style="color:#fff;font-weight:600;margin-bottom:6px">Layanan</div>
+          <div><a href="/sim-gtk/cek-sertifikat">Cek Sertifikat PKB</a></div>
+          <div><a href="#fitur">Fitur</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+<%- include("../partials/footer") %>
+
+

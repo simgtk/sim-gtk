@@ -1,0 +1,107 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/superadmin/dashboard">Super Admin</a>
+      <span class="sep">/</span>
+      <span>Laporan Platform</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-print"></use></svg>
+          Laporan Agregat Platform SIM-GTK
+        </h1>
+        <p class="muted">Rekapitulasi lembaga terdaftar, jumlah pengguna aktif per peran, penggunaan resource sistem, dan statistik mutu pembelajaran lintas madrasah.</p>
+      </div>
+      <div>
+        <button class="btn btn-outline" onclick="window.print()">
+          <svg class="ic ic-sm"><use href="#i-print"></use></svg> Cetak / Ekspor PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- REKAPITULASI SUMMARY CARDS -->
+    <div class="grid grid-4 mb-3">
+      <div class="card p-2">
+        <div class="tiny muted uppercase">Total Madrasah Terdaftar</div>
+        <div class="h3" style="font-size:24px;font-weight:700"><%= lembagas.length %></div>
+        <div class="tiny text-green">100% Terdata di Wilayah</div>
+      </div>
+      <div class="card p-2">
+        <div class="tiny muted uppercase">Total Pengguna Aktif</div>
+        <div class="h3 text-blue" style="font-size:24px;font-weight:700"><%= totalUsers %> Akun</div>
+        <div class="tiny muted">6 Peran Terintegrasi</div>
+      </div>
+      <div class="card p-2">
+        <div class="tiny muted uppercase">Supervisi Terlaksana</div>
+        <div class="h3 text-green" style="font-size:24px;font-weight:700"><%= totalSupervisi %> Kegiatan</div>
+        <div class="tiny text-blue">Rata-rata Skor: 89.4 (Baik)</div>
+      </div>
+      <div class="card p-2">
+        <div class="tiny muted uppercase">Penyimpanan Terpakai</div>
+        <div class="h3 text-purple" style="font-size:24px;font-weight:700">1.24 GB</div>
+        <div class="tiny muted">Dari Kuota 8.00 GB</div>
+      </div>
+    </div>
+
+    <!-- TABEL REKAPITULASI LINTAS MADRASAH -->
+    <div class="card mb-3">
+      <div class="card-head">
+        <h3 style="font-size:16px;margin:0">Rekapitulasi Kelembagaan &amp; GTK Lintas Satker</h3>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>NPSN</th>
+                <th>Nama Madrasah</th>
+                <th>Jenjang</th>
+                <th>Kabupaten/Kota</th>
+                <th>Kepala Madrasah</th>
+                <th>Status Operasional</th>
+                <th>Paket Layanan</th>
+                <th>Kapasitas GTK</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% lembagas.forEach(function(l) { %>
+                <tr>
+                  <td><b><%= l.npsn || '-' %></b></td>
+                  <td>
+                    <div style="font-weight:600"><%= l.nama %></div>
+                    <div class="tiny muted"><%= l.email || '-' %></div>
+                  </td>
+                  <td><span class="badge badge-info"><%= l.jenjang %></span></td>
+                  <td><%= l.kabupaten %></td>
+                  <td><%= l.nama_kamad || '-' %></td>
+                  <td>
+                    <% if (l.status === 'aktif') { %>
+                      <span class="badge badge-success">Aktif</span>
+                    <% } else if (l.status === 'menunggu_verifikasi') { %>
+                      <span class="badge badge-warning">Menunggu</span>
+                    <% } else { %>
+                      <span class="badge badge-danger">Ditangguhkan</span>
+                    <% } %>
+                  </td>
+                  <td><span class="badge badge-teal"><%= l.paket_layanan %></span></td>
+                  <td><b><%= l.kapasitas_gtk %> GTK</b></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,78 @@
+<%- include('../partials/head', { title: "Data Ijazah", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Data Ijazah</b>
+    </div>
+    <div class="page-head">
+      <h1>Data Ijazah</h1>
+      <p>Riwayat pendidikan formal dan legalisasi ijazah</p>
+    </div>
+
+<div class="grid" style="grid-template-columns:1fr 1.5fr">
+  <div class="card">
+    <div class="card-head"><div><h3>Tambah Data Ijazah</h3><p>Riwayat pendidikan formal</p></div></div>
+    <form method="post" action="/sim-gtk/administrasi/ijazah">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="form-grid">
+        <div class="field">
+          <label>Jenjang</label>
+          <select name="jenjang" required>
+            <option value="">— pilih —</option>
+            <option>SMA/MA</option><option>D3</option><option>D4</option><option>S1</option><option>S2</option><option>S3</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tahun Lulus</label>
+          <input type="number" name="thn_lulus" min="1950" max="2035" placeholder="2013">
+        </div>
+        <div class="field span-2">
+          <label>Institusi / Perguruan Tinggi</label>
+          <input type="text" name="institusi" placeholder="mis. IAIN Sultan Amai Gorontalo" required>
+        </div>
+        <div class="field">
+          <label>Jurusan / Program Studi</label>
+          <input type="text" name="jurusan" placeholder="Pendidikan Agama Islam">
+        </div>
+        <div class="field">
+          <label>Tahun Masuk</label>
+          <input type="number" name="thn_masuk" min="1950" max="2035" placeholder="2009">
+        </div>
+        <div class="field">
+          <label>Gelar</label>
+          <input type="text" name="gelar" placeholder="S.Pd.I">
+        </div>
+        <div class="field">
+          <label>IPK</label>
+          <input type="text" name="ipk" placeholder="3.52">
+        </div>
+        <div class="field span-2">
+          <label>Nomor Ijazah</label>
+          <input type="text" name="no_ijazah" placeholder="IJ-2013-04571">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block mt-2" type="submit"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-save"></use></svg> Simpan Ijazah</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div><h3>Daftar Ijazah</h3><p>0 data pendidikan tercatat</p></div>
+      <span class="badge badge-teal">Pendidikan terakhir: S1</span>
+    </div>
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-graduation"></use></svg><b>Belum ada data ijazah</b>Tambahkan riwayat pendidikan melalui formulir di samping.</div>
+    
+  </div>
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

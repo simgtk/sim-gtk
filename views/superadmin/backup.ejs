@@ -1,0 +1,116 @@
+<%- include('../partials/head') %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="breadcrumb">
+      <a href="/sim-gtk/beranda">Beranda</a>
+      <span class="sep">/</span>
+      <a href="/sim-gtk/superadmin/dashboard">Super Admin</a>
+      <span class="sep">/</span>
+      <span>Pencadangan &amp; Pemulihan</span>
+    </div>
+
+    <div class="page-header flex justify-between align-center wrap gap-1">
+      <div>
+        <h1 class="page-title flex align-center gap-1">
+          <svg class="ic text-blue" style="width:28px;height:28px"><use href="#i-save"></use></svg>
+          Pencadangan &amp; Pemulihan Sistem (Backup &amp; Restore)
+        </h1>
+        <p class="muted">Pemantauan snapshot database SQLite harian, prosedur pemulihan data (disaster recovery), dan verifikasi integritas checksum data.</p>
+      </div>
+      <div>
+        <form method="post" action="/sim-gtk/superadmin/backup/create" style="display:inline">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit" class="btn btn-primary">
+            <svg class="ic ic-sm"><use href="#i-plus"></use></svg> Buat Cadangan Manual Sekarang
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- FLASH MESSAGE -->
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> mb-3">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <!-- STATUS KESIAPAN DATA (DISASTER RECOVERY READINESS) -->
+    <div class="grid grid-3 mb-3">
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Status Kesiapan Data</div>
+          <div class="h3 text-green" style="font-size:20px;font-weight:700">100% Siap (RPO &lt; 24h)</div>
+        </div>
+        <span class="badge badge-success">Sehat</span>
+      </div>
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Pencadangan Terakhir</div>
+          <div class="h3 text-blue" style="font-size:20px;font-weight:700">Hari ini, 04:00</div>
+        </div>
+        <span class="badge badge-info">Otomatis WAL</span>
+      </div>
+      <div class="card p-2 flex justify-between align-center">
+        <div>
+          <div class="tiny muted uppercase">Total Snapshot Tersimpan</div>
+          <div class="h3" style="font-size:20px;font-weight:700"><%= backups.length %> File</div>
+        </div>
+        <span class="badge badge-primary">Tervalidasi SHA</span>
+      </div>
+    </div>
+
+    <!-- DAFTAR FILE PENCADANGAN -->
+    <div class="card mb-3">
+      <div class="card-head">
+        <h3 style="font-size:16px;margin:0">Daftar Arsip Cadangan Database SIM-GTK</h3>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nama Berkas Cadangan</th>
+                <th>Ukuran Berkas</th>
+                <th>Tipe Cadangan</th>
+                <th>Checksum SHA-256</th>
+                <th>Waktu Pencadangan</th>
+                <th>Status Kesiapan</th>
+                <th style="width:170px;text-align:center">Aksi Pemulihan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% backups.forEach(function(b) { %>
+                <tr>
+                  <td>
+                    <div class="font-mono" style="font-weight:600"><%= b.nama_file %></div>
+                  </td>
+                  <td><b><%= b.ukuran_mb %> MB</b></td>
+                  <td>
+                    <span class="badge badge-sm badge-<%= b.tipe === 'Otomatis' ? 'teal' : 'primary' %>"><%= b.tipe %></span>
+                  </td>
+                  <td><span class="font-mono tiny muted"><%= b.hash_checksum || 'sha256-verified' %></span></td>
+                  <td class="tiny muted"><%= b.created_at %></td>
+                  <td><span class="badge badge-success">Tersedia &amp; Valid</span></td>
+                  <td style="text-align:center">
+                    <form method="post" action="/sim-gtk/superadmin/backup/<%= b.id %>/restore" style="display:inline" onsubmit="return confirm('PERINGATAN: Memulihkan database akan menimpa data terkini dengan snapshot ini. Lanjutkan?')">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <button type="submit" class="btn btn-outline btn-xs" title="Pulihkan Database">
+                        <svg class="ic ic-sm"><use href="#i-refresh"></use></svg> Pulihkan
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,105 @@
+<%- include('../partials/head', { title: "Persetujuan &amp; Verifikasi", bodyClass: '' }) %>
+<%- include('../partials/topbar') %>
+<div class="shell">
+  <%- include('../partials/sidebar') %>
+  <main class="main">
+
+    
+    <div class="crumbs no-print">
+      <a href="/sim-gtk/beranda">SIM-GTK</a> <span>/</span> <b>Persetujuan &amp; Verifikasi</b>
+    </div>
+    <div class="page-head">
+      <h1>Persetujuan &amp; Verifikasi</h1>
+      <p>Tinjau pengajuan GTK dan kelola akses akun madrasah</p>
+    </div>
+
+<div class="tabs">
+  
+    <a class="active" href="/sim-gtk/manajemen/persetujuan?tab=pendaftaran">Pendaftaran<span class="count">0</span></a>
+  
+    <a class="" href="/sim-gtk/manajemen/persetujuan?tab=perubahan">Perubahan Data<span class="count">2</span></a>
+  
+    <a class="" href="/sim-gtk/manajemen/persetujuan?tab=golongan">Golongan &amp; MKG<span class="count">1</span></a>
+  
+    <a class="" href="/sim-gtk/manajemen/persetujuan?tab=pengajuan">Pengajuan<span class="count">3</span></a>
+  
+    <a class="" href="/sim-gtk/manajemen/persetujuan?tab=diklat">Pelatihan<span class="count">0</span></a>
+  
+    <a class="" href="/sim-gtk/manajemen/persetujuan?tab=tugas">Tugas Tambahan<span class="count">0</span></a>
+  
+    <a class="" href="/sim-gtk/manajemen/persetujuan?tab=ijazah">Ijazah<span class="count">0</span></a>
+  
+    <a class="" href="/sim-gtk/manajemen/persetujuan?tab=sertifikasi">Sertifikasi<span class="count">0</span></a>
+  
+</div>
+
+<div class="grid grid-4 mb-3">
+  <div class="stat tint-1"><div><div class="lbl">Total Menunggu</div><div class="val">6</div><div class="sub">Seluruh jenis pengajuan</div></div><div class="ico ico-teal"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-clipboard"></use></svg></div></div>
+  <div class="stat tint-3"><div><div class="lbl">Pendaftaran Baru</div><div class="val">0</div><div class="sub">Akun belum aktif</div></div><div class="ico ico-amber"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-user"></use></svg></div></div>
+  <div class="stat tint-4"><div><div class="lbl">Perubahan Data</div><div class="val">3</div><div class="sub">Termasuk golongan &amp; MKG</div></div><div class="ico ico-blue"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-edit"></use></svg></div></div>
+  <div class="stat tint-2"><div><div class="lbl">Administrasi</div><div class="val">3</div><div class="sub">Pengajuan &amp; dokumen</div></div><div class="ico ico-green"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-file"></use></svg></div></div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-head"><div><h3>Pendaftaran Akun Baru</h3><p>Tinjau dan berikan keputusan verifikasi</p></div></div>
+
+  
+    
+      <div class="list-empty"><svg class="ic " aria-hidden="true"><use href="#i-user-check"></use></svg><b>Tidak ada pendaftaran menunggu</b>Semua pendaftaran akun sudah diproses.</div>
+    
+
+  
+</div>
+
+<div class="card">
+  <div class="card-head"><div><h3>Riwayat Verifikasi</h3><p>Keputusan terakhir yang Anda berikan</p></div></div>
+  
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>GTK</th><th>Jenis</th><th>Keterangan</th><th>Status</th><th>Tanggal</th></tr></thead>
+        <tbody>
+          
+            <tr>
+              <td class="strong">Herman Susanto Buhungo</td>
+              <td><span class="badge badge-muted">perubahan</span></td>
+              <td class="small">Gelar Belakang</td>
+              <td><span class="badge badge-success">Disetujui</span></td>
+              <td class="nowrap muted small">23 Okt 2026 08:59</td>
+            </tr>
+          
+            <tr>
+              <td class="strong">Herman Susanto Buhungo</td>
+              <td><span class="badge badge-muted">golongan</span></td>
+              <td class="small">III/a · Sesuai berkas.</td>
+              <td><span class="badge badge-success">Disetujui</span></td>
+              <td class="nowrap muted small">23 Okt 2026 03:26</td>
+            </tr>
+          
+            <tr>
+              <td class="strong">Herman Susanto Buhungo</td>
+              <td><span class="badge badge-muted">pengajuan</span></td>
+              <td class="small">Pengajuan SKBK Bulan September 2026</td>
+              <td><span class="badge badge-success">Disetujui</span></td>
+              <td class="nowrap muted small">23 Okt 2026 03:26</td>
+            </tr>
+          
+            <tr>
+              <td class="strong">Herman Susanto Buhungo</td>
+              <td><span class="badge badge-muted">pengajuan</span></td>
+              <td class="small">Dispensasi JTM karena Tugas Pendampingan</td>
+              <td><span class="badge badge-success">Disetujui</span></td>
+              <td class="nowrap muted small">23 Okt 2026 03:26</td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  
+</div>
+    
+    <div class="tiny muted mt-4" style="padding-top:18px;border-top:1px solid var(--line)">
+      SIM-GTK &mdash; Sistem Informasi Manajemen Guru dan Tenaga Kependidikan Madrasah. Semua data ditampilkan sesuai madrasah dan hak akses akun Anda.
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>
